@@ -1,0 +1,54 @@
+using UnityEngine;
+
+public class PlayerHitbox : MonoBehaviour
+{
+    public Transform Owner { get; private set; }
+    public HitboxPayload Payload { get; private set; }
+    public bool HasPayload { get; private set; }
+
+    [SerializeField] private Collider _collider; // assign in inspector
+
+    public void Initialize(Transform owner)
+    {
+        Owner = owner;
+        HasPayload = false;
+    }
+
+    public void SetPayload(HitboxPayload payload)
+    {
+        //Payload = payload;
+        float sign = Mathf.Sign(transform.lossyScale.x);
+        Vector3 dir = payload.KnockbackDirection;
+        dir.x = Mathf.Abs(dir.x) * sign;
+
+        Payload = new HitboxPayload(
+        payload.Damage,
+        dir,
+        payload.KnockbackForce,
+        payload.HitstunDuration
+        );
+        HasPayload = true;
+         // ✅ Immediately check overlaps so hits don't get missed
+        Collider[] overlaps = Physics.OverlapBox(
+            _collider.bounds.center,
+            _collider.bounds.extents,
+            _collider.transform.rotation
+        );
+
+        foreach (var col in overlaps)
+        {
+            var hurtbox = col.GetComponent<EnemyHurtbox>();
+            if (hurtbox != null)
+            {
+                hurtbox.TryTakeHit(this);
+            }
+        }
+    }
+
+    public void ClearPayload()
+    {
+        HasPayload = false;
+
+    }
+   
+}

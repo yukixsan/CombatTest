@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BurstSkill : SkillObject
@@ -11,7 +12,8 @@ public class BurstSkill : SkillObject
     public override void Initialize(PlayerSkillData data, Transform player)
     {
         base.Initialize(data, player);
-
+        
+        //_hitboxPos.transform.localScale = flip;
         // Give it a forward velocity (assuming right = forward in 2D)
         if (rb == null) rb = GetComponent<Rigidbody2D>();
         if (rb != null)

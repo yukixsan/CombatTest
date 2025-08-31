@@ -7,7 +7,8 @@ public class PlayerAttackHandler : MonoBehaviour
     [Header("General")]
     [SerializeField] private Animator _animator;
     [SerializeField] private CombatActionData _startingAction;
-    [SerializeField] private PolygonCollider2D _hitbox;
+    [SerializeField] private PlayerHitbox _hitbox;
+    [SerializeField] private Transform _model;
 
     [Header("Variables")]
     private Coroutine _currentActionRoutine;
@@ -19,9 +20,13 @@ public class PlayerAttackHandler : MonoBehaviour
     public bool IsInRecovery => _inRecovery;
     public bool IsAttacking => _isAttacking;
 
+
+
     private void Start()
     {
         _currentAction = _startingAction;
+                _hitbox.enabled = false;
+
     }
 
     public void TryStartAction(CombatActionData newAction)
@@ -71,10 +76,18 @@ public class PlayerAttackHandler : MonoBehaviour
         {
             LaunchSkill(skillData);
         }
-        else if (action is AttackData attack)
+        else if (action is AttackData   attackData)
         {
             // normal attack hitbox enabling
             _hitbox.enabled = true;
+            var payload = new HitboxPayload(
+                attackData.damage,
+                attackData.knockbackDirection,
+                attackData.knockbackForce,
+                attackData.hitstunDuration
+            );      
+            _hitbox.SetPayload(payload);
+        
         }
 
         print($"[Attack] Active: {action.name}");
@@ -84,6 +97,7 @@ public class PlayerAttackHandler : MonoBehaviour
 
         // Follow-up or reset
         _hitbox.enabled = false;
+        _hitbox.ClearPayload();
 
         if (action is AttackData atkData)
         {
@@ -140,16 +154,18 @@ public class PlayerAttackHandler : MonoBehaviour
     private void LaunchSkill(PlayerSkillData skillData)
     {
         if (skillData.skillPrefab == null) return;
+        Vector3 offset = skillData.spawnOffset;
+        offset.x  *= Mathf.Sign(_model.localScale.x);
 
         GameObject obj = Instantiate(skillData.skillPrefab,
-            transform.position + transform.TransformDirection(skillData.spawnOffset),
+            transform.position + offset,
             transform.rotation);
 
         SkillObject skill = obj.GetComponent<SkillObject>();
         if (skill != null)
-            skill.Initialize(skillData, transform);
+            skill.Initialize(skillData, _model);
 
         if (skillData.attachToPlayer)
-            obj.transform.SetParent(transform);
+            obj.transform.SetParent(_model, worldPositionStays: true);
     }
 }

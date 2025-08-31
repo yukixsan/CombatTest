@@ -88,8 +88,28 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(Vector3.down * _fallMult, ForceMode.Acceleration);
         }
 
-
     }
+
+    private void LaunchVelocity(Vector3 dir, float strength)
+    {
+        rb.linearVelocity = dir.normalized * strength;
+    }
+
+    private void LaunchForce(Vector3 dir, float strength)
+    {
+        rb.AddForce(dir.normalized * strength, ForceMode.Impulse);
+    }
+
+    // ========= Animation Event Presets =========
+    public void LaunchUp(float strength) => LaunchVelocity(Vector3.up, strength);
+    public void LaunchForward(float strength) => LaunchVelocity(Vector3.right, strength);
+    public void LaunchBack(float strength) => LaunchVelocity(Vector3.left, strength);
+    public void LaunchDown(float strength) => LaunchVelocity(Vector3.down, strength);
+
+    public void ForceUp(float strength) => LaunchForce(Vector3.up, strength);
+    public void ForceForward(float strength) => LaunchForce(Vector3.right, strength);
+    public void ForceBack(float strength) => LaunchForce(Vector3.left, strength);
+    public void ForceDown(float strength) => LaunchForce(Vector3.down, strength);
 
     private void LateUpdate()
     {
@@ -101,6 +121,7 @@ public class PlayerMovement : MonoBehaviour
         if (moveX > 0)
         {
             _model.localScale = new Vector3(1, 1, 1);
+
         }
         else if (moveX < 0)
         {

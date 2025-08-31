@@ -14,6 +14,12 @@ public class CombatActionData : ScriptableObject
     public float active = 0.2f;
     public float recovery = 0.3f;
 
+    [Header("Properties")]
+    public float damage = 10f;
+    public Vector3 knockbackDirection = Vector3.back;
+    public float knockbackForce = 5f;
+    public float hitstunDuration = 0.3f;
+
     [Header("Cancel Windows")]
     public bool canBeCancelledWindup = true;
     public bool canBeCancelledActive = false;

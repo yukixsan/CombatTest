@@ -17,10 +17,14 @@ MonoBehaviour:
   windup: 0.2
   active: 0.2
   recovery: 0.1
+  damage: 10
+  knockbackDirection: {x: 1, y: 0, z: 0}
+  knockbackForce: 5
+  hitstunDuration: 0.3
   canBeCancelledWindup: 1
   canBeCancelledActive: 0
   canBeCancelledRecovery: 1
   cooldown: 0
   skillPrefab: {fileID: 6981893883298962688, guid: 4cca850db587df242ad0ab3c96a7ede2, type: 3}
-  spawnOffset: {x: 0, y: 0, z: 0}
-  attachToPlayer: 0
+  spawnOffset: {x: 1, y: 0, z: 0}
+  attachToPlayer: 1
