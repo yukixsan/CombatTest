@@ -4,15 +4,19 @@ using UnityEngine;
     public struct HitboxPayload
     {
         public float Damage;
-        public Vector3 KnockbackDirection;
         public float KnockbackForce;
+        public float LaunchForce;
+        public int LaunchDir;
         public float HitstunDuration;
+        public Transform attacker;
 
-        public HitboxPayload(float damage, Vector3 direction, float force,float hitstun)
+        public HitboxPayload(float damage, float force,float launch,int launchDir ,float hitstun, Transform attacker)
         {
-            Damage = damage;
-            KnockbackDirection = direction.normalized;
-            KnockbackForce = force;
-            HitstunDuration = hitstun;
+        this.Damage = damage;
+        this.KnockbackForce = force;
+        this.LaunchForce = launch;
+        this.LaunchDir = launchDir;
+        this.HitstunDuration = hitstun;
+        this.attacker = attacker;
         }
     }

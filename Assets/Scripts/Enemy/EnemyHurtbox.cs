@@ -11,14 +11,14 @@ public class EnemyHurtbox : MonoBehaviour
         var hitbox = other.GetComponent<PlayerHitbox>();
         if (hitbox != null && hitbox.HasPayload)
         {
-            _enemyCombat.TakeHit(hitbox.Payload, hitbox.Owner);
+            _enemyCombat.TakeHit(hitbox.Payload);
         }
     }
     public void TryTakeHit(PlayerHitbox hitbox)
     {
         if (hitbox.HasPayload)
         {
-            _enemyCombat.TakeHit(hitbox.Payload, hitbox.Owner);
+            _enemyCombat.TakeHit(hitbox.Payload);
         }
     }
 

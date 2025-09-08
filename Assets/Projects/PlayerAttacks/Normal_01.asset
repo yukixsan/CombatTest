@@ -16,10 +16,11 @@ MonoBehaviour:
   animationClip: {fileID: 7400000, guid: 485ba957bf0e51f41a76555cf720163b, type: 2}
   windup: 0.1
   active: 0.2
-  recovery: 0.2
+  recovery: 0.3
   damage: 10
-  knockbackDirection: {x: 1, y: 0, z: 0}
   knockbackForce: 1
+  launchForce: 0
+  launchDir: 0
   hitstunDuration: 0.3
   canBeCancelledWindup: 1
   canBeCancelledActive: 0

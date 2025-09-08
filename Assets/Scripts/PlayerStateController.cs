@@ -7,13 +7,15 @@ public class PlayerStateController : MonoBehaviour
         Idle,
         Moving,
         Jumping,
-        Attacking
+        Attacking,
+        Recovery
     }
 
     [Header("References")]
     [SerializeField] private PlayerMovement _movement;
     [SerializeField] private PlayerAttackHandler _attackHandler;
     [SerializeField] private Animator _animator;
+
 
     public PlayerState CurrentState { get; private set; } = PlayerState.Idle;
 
@@ -23,6 +25,10 @@ public class PlayerStateController : MonoBehaviour
         if (_attackHandler.IsAttacking)
         {
             SetState(PlayerState.Attacking);
+        }
+        else if (_attackHandler.IsInRecovery)
+        {
+            SetState(PlayerState.Recovery);
         }
         else if (!_movement.IsGrounded)
         {
@@ -42,14 +48,14 @@ public class PlayerStateController : MonoBehaviour
     {
         if (CurrentState == newState) return;
         CurrentState = newState;
-
+        print(CurrentState);
         // Optional: hook into Animator
         _animator.SetBool("isRunning", CurrentState == PlayerState.Moving);
         _animator.SetBool("isJumping", CurrentState == PlayerState.Jumping);
         _animator.SetBool("isAttacking", CurrentState == PlayerState.Attacking);
     }
 
-    public bool CanMove => CurrentState != PlayerState.Attacking;
+    public bool CanMove => CurrentState != PlayerState.Attacking && CurrentState != PlayerState.Recovery;
     public bool CanAttack => CurrentState != PlayerState.Attacking;
 }
 

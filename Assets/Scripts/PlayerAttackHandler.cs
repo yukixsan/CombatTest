@@ -82,10 +82,13 @@ public class PlayerAttackHandler : MonoBehaviour
             _hitbox.enabled = true;
             var payload = new HitboxPayload(
                 attackData.damage,
-                attackData.knockbackDirection,
                 attackData.knockbackForce,
-                attackData.hitstunDuration
-            );      
+                attackData.launchForce,
+                attackData.launchDir,
+                attackData.hitstunDuration,
+                transform
+
+            ) ;      
             _hitbox.SetPayload(payload);
         
         }
@@ -129,6 +132,7 @@ public class PlayerAttackHandler : MonoBehaviour
         _currentAction = _startingAction;
 
         _stateController.SetState(PlayerStateController.PlayerState.Idle);
+
         _animator.CrossFade("Idle", 0.1f);
         _currentActionRoutine = null;
         

@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class SkillObject : MonoBehaviour
 {
-    protected int damage;
-    protected float knockback;
+    protected HitboxPayload payload;
     [SerializeField] private PlayerHitbox _hitbox;
 
     public virtual void Initialize(PlayerSkillData data, Transform player)
@@ -15,21 +14,20 @@ public class SkillObject : MonoBehaviour
             transform.SetParent(player);
         if (_hitbox != null)
         {
-             var payload = new HitboxPayload
-            {
-                Damage = data.damage,
-                KnockbackForce = data.knockbackForce,
-                KnockbackDirection = data.knockbackDirection
-            };
+            // Build payload for this skill
+            payload = new HitboxPayload(
+                data.damage,
+                data.knockbackForce,
+                data.launchForce,
+                data.launchDir,
+                data.hitstunDuration,
+                player // attacker reference
+            );
 
             _hitbox.Initialize(player);
             _hitbox.SetPayload(payload);
         }
     }
 
-    protected virtual void OnTriggerEnter2D(Collider2D other)
-    {
-        Debug.Log($"Hit {other.name} for {damage} damage!");
-        // TODO: integrate Health later
-    }
+    
 }

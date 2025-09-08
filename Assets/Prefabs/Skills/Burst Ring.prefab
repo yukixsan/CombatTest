@@ -118,7 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hitbox: {fileID: 2219588040453617290}
   speed: 10
-  lifetime: 1
+  lifetime: 0.3
   rb: {fileID: 1532217873919053033}
 --- !u!198 &5862191797452311924
 ParticleSystem:

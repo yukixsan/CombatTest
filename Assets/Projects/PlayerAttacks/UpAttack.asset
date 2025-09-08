@@ -18,8 +18,9 @@ MonoBehaviour:
   active: 0.1
   recovery: 0.2
   damage: 10
-  knockbackDirection: {x: 0, y: 1, z: 0}
-  knockbackForce: 5
+  knockbackForce: 0
+  launchForce: 6
+  launchDir: 1
   hitstunDuration: 0.3
   canBeCancelledWindup: 1
   canBeCancelledActive: 0

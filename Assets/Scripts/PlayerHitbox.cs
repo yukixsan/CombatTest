@@ -16,17 +16,8 @@ public class PlayerHitbox : MonoBehaviour
 
     public void SetPayload(HitboxPayload payload)
     {
-        //Payload = payload;
-        float sign = Mathf.Sign(transform.lossyScale.x);
-        Vector3 dir = payload.KnockbackDirection;
-        dir.x = Mathf.Abs(dir.x) * sign;
 
-        Payload = new HitboxPayload(
-        payload.Damage,
-        dir,
-        payload.KnockbackForce,
-        payload.HitstunDuration
-        );
+        Payload = payload;
         HasPayload = true;
          // ✅ Immediately check overlaps so hits don't get missed
         Collider[] overlaps = Physics.OverlapBox(
@@ -48,7 +39,6 @@ public class PlayerHitbox : MonoBehaviour
     public void ClearPayload()
     {
         HasPayload = false;
-
     }
    
 }

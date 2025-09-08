@@ -68,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+
         // Horizontal movement only (2.5D)
         Vector3 velocity = rb.linearVelocity;
         velocity.x = moveInput.x * moveSpeed;
@@ -118,6 +119,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleModelFlip(float moveX)
     {
+        if (!_stateController.CanMove) return;
+
         if (moveX > 0)
         {
             _model.localScale = new Vector3(1, 1, 1);

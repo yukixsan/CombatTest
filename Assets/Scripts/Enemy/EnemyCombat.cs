@@ -13,7 +13,7 @@ public class EnemyCombat : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    public void TakeHit(HitboxPayload payload, Transform attacker)
+    public void TakeHit(HitboxPayload payload)
     {
         print("enemy hit");
         // Damage
@@ -21,11 +21,15 @@ public class EnemyCombat : MonoBehaviour
         Debug.Log($"{name} took {payload.Damage} dmg. HP: {currentHealth}/{maxHealth}");
 
         // Knockback
-        // Default knockback direction from payload
+        float facingX = Mathf.Sign(transform.position.x - payload.attacker.position.x);
 
-       
-        Vector3 kb = payload.KnockbackDirection * payload.KnockbackForce;
-        rb.AddForce(kb, ForceMode.Impulse);
+        Vector3 knockback = new Vector3(
+                   payload.KnockbackForce * facingX,
+                   payload.LaunchForce * payload.LaunchDir,
+                   0
+               );
+
+        rb.AddForce(knockback, ForceMode.Impulse);
 
         // TODO: Apply stun/animation if needed
         // e.g. StartCoroutine(Hitstun(payload.HitstunDuration));
