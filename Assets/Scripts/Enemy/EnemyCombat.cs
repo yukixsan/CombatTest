@@ -32,6 +32,8 @@ public class EnemyCombat : MonoBehaviour
         rb.AddForce(knockback, ForceMode.Impulse);
 
         Vector3 hitPoint = (payload.attacker.position + transform.position) * 0.5f;
+        Debug.Log($"SpawnVFX index: {payload.VFXindex}");
+
         HitVFXManager.Instance.SpawnVFX(payload.VFXindex, hitPoint, Quaternion.identity);
         HitStopManager.Instance.StartHitstop(payload.HitstopDuration);
 

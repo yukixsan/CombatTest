@@ -173,9 +173,9 @@ public class PlayerCombat : MonoBehaviour
     public void OnRecoveryStart()
     {
         if (currentAttack == null&& currentSkill == null) return;
+        _hitbox.ClearPayload();
 
         _hitbox.enabled = false;
-        _hitbox.ClearPayload();
 
         _stateController.SetMovePermission(true);
         _stateController.SetJumpPermission(true);
@@ -192,6 +192,7 @@ public class PlayerCombat : MonoBehaviour
         isAttacking = false;
         cancelWindowOpen = false;
         currentAttack = null;
+        currentSkill = null;
 
         // If queued attack is present (queued during earlier phases), start it now
         if (queuedAttack != null)
@@ -395,7 +396,6 @@ public class PlayerCombat : MonoBehaviour
         cancelWindowOpen = false;
         isAttacking = false;
         _hitbox.ClearPayload();
-
-    
     }
+    
 }

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Attack_03
   animationClip: {fileID: 7400000, guid: fcea2472d673e2b45b3a3efff21abca1, type: 2}
+  VFXindex: 3
   windup: 0.25
   active: 0.13
   recovery: 0.5

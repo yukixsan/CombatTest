@@ -18,7 +18,7 @@ MonoBehaviour:
   windup: 0.2
   active: 0.2
   recovery: 0.1
-  damage: 10
+  damage: 15
   knockbackForce: 0.5
   launchForce: 5
   launchDir: 1
@@ -27,7 +27,7 @@ MonoBehaviour:
   airLimit: 0
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
-  canBeCancelledRecovery: 1
+  canBeCancelledRecovery: 0
   cooldown: 0
   skillPrefab: {fileID: 0}
   spawnOffset: {x: 0, y: 0, z: 0}
