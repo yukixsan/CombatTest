@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: SkillE
   m_EditorClassIdentifier: 
   Name: SkillE
-  animationClip: {fileID: 7400000, guid: 4e7ad8cb2abcc3e42849f827b6bd713c, type: 2}
+  animationClip: {fileID: 7400000, guid: 0d866b5669825644bbd5011a912481c4, type: 2}
+  VFXindex: 1
   windup: 0.2
   active: 0.2
   recovery: 0.1
   damage: 10
-  knockbackDirection: {x: 1, y: 0, z: -1}
-  knockbackForce: 5
-  hitstunDuration: 0.3
-  canBeCancelledWindup: 1
+  knockbackForce: 0.5
+  launchForce: 5
+  launchDir: 1
+  hitstunDuration: 0.04
+  Airborne: 0
+  airLimit: 0
+  canBeCancelledWindup: 0
   canBeCancelledActive: 0
   canBeCancelledRecovery: 1
   cooldown: 0

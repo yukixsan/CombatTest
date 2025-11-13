@@ -14,16 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Attack_01
   animationClip: {fileID: 7400000, guid: 485ba957bf0e51f41a76555cf720163b, type: 2}
-  windup: 0.1
-  active: 0.2
-  recovery: 0.3
+  windup: 0.12
+  active: 0.08
+  recovery: 0.2
   damage: 10
   knockbackForce: 1
   launchForce: 0
   launchDir: 0
-  hitstunDuration: 0.3
-  canBeCancelledWindup: 1
+  hitstunDuration: 0.02
+  Airborne: 0
+  airLimit: 0
+  canBeCancelledWindup: 0
   canBeCancelledActive: 0
   canBeCancelledRecovery: 1
   nextCombo: {fileID: 11400000, guid: 26d18d55de99ca34ca0ec4372e7abc68, type: 2}
+  comboIndex: 1
+  directionVariant: 0
   absoluteRecovery: 0

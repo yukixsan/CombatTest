@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -6,7 +7,8 @@ public class PlayerAttackHandler : MonoBehaviour
 {
     [Header("General")]
     [SerializeField] private Animator _animator;
-    [SerializeField] private CombatActionData _startingAction;
+    [SerializeField] public AttackData _groundNeutral;
+    [SerializeField] public AttackData _airNeutral;
     [SerializeField] private PlayerHitbox _hitbox;
     [SerializeField] private Transform _model;
 
@@ -24,7 +26,7 @@ public class PlayerAttackHandler : MonoBehaviour
 
     private void Start()
     {
-        _currentAction = _startingAction;
+        _currentAction = _groundNeutral;
                 _hitbox.enabled = false;
 
     }
@@ -78,18 +80,7 @@ public class PlayerAttackHandler : MonoBehaviour
         }
         else if (action is AttackData   attackData)
         {
-            // normal attack hitbox enabling
-            _hitbox.enabled = true;
-            var payload = new HitboxPayload(
-                attackData.damage,
-                attackData.knockbackForce,
-                attackData.launchForce,
-                attackData.launchDir,
-                attackData.hitstunDuration,
-                transform
-
-            ) ;      
-            _hitbox.SetPayload(payload);
+            
         
         }
 
@@ -101,12 +92,11 @@ public class PlayerAttackHandler : MonoBehaviour
         // Follow-up or reset
         _hitbox.enabled = false;
         _hitbox.ClearPayload();
-
-        if (action is AttackData atkData)
+          if (action is AttackData atkData)
         {
             if (atkData.absoluteRecovery)
             {
-                _currentAction = _startingAction;
+                _currentAction = null;
             }
             else if (atkData.nextCombo != null)
             {
@@ -114,24 +104,28 @@ public class PlayerAttackHandler : MonoBehaviour
             }
             else
             {
-                _currentAction = _startingAction;
+                _currentAction = null;
             }
         }
         else
         {
 
-            _currentAction = _startingAction;
+            _currentAction = null;
         }
+      
 
         //Recovery
         _inRecovery = true;
         print($"[Attack] Recovery: {action.name}");
+        
         yield return new WaitForSeconds(action.recovery);
         _inRecovery = false;
-        //Reset
-        _currentAction = _startingAction;
-
-        _stateController.SetState(PlayerStateController.PlayerState.Idle);
+        
+        // Reset to neutral anchor
+        _currentAction = _groundNeutral; // chain ends, PlayerCombat will restart at neutral
+        
+    
+        //_stateController.SetState(PlayerStateController.PlayerState.Idle);
 
         _animator.CrossFade("Idle", 0.1f);
         _currentActionRoutine = null;
@@ -139,16 +133,62 @@ public class PlayerAttackHandler : MonoBehaviour
     }
     public void TryAttack()
     {
+        // print("ground attack");
+        // AttackData start = _groundNeutral;
+
+        // if (!_isAttacking)
+        // {
+        //     if (start != null)
+        //         TryStartAction(start);
+        //     return;
+        // }
+
+        // // If already attacking → check chaining
+        // if (_inRecovery &&  _currentAction is AttackData atk && atk.nextCombo != null)
+        // {
+        //     TryStartAction(_currentAction);
+        // }
         if (_currentAction is AttackData)
+        { TryStartAction(_currentAction);  }
+
+    }
+    public void TryAirborneAttack()
+    {
+        print("air iki haruse");
+        AttackData start = _airNeutral;
+        if (!_isAttacking)
+        {
+            if (start != null)
+                TryStartAction(start);
+            return;
+        }
+
+        // If already attacking → check chaining
+        if (_inRecovery && _currentAction is AttackData atk && atk.nextCombo != null)
+        {
             TryStartAction(_currentAction);
+        }
+    }
+    // Starts a *specific* attack (e.g. Up/Down branch)
+    public void TrySpecialAttack(AttackData attack)
+    {
+        
+        if (attack == null) return;
+
+        if (!_isAttacking)
+        {
+            TryStartAction(attack);
+            return;
+        }
+
+        // Only allow chaining into this if it’s the defined nextCombo
+        if (_inRecovery && _currentAction is AttackData atk && atk.nextCombo == attack)
+        {
+            TryStartAction(attack);
+        }
     }
 
-    public void TryDirectionalAttack(AttackData attack)
-    {
-        if (_currentAction is AttackData)
-            _currentAction = attack;
-            TryStartAction(attack);
-    }
+   
 
     public void TrySkill(PlayerSkillData skill)
     {

@@ -19,11 +19,15 @@ MonoBehaviour:
   recovery: 0.2
   damage: 10
   knockbackForce: 0
-  launchForce: 6
+  launchForce: 8
   launchDir: 1
-  hitstunDuration: 0.3
+  hitstunDuration: 0.04
+  Airborne: 0
+  airLimit: 0
   canBeCancelledWindup: 1
   canBeCancelledActive: 0
   canBeCancelledRecovery: 0
   nextCombo: {fileID: 0}
+  comboIndex: 0
+  directionVariant: 1
   absoluteRecovery: 1

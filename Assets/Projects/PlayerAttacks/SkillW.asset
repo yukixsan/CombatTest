@@ -18,12 +18,14 @@ MonoBehaviour:
   active: 0.2
   recovery: 0.1
   damage: 10
-  knockbackDirection: {x: 1, y: 0, z: 0}
   knockbackForce: 5
+  launchForce: 0
+  launchDir: 0
   hitstunDuration: 0.3
-  canBeCancelledWindup: 1
+  Airborne: 0
+  canBeCancelledWindup: 0
   canBeCancelledActive: 0
-  canBeCancelledRecovery: 1
+  canBeCancelledRecovery: 0
   cooldown: 0
   skillPrefab: {fileID: 0}
   spawnOffset: {x: 0, y: 0, z: 0}

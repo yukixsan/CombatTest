@@ -31,8 +31,9 @@ public class EnemyCombat : MonoBehaviour
 
         rb.AddForce(knockback, ForceMode.Impulse);
 
-        // TODO: Apply stun/animation if needed
-        // e.g. StartCoroutine(Hitstun(payload.HitstunDuration));
+        Vector3 hitPoint = (payload.attacker.position + transform.position) * 0.5f;
+        HitVFXManager.Instance.SpawnVFX(payload.VFXindex, hitPoint, Quaternion.identity);
+        HitStopManager.Instance.StartHitstop(payload.HitstopDuration);
 
         if (currentHealth <= 0f)
         {

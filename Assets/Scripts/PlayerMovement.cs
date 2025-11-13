@@ -19,6 +19,10 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveInput;
     [SerializeField]private bool _isGrounded;
     public bool IsMoving { get; private set; }
+    // Accumulator fields
+    private Vector3 pendingLaunchVelocity = Vector3.zero;
+    private bool hasPendingVelocity = false;
+
     [SerializeField]private bool _jumpPressed;
 
     //State Controller
@@ -88,17 +92,38 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(Vector3.down * _fallMult, ForceMode.Acceleration);
         }
+        // 2) Apply accumulated velocity launches (overwrites velocity intentionally)
+        if (hasPendingVelocity)
+        {
+            // Option A: Overwrite velocity with the accumulated vector
+            rb.linearVelocity = pendingLaunchVelocity;
+
+            // Reset
+            pendingLaunchVelocity = Vector3.zero;
+            hasPendingVelocity = false;
+        }
+    
 
     }
 
     private void LaunchVelocity(Vector3 dir, float strength)
     {
-        rb.linearVelocity = dir.normalized * strength;
+        float facing = Mathf.Sign(_model.localScale.x); 
+
+        // Flip the X direction if facing left
+        dir.x *= facing;
+
+        // Normalize and scale
+
+        pendingLaunchVelocity += dir.normalized * strength;
+        hasPendingVelocity = true;
     }
 
     private void LaunchForce(Vector3 dir, float strength)
     {
-        rb.AddForce(dir.normalized * strength, ForceMode.Impulse);
+        float facing = Mathf.Sign(_model.localScale.x);
+        Vector3 finalDir = new Vector3(dir.x * facing, dir.y, dir.z);
+        rb.AddForce(finalDir.normalized * strength, ForceMode.VelocityChange);
     }
 
     // ========= Animation Event Presets =========

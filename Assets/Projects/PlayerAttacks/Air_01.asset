@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93e86760c954ca04a8da1402cfaae22b, type: 3}
+  m_Name: Air_01
+  m_EditorClassIdentifier: 
+  Name: Air_01
+  animationClip: {fileID: 7400000, guid: 5fcc7aa307c9ead42a06da696b14df4e, type: 2}
+  windup: 0.15
+  active: 0.08
+  recovery: 0.17
+  damage: 10
+  knockbackForce: 1
+  launchForce: 0.5
+  launchDir: 1
+  hitstunDuration: 0
+  Airborne: 1
+  airLimit: 1
+  canBeCancelledWindup: 0
+  canBeCancelledActive: 0
+  canBeCancelledRecovery: 1
+  nextCombo: {fileID: 11400000, guid: f0ab766311948514fb268317a19ae46a, type: 2}
+  comboIndex: 1
+  directionVariant: 0
+  absoluteRecovery: 0

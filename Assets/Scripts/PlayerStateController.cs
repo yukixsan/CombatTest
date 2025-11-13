@@ -2,60 +2,55 @@ using UnityEngine;
 
 public class PlayerStateController : MonoBehaviour
 {
-    public enum PlayerState
-    {
-        Idle,
-        Moving,
-        Jumping,
-        Attacking,
-        Recovery
-    }
+    
 
     [Header("References")]
     [SerializeField] private PlayerMovement _movement;
-    [SerializeField] private PlayerAttackHandler _attackHandler;
+    [SerializeField] private PlayerCombat _combat;
     [SerializeField] private Animator _animator;
 
+    public PlayerMovement Movement => _movement;
+    public PlayerCombat Combat => _combat;
+    public Animator Animator => _animator;
 
-    public PlayerState CurrentState { get; private set; } = PlayerState.Idle;
+    private BasePlayerState currentState;
+
+    public GroundState GroundedState { get; private set; }
+    public AirborneState AirborneState { get; private set; }
+
+    [SerializeField]public bool CanMove { get; private set; } = true;
+    public bool CanJump { get; private set; } = true;
+    public bool IsAirborne => _movement != null && !_movement.IsGrounded;
+
+    
+    private void Awake()
+    {
+        GroundedState = new GroundState(this);
+        AirborneState = new AirborneState(this);
+        SwitchState(GroundedState);
+
+    }
+
+
+    // private void Start()
+    // {
+    // }
 
     private void Update()
     {
-        // Update based on what attackHandler is doing
-        if (_attackHandler.IsAttacking)
-        {
-            SetState(PlayerState.Attacking);
-        }
-        else if (_attackHandler.IsInRecovery)
-        {
-            SetState(PlayerState.Recovery);
-        }
-        else if (!_movement.IsGrounded)
-        {
-            SetState(PlayerState.Jumping);
-        }
-        else if (_movement.IsMoving)
-        {
-            SetState(PlayerState.Moving);
-        }
-        else
-        {
-            SetState(PlayerState.Idle);
-        }
+        currentState.OnUpdate();
     }
 
-    public void SetState(PlayerState newState)
+    public void SwitchState(BasePlayerState newState)
     {
-        if (CurrentState == newState) return;
-        CurrentState = newState;
-        print(CurrentState);
-        // Optional: hook into Animator
-        _animator.SetBool("isRunning", CurrentState == PlayerState.Moving);
-        _animator.SetBool("isJumping", CurrentState == PlayerState.Jumping);
-        _animator.SetBool("isAttacking", CurrentState == PlayerState.Attacking);
+        if (currentState == newState) return;
+        currentState?.OnExit();
+        currentState = newState;
+        currentState.OnEnter();
     }
+       public void SetMovePermission(bool canMove) => CanMove = canMove;
+    public void SetJumpPermission(bool canJump) => CanJump = canJump;
 
-    public bool CanMove => CurrentState != PlayerState.Attacking && CurrentState != PlayerState.Recovery;
-    public bool CanAttack => CurrentState != PlayerState.Attacking;
+    
 }
 

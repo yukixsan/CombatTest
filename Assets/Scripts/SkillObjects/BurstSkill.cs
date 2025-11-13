@@ -18,7 +18,7 @@ public class BurstSkill : SkillObject
         if (rb == null) rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            Vector2 dir = player.localScale.x > 0 ? Vector2.right : Vector2.left;
+            Vector2 dir =  Vector2.right * _facing;
             rb.linearVelocity = dir * speed;
         }
 
