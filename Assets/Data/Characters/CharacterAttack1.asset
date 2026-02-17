@@ -75,7 +75,7 @@ MonoBehaviour:
     m_HitPauseDelay: 0.1
     m_HitPauseDuration: 0.1
     m_TimeScale: 0
-  m_Animation: {fileID: 7400000, guid: 706404034a11ae84bad32751f666787b, type: 3}
+  m_Animation: {fileID: 7400000, guid: cfe8634d24904324fbfa92f7c8efbe50, type: 2}
   m_Mask: {fileID: 0}
   m_Motion: 1
   m_SyncReaction: {fileID: 0}
@@ -127,7 +127,7 @@ MonoBehaviour:
   m_OnHit:
     m_Instructions:
       m_Instructions: []
-  <EditorModelPath>k__BackingField: Assets/Animations/Frank_Warrior/Assets/Meshes/Frank_Warrior_Unity.FBX
+  <EditorModelPath>k__BackingField: Assets/ATART/Character/Warrior/Prefabs/Warrior.prefab
   references:
     version: 2
     RefIds:
