@@ -75,8 +75,8 @@ MonoBehaviour:
     m_HitPauseDelay: 0.1
     m_HitPauseDuration: 0.1
     m_TimeScale: 0
-  m_Animation: {fileID: 7400000, guid: 5a163245831646b47adbb4733592dd44, type: 2}
-  m_Mask: {fileID: 31900000, guid: 38bfbf2f8d502ee4fb2f60c206293b10, type: 2}
+  m_Animation: {fileID: 7400000, guid: c191d81afb627c145be4a33fbb7fc639, type: 2}
+  m_Mask: {fileID: 0}
   m_Motion: 1
   m_SyncReaction: {fileID: 0}
   m_Gravity: 1

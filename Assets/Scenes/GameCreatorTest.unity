@@ -932,7 +932,7 @@ MonoBehaviour:
         m_Scale: {x: 1, y: 1, z: 1}
         m_SmoothTime: 0.5
         m_Mannequin: {fileID: 887689594}
-        m_Animator: {fileID: 1192919427}
+        m_Animator: {fileID: 242769135}
         m_StartState: {fileID: 0}
         m_Reaction: {fileID: 0}
     - rid: 7367588101380374539
@@ -2410,6 +2410,16 @@ Transform:
   - {fileID: 538826672}
   m_Father: {fileID: 919944085}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &242769134 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
+  m_PrefabInstance: {fileID: 953277534}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &242769135 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
+  m_PrefabInstance: {fileID: 953277534}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &249610230
 GameObject:
   m_ObjectHideFlags: 0
@@ -6500,6 +6510,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1192919428}
+  - {fileID: 242769134}
   m_Father: {fileID: 93284779}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &891205771
@@ -6692,6 +6703,67 @@ Transform:
   - {fileID: 1889955830}
   m_Father: {fileID: 1606287999}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &953277534
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 887689594}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
+      propertyPath: m_Name
+      value: 9CG_Katana
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ecba992c2f1394f9eb808f518164f8ea, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
 --- !u!1 &955340150
 GameObject:
   m_ObjectHideFlags: 0
@@ -8138,7 +8210,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1192919427
 Animator:
   serializedVersion: 7
