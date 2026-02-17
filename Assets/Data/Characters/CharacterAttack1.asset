@@ -69,11 +69,11 @@ MonoBehaviour:
         rid: 7367588101380374556
     m_HitEffect:
       m_Property:
-        rid: 7367588101380374557
+        rid: 1004009540766663076
     m_HitPause: 1
     m_HitPauseTimeScale: 0.05
     m_HitPauseDelay: 0.1
-    m_HitPauseDuration: 0.1
+    m_HitPauseDuration: 1
     m_TimeScale: 0
   m_Animation: {fileID: 7400000, guid: cfe8634d24904324fbfa92f7c8efbe50, type: 2}
   m_Mask: {fileID: 0}
@@ -96,7 +96,7 @@ MonoBehaviour:
       rid: 7367588101380374564
   m_SpeedStrike:
     m_Property:
-      rid: 7367588101380374565
+      rid: 1004009540766663467
   m_SpeedRecovery:
     m_Property:
       rid: 7367588101380374566
@@ -127,10 +127,36 @@ MonoBehaviour:
   m_OnHit:
     m_Instructions:
       m_Instructions: []
-  <EditorModelPath>k__BackingField: Assets/ATART/Character/Warrior/Prefabs/Warrior.prefab
+  <EditorModelPath>k__BackingField: Assets/Animations/Frank_Warrior/Assets/Meshes/Frank_Warrior_Unity.FBX
   references:
     version: 2
     RefIds:
+    - rid: 1004009540766662996
+      type: {class: ClipDefault, ns: GameCreator.Runtime.VisualScripting, asm: GameCreator.Runtime.Core}
+      data:
+        m_Time: 0.30769232
+        m_Duration: 0
+        m_Instructions:
+          m_Instructions:
+            m_Instructions:
+            - rid: 1004009540766662997
+    - rid: 1004009540766662997
+      type: {class: InstructionCharacterNavigationJump, ns: GameCreator.Runtime.VisualScripting, asm: GameCreator.Runtime.Core}
+      data:
+        m_Breakpoint: 0
+        m_IsEnabled: 1
+        m_Character:
+          m_Property:
+            rid: 1004009540766662998
+    - rid: 1004009540766662998
+      type: {class: GetGameObjectPlayer, ns: GameCreator.Runtime.Characters, asm: GameCreator.Runtime.Core}
+      data: 
+    - rid: 1004009540766663076
+      type: {class: GetGameObjectNone, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
+      data: 
+    - rid: 1004009540766663467
+      type: {class: GetDecimalConstantTwo, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
+      data: 
     - rid: 7367588101380374547
       type: {class: GetStringString, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data:
@@ -165,9 +191,6 @@ MonoBehaviour:
     - rid: 7367588101380374556
       type: {class: GetAudioNone, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data: 
-    - rid: 7367588101380374557
-      type: {class: GetGameObjectNone, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
-      data: 
     - rid: 7367588101380374558
       type: {class: TrackMeleePhases, ns: GameCreator.Runtime.Melee, asm: GameCreator.Runtime.Melee}
       data:
@@ -196,11 +219,9 @@ MonoBehaviour:
     - rid: 7367588101380374563
       type: {class: TrackDefault, ns: GameCreator.Runtime.VisualScripting, asm: GameCreator.Runtime.Core}
       data:
-        m_Clips: []
+        m_Clips:
+        - rid: 1004009540766662996
     - rid: 7367588101380374564
-      type: {class: GetDecimalConstantOne, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
-      data: 
-    - rid: 7367588101380374565
       type: {class: GetDecimalConstantOne, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data: 
     - rid: 7367588101380374566
