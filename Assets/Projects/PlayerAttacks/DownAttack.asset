@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: DownAttack
   m_EditorClassIdentifier: 
   Name: Down attack
-  animationClip: {fileID: 7400000, guid: 153fb41125985664c8aabfee48e151ca, type: 2}
+  animationClip: {fileID: 7400000, guid: 0f19f90ddc61a5e4e8970f839737bd80, type: 2}
+  VFXindex: 0
   windup: 0.2
   active: 0.2
   recovery: 0.1
@@ -21,7 +22,7 @@ MonoBehaviour:
   knockbackForce: 5
   launchForce: 0
   launchDir: 0
-  hitstunDuration: 0.3
+  hitstunDuration: 0.05
   Airborne: 0
   airLimit: 0
   canBeCancelledWindup: 0

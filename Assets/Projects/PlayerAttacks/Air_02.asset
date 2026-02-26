@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Air_02
   m_EditorClassIdentifier: 
   Name: Air_02
-  animationClip: {fileID: 7400000, guid: 3bfff9bb1d4d8414a9bbee35e16e9a02, type: 2}
+  animationClip: {fileID: 7400000, guid: 620d3045b8005b746b7cfe9351243edb, type: 2}
   VFXindex: 2
   windup: 0.2
   active: 0.12

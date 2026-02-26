@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Air_01
   m_EditorClassIdentifier: 
   Name: Air_01
-  animationClip: {fileID: 7400000, guid: 5fcc7aa307c9ead42a06da696b14df4e, type: 2}
+  animationClip: {fileID: 7400000, guid: 2320e94377160ed4692fd627451e69c3, type: 2}
+  VFXindex: 0
   windup: 0.15
   active: 0.08
   recovery: 0.17
@@ -23,7 +24,7 @@ MonoBehaviour:
   launchDir: 1
   hitstunDuration: 0
   Airborne: 1
-  airLimit: 1
+  airLimit: 0
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
   canBeCancelledRecovery: 1

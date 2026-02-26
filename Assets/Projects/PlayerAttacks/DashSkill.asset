@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84920fce873cd9d438592c66055a30fc, type: 3}
+  m_Name: DashSkill
+  m_EditorClassIdentifier: 
+  Name: Dash_Ground
+  animationClip: {fileID: 0}
+  VFXindex: 0
+  windup: 0.2
+  active: 0.2
+  recovery: 0.3
+  damage: 0
+  knockbackForce: 5
+  launchForce: 0
+  launchDir: 0
+  hitstunDuration: 0
+  Airborne: 0
+  airLimit: 0
+  canBeCancelledWindup: 0
+  canBeCancelledActive: 0
+  canBeCancelledRecovery: 1
+  cooldown: 0
+  skillPrefab: {fileID: 0}
+  spawnOffset: {x: 0, y: 0, z: 0}
+  attachToPlayer: 0

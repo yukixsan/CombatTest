@@ -2,7 +2,7 @@ using UnityEngine;
 
 public enum CommandType
 {
-     Attack,
+    Attack,
     Skill,
     Dash
 }

@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: UpAttack
   m_EditorClassIdentifier: 
   Name: Up Attack
-  animationClip: {fileID: 7400000, guid: bcb2f654be754c349811204767809f87, type: 2}
+  animationClip: {fileID: 7400000, guid: 5b1e5b8b11edb9f4aa47166efa6023fc, type: 2}
+  VFXindex: 0
   windup: 0.2
   active: 0.1
   recovery: 0.2
@@ -26,7 +27,7 @@ MonoBehaviour:
   airLimit: 0
   canBeCancelledWindup: 1
   canBeCancelledActive: 0
-  canBeCancelledRecovery: 0
+  canBeCancelledRecovery: 1
   nextCombo: {fileID: 0}
   comboIndex: 0
   directionVariant: 1
