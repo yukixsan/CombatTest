@@ -13,6 +13,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private List<AttackData> airAttacks = new();
     [SerializeField] private List<PlayerSkillData> groundSkills = new();
     [SerializeField] private List<PlayerSkillData> airSkills = new();   
+    [SerializeField] private List<PlayerSkillData> dashSkills = new(); //0 Ground, 1 Airborne
 
 
     [Header("Runtime")]
@@ -290,10 +291,22 @@ public class PlayerCombat : MonoBehaviour
     public void ExecuteDash()
     {
         Debug.Log("[Combat] Dash executed");
+        PlayerSkillData dashData = FindMatchingDash();
+        if (dashData != null)     {
+            StartDash(dashData);
+        }
+        else
+        {return;}
+    }
+
+    private void StartDash(PlayerSkillData dashData)
+    {
+        StartSkill(dashData);
+        //Iframes here if needed, or handled by the skill prefab itself
     }
     private AttackData FindMatchingAttack(int comboIndex, DirectionVariant variant)
     {
-        bool isAirborne = _stateController != null && _stateController.IsAirborne;
+        bool isAirborne = IsAirborne();
         var attacks = isAirborne ? airAttacks : groundAttacks;
         // Step 1: Try exact match
         foreach (var a in attacks)
@@ -353,7 +366,7 @@ public class PlayerCombat : MonoBehaviour
     }
     private PlayerSkillData FindMatchingSkill(int index)
     {
-        bool isAirborne = _stateController != null && _stateController.IsAirborne;
+        bool isAirborne = IsAirborne();
         var list = isAirborne ? airSkills : groundSkills;
 
         if (index < 0 || index >= list.Count)
@@ -369,21 +382,29 @@ public class PlayerCombat : MonoBehaviour
 
         return skill;
     }
+
+    private PlayerSkillData FindMatchingDash()
+    {
+        bool airborne = IsAirborne();
+
+        int index = airborne ? 1 : 0;
+
+        if (index >= dashSkills.Count)
+        return null;
+
+        return dashSkills[index];
+    }
     
-    
+    //Helpers
      private static DirectionVariant DirectionToVariant(Vector2 dir)
     {
         if (dir.y > 0.5f) return DirectionVariant.Up;
         if (dir.y < -0.5f) return DirectionVariant.Down;
         return DirectionVariant.Neutral;
     }
-    private string DirectionToString(Vector2 dir)
+    private bool IsAirborne()
     {
-        if (dir.y > 0.5f) return "↑";
-        if (dir.y < -0.5f) return "↓";
-        if (dir.x > 0.5f) return "→";
-        if (dir.x < -0.5f) return "←";
-        return "(neutral)";
+        return _stateController != null && _stateController.IsAirborne;
     }
     public void ResetAttack()
     {

@@ -464,7 +464,7 @@ Transform:
   m_GameObject: {fileID: 346490969}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.76315796, z: 0.5894738}
+  m_LocalPosition: {x: 0, y: 0.763158, z: 0.5894738}
   m_LocalScale: {x: 0.5263157, y: 0.5263158, z: 0.5263157}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6197,6 +6197,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 36886325a811e714aba0488e1c7d1534, type: 2}
   - {fileID: 11400000, guid: b238043d30ae76a48863da3debff636b, type: 2}
   - {fileID: 11400000, guid: b238043d30ae76a48863da3debff636b, type: 2}
+  dashSkills:
+  - {fileID: 11400000, guid: 0b6d853d0f03d1741b3c235f74402740, type: 2}
+  - {fileID: 11400000, guid: b0ff08c49a881d9469f1c20ff1dc6e0a, type: 2}
   animator: {fileID: 1748799572}
   _hitbox: {fileID: 346490972}
   _model: {fileID: 222908111}
