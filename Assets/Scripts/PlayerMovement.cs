@@ -1,5 +1,5 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,6 +8,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float _fallMult;
     [SerializeField] private Transform _model;
+    private Vector3 externalVelocity;
+    [Header("Dash Settings")]
+    private bool isDashing;
+    private float dashTimer;
+    [SerializeField]private float dashDuration;
+    [SerializeField] private float dashSpeed;
+    private float dashFacing;
+
 
     [Header("Ground Check Settings")]
     public Transform groundCheck;
@@ -58,52 +66,67 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // 1️⃣ GROUND CHECK
         _isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
 
-        //Stopping movement
-        if (!_stateController.CanMove) // stateController reference here
-        {
-            // Freeze X movement if not allowed
-            Vector3 stopVel = rb.linearVelocity;
-            stopVel.x = 0;
-            rb.linearVelocity = stopVel;
+        Vector3 velocity = rb.linearVelocity;
 
-            IsMoving = false;
-            return;
+        // 2️⃣ LAUNCH (HIGHEST PRIORITY)
+        if (hasPendingVelocity)
+        {
+            rb.linearVelocity = pendingLaunchVelocity;
+
+            pendingLaunchVelocity = Vector3.zero;
+            hasPendingVelocity = false;
+            return; // Launch overrides everything for 1 frame
         }
 
+        // 3️⃣ DASH STATE
+        if (isDashing)
+        {
+            dashTimer -= Time.fixedDeltaTime;
+            //velocity.y = 0; 
+            externalVelocity = new Vector3(dashFacing * dashSpeed, 0f, 0f);
 
-        // Horizontal movement only (2.5D)
-        Vector3 velocity = rb.linearVelocity;
-        velocity.x = moveInput.x * moveSpeed;
+            if (dashTimer <= 0f)
+            {
+                isDashing = false;
+                rb.useGravity = true;
+                externalVelocity = Vector3.zero;
+            }
+        }
+
+        // 4️⃣ BASE MOVEMENT (INPUT LAYER)
+        float baseX = 0f;
+
+        bool allowBaseMovement = _stateController.CanMove;
+
+        // Disable input movement if - movement not allowed - OR currently dashing
+        if (allowBaseMovement && !isDashing)
+        {
+            baseX = moveInput.x * moveSpeed;
+        }
+
+        velocity.x = baseX + externalVelocity.x;
+
         rb.linearVelocity = velocity;
 
-        // Update IsMoving (ignores tiny floating values)
-        IsMoving = Mathf.Abs(moveInput.x) > 0.1f;
+        IsMoving = Mathf.Abs(baseX) > 0.1f;
 
+        // 5️⃣ JUMP
         if (_jumpPressed && _isGrounded)
         {
-            Vector3 v = rb.linearVelocity;
-            v.y = jumpForce; // instant vertical velocity
-            rb.linearVelocity = v;
+            velocity = rb.linearVelocity;
+            velocity.y = jumpForce;
+            rb.linearVelocity = velocity;
         }
         _jumpPressed = false;
-        if (!_isGrounded && rb.linearVelocity.y < 0)
+
+        // 6️⃣ FALL MULTIPLIER
+        if (!_isGrounded && rb.linearVelocity.y < 0 )
         {
             rb.AddForce(Vector3.down * _fallMult, ForceMode.Acceleration);
         }
-        // 2) Apply accumulated velocity launches (overwrites velocity intentionally)
-        if (hasPendingVelocity)
-        {
-            // Option A: Overwrite velocity with the accumulated vector
-            rb.linearVelocity = pendingLaunchVelocity;
-
-            // Reset
-            pendingLaunchVelocity = Vector3.zero;
-            hasPendingVelocity = false;
-        }
-    
-
     }
 
     private void LaunchVelocity(Vector3 dir, float strength)
@@ -137,6 +160,19 @@ public class PlayerMovement : MonoBehaviour
     public void ForceBack(float strength) => LaunchForce(Vector3.left, strength);
     public void ForceDown(float strength) => LaunchForce(Vector3.down, strength);
 
+    
+    public void ForceDashMovement()
+    {
+        if (isDashing) return; // Prevent overlapping dashes
+
+        isDashing = true;
+        dashTimer = dashDuration;
+        dashFacing = Mathf.Sign(_model.localScale.x);
+        rb.useGravity = false;
+    }
+   
+
+    //Model flip handler
     private void LateUpdate()
     {
         HandleModelFlip(moveInput.x);

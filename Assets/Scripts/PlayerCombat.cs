@@ -212,6 +212,19 @@ public class PlayerCombat : MonoBehaviour
         //animator.Play("Idle");
     }
     
+    public void OnDashSkillStart()
+    {
+        // Dash might have its own animation events, but we can handle common logic here if needed
+        Debug.Log("[Combat] Dash skill started");
+        _stateController.SetMovePermission(false);
+        _stateController.SetJumpPermission(false);
+        _hitbox.enabled = false;
+
+        
+        cancelWindowOpen = (currentAttack != null && currentAttack.canBeCancelledRecovery) ||
+                            (currentSkill != null && currentSkill.canBeCancelledRecovery);
+        TryQueuedAttack();
+    }
      private void TryQueuedAttack()
     {
         if (!cancelWindowOpen) return;
@@ -284,7 +297,7 @@ public class PlayerCombat : MonoBehaviour
         }
         if (animator != null && data.animationClip != null)
         {
-            try { animator.Play(data.animationClip.name); }
+            try { animator.Play(data.animationClip.name,0,0f); }
             catch { Debug.LogWarning($"Animation state {data.animationClip.name} not found"); }
         }
     }

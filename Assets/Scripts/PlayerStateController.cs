@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class PlayerStateController : MonoBehaviour
 {
-    
-
     [Header("References")]
     [SerializeField] private PlayerMovement _movement;
     [SerializeField] private PlayerCombat _combat;
