@@ -30,8 +30,11 @@ public class PlayerMovement : MonoBehaviour
     // Accumulator fields
     private Vector3 pendingLaunchVelocity = Vector3.zero;
     private bool hasPendingVelocity = false;
-
+    [Header("Jump checks")]
     [SerializeField]private bool _jumpPressed;
+    public float VerticalVelocity => rb.linearVelocity.y;
+    public bool IsRising => rb.linearVelocity.y > 0.05f;
+    public bool IsFalling => rb.linearVelocity.y < -0.05f;
 
     //State Controller
     [SerializeField] private PlayerStateController _stateController;
@@ -85,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
         if (isDashing)
         {
             dashTimer -= Time.fixedDeltaTime;
-            //velocity.y = 0; 
+            velocity.y = 0; 
             externalVelocity = new Vector3(dashFacing * dashSpeed, 0f, 0f);
 
             if (dashTimer <= 0f)

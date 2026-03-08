@@ -6358,10 +6358,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  jumpForce: 40
-  _fallMult: 50
+  jumpForce: 30
+  _fallMult: 0
   _model: {fileID: 222908111}
-  dashDuration: 0.25
+  dashDuration: 0.2
   dashSpeed: 20
   groundCheck: {fileID: 149459139}
   groundCheckRadius: 0.2

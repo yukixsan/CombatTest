@@ -8,8 +8,7 @@ public class AirborneState : BasePlayerState
 
     public override void OnEnter()
     {
-
-        currentSubState = new FallingState(controller);
+        currentSubState = new AirRisingState(controller);
         currentSubState.OnEnter();
     }
 
@@ -25,7 +24,9 @@ public class AirborneState : BasePlayerState
 
         if (combat.isAttacking)
             SwitchSubState(new AirAttackState(controller));
-         else 
+        else if (movement.IsRising)
+            SwitchSubState(new AirRisingState(controller));
+        else
             SwitchSubState(new FallingState(controller));
     }
 
@@ -40,7 +41,7 @@ public class AirborneState : BasePlayerState
     public override void OnExit()
     {
         currentSubState?.OnExit();
-          controller.SetMovePermission(true);
+        controller.SetMovePermission(true);
         controller.SetJumpPermission(true);
     }
 }

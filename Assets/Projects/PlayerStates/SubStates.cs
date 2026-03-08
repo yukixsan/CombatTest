@@ -64,6 +64,25 @@ public class GroundRecoveryState : BasePlayerState
 
         //animator.Play("Fall");
     }
+    public override void OnUpdate()
+    {
+        if (movement.IsMoving)
+            controller.SwitchState(controller.GroundedState);
+    }
+}
+
+public class AirRisingState : BasePlayerState
+{
+    public AirRisingState(PlayerStateController controller) : base(controller) { }
+    public override void OnEnter()
+    {
+        Debug.Log($"[State Enter] {GetType().Name}");
+        if (!combat.isAttacking)
+        {
+            animator.Play("Jump");
+
+        }
+    }
 }
 
 public class FallingState : BasePlayerState
@@ -74,7 +93,7 @@ public class FallingState : BasePlayerState
     {
         Debug.Log($"[State Enter] {GetType().Name}");
 
-        //animator.Play("Fall");
+        animator.Play("Fall");
     }
 }
 
@@ -84,9 +103,7 @@ public class AirAttackState : BasePlayerState
 
     public override void OnEnter()
     {
-        // controller.SetMovePermission(false);
-        //controller.SetJumpPermission(false);
-        //animator.Play("AirAttack");
+        
         Debug.Log($"[State Enter] {GetType().Name}");
 
     }
@@ -98,11 +115,7 @@ public class AirAttackState : BasePlayerState
             controller.SwitchState(controller.AirborneState);
         }
     }
-      public override void OnExit()
-    {
-        // controller.SetMovePermission(true);
-
-    }
+      
 }
 
 public class AirRecoveryState : BasePlayerState

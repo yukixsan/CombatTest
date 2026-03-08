@@ -219,11 +219,6 @@ public class PlayerCombat : MonoBehaviour
         _stateController.SetMovePermission(false);
         _stateController.SetJumpPermission(false);
         _hitbox.enabled = false;
-
-        
-        cancelWindowOpen = (currentAttack != null && currentAttack.canBeCancelledRecovery) ||
-                            (currentSkill != null && currentSkill.canBeCancelledRecovery);
-        TryQueuedAttack();
     }
      private void TryQueuedAttack()
     {
@@ -421,12 +416,14 @@ public class PlayerCombat : MonoBehaviour
     }
     public void ResetAttack()
     {
-        foreach(var a in airAttacks)
-        {
-            a.airLimit = 0;
-        }
+        // foreach(var a in airAttacks)
+        // {
+        //     a.airLimit = 0;
+        // }
         currentAttack = null;
         currentSkill = null;
+        queuedAttack = null;
+        
         cancelWindowOpen = false;
         isAttacking = false;
         _hitbox.ClearPayload();

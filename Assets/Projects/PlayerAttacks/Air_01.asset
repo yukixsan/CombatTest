@@ -24,11 +24,11 @@ MonoBehaviour:
   launchDir: 1
   hitstunDuration: 0
   Airborne: 1
-  airLimit: 0
+  airLimit: 9
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
   canBeCancelledRecovery: 1
-  nextCombo: {fileID: 11400000, guid: f0ab766311948514fb268317a19ae46a, type: 2}
+  nextCombo: {fileID: 0}
   comboIndex: 1
   directionVariant: 0
   absoluteRecovery: 0
