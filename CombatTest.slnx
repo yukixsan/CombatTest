@@ -1,0 +1,20 @@
+﻿<Solution>
+  <Project Path="GameCreator.Runtime.Core.csproj" />
+  <Project Path="GameCreator.Runtime.Stats.csproj" />
+  <Project Path="GameCreator.Editor.Core.csproj" />
+  <Project Path="GameCreator.Editor.Stats.csproj" />
+  <Project Path="MagicaClothV2.csproj" />
+  <Project Path="GameCreator.Runtime.Melee.csproj" />
+  <Project Path="MagicaClothV2.Editor.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="GameCreator.Editor.Melee.csproj" />
+  <Project Path="GameCreator.Tests.Core.csproj" />
+  <Project Path="CFXRRuntime.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="CFXRDemo.csproj" />
+  <Project Path="CFXREditor.csproj" />
+  <Project Path="KinoBloom.Runtime.csproj" />
+  <Project Path="MagicaCloth2Example.csproj" />
+  <Project Path="CFXR.WelcomeScreen.csproj" />
+  <Project Path="ToonyColorsPro.Demo.Editor.csproj" />
+</Solution>

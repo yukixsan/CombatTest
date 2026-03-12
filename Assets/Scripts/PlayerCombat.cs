@@ -20,6 +20,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private PlayerHitbox _hitbox;
     [SerializeField] private Transform _model;
+    private Dictionary<AttackData, int> airAttackUsage = new();
 
     [Header("Combo timing (used for reset)")]
     [SerializeField] private float comboResetTime = 0.5f;
@@ -108,6 +109,20 @@ public class PlayerCombat : MonoBehaviour
 
     private void StartAttack(AttackData data)
     {
+        //Check if air attack limit exceeded
+        if (data.Airborne)
+        {
+            if (!airAttackUsage.ContainsKey(data))
+                airAttackUsage[data] = 0;
+            if (airAttackUsage[data] > 1)
+            {
+                Debug.Log($"[Combat] Air attack '{data.Name}' limit exceeded, cannot start");
+                return;
+            }
+            airAttackUsage[data]++;
+            
+        }
+
         Debug.Log($"[Combat] Start Attack '{data.Name}' (combo {data.comboIndex}, dir {data.directionVariant})");
         currentAttack = data;
         isAttacking = true;
@@ -323,10 +338,6 @@ public class PlayerCombat : MonoBehaviour
 
             if (a.comboIndex == comboIndex && a.directionVariant == variant)
             {
-                if (a.Airborne == true)
-                    a.airLimit++;
-                if (a.airLimit > 1)
-                    return null;
                 return a;
             }
 
@@ -337,10 +348,6 @@ public class PlayerCombat : MonoBehaviour
             if (a == null) continue;
             if (a.directionVariant == variant && a.comboIndex == 0) // or ignore comboIndex entirely
             {
-                if (a.Airborne == true)
-                    a.airLimit++;
-                if (a.airLimit > 1)
-                    continue;
                 return a;
             }
         }
@@ -350,12 +357,7 @@ public class PlayerCombat : MonoBehaviour
             if (a == null) continue;
             if (a.comboIndex == comboIndex && a.directionVariant == DirectionVariant.Neutral)
             {
-                if (a.Airborne == true)
-                    a.airLimit++;
-                if (a.airLimit > 1)
-                    continue;
                 return a;
-
             }
         }
 
@@ -416,13 +418,13 @@ public class PlayerCombat : MonoBehaviour
     }
     public void ResetAttack()
     {
-        // foreach(var a in airAttacks)
-        // {
-        //     a.airLimit = 0;
-        // }
+        //Reset air limit
+        airAttackUsage.Clear();
+
         currentAttack = null;
         currentSkill = null;
         queuedAttack = null;
+        currentComboIndex = 0;
         
         cancelWindowOpen = false;
         isAttacking = false;

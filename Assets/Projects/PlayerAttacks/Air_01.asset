@@ -24,7 +24,7 @@ MonoBehaviour:
   launchDir: 1
   hitstunDuration: 0
   Airborne: 1
-  airLimit: 9
+  airLimit: 2
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
   canBeCancelledRecovery: 1
