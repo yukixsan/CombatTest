@@ -234,7 +234,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5162098489482759261, guid: 9e7dd40f1c58fd44e87dab69a4022a49, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5480236859503459130, guid: 9e7dd40f1c58fd44e87dab69a4022a49, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -583,7 +583,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7105196434917759045, guid: 1ceb5d74de7a1d04ea9fdb4097e154fb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7370214446361696461, guid: 1ceb5d74de7a1d04ea9fdb4097e154fb, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -850,7 +850,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &558973876
 Transform:
   m_ObjectHideFlags: 0
@@ -6752,7 +6752,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1748799556}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: b4a5f34120e580f4787923d8030bff61, type: 3}
+  m_Avatar: {fileID: 9000000, guid: b02f7765ace5dff4a866b767512e4a05, type: 3}
   m_Controller: {fileID: 9100000, guid: 5021fce948bc6b949929d5e9e230ce98, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0

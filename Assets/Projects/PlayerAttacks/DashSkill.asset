@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DashSkill
   m_EditorClassIdentifier: 
   Name: Dash_Ground
-  animationClip: {fileID: 7400000, guid: cf65eabb7ea7b3042bf0fbe667d7d058, type: 2}
+  animationClip: {fileID: 7400000, guid: 078cf3f3cb5aea548a34d59597d97f3e, type: 2}
   VFXindex: 0
   windup: 0.2
   active: 0.2
