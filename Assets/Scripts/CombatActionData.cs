@@ -15,10 +15,8 @@ public class CombatActionData : ScriptableObject
     public AnimationClip animationClip;
     public int VFXindex = 0;
 
-    [Header("Phase Durations")]
-    public float windup = 0.2f;
-    public float active = 0.2f;
-    public float recovery = 0.3f;
+    [Header("Weapon Visual Setting")]
+    public bool useHandWeapon = false;
 
     [Header("Properties")]
     public float damage = 10f;

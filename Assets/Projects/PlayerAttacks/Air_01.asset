@@ -13,11 +13,9 @@ MonoBehaviour:
   m_Name: Air_01
   m_EditorClassIdentifier: 
   Name: Air_01
-  animationClip: {fileID: 7400000, guid: 2320e94377160ed4692fd627451e69c3, type: 2}
+  animationClip: {fileID: 7400000, guid: 4e02f11d918a54e419c4fcdd2eaf2a5f, type: 2}
   VFXindex: 0
-  windup: 0.15
-  active: 0.08
-  recovery: 0.17
+  useHandWeapon: 1
   damage: 10
   knockbackForce: 1
   launchForce: 0.5

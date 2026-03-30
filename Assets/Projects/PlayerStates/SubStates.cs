@@ -79,6 +79,7 @@ public class AirRisingState : BasePlayerState
         Debug.Log($"[State Enter] {GetType().Name}");
         if (!combat.isAttacking)
         {
+            combat.SetWeaponVisual(true); // reset to default weapon visual when entering air state
             animator.Play("Jump");
 
         }

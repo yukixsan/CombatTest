@@ -15,9 +15,7 @@ MonoBehaviour:
   Name: Up Attack
   animationClip: {fileID: 7400000, guid: 5b1e5b8b11edb9f4aa47166efa6023fc, type: 2}
   VFXindex: 0
-  windup: 0.2
-  active: 0.1
-  recovery: 0.2
+  useHandWeapon: 1
   damage: 10
   knockbackForce: 0
   launchForce: 8

@@ -20,6 +20,13 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private PlayerHitbox _hitbox;
     [SerializeField] private Transform _model;
+
+    [Header("Weapon Visuals")]
+    [SerializeField] private GameObject weaponAddBone;   // child of Add_weapon L/R
+    [SerializeField] private GameObject weaponHandBone_R;  // child of Hand bone
+    [SerializeField] private GameObject weaponHandBone_L;  // child of Hand bone
+    private bool usingHandWeapon = false;
+
     private Dictionary<AttackData, int> airAttackUsage = new();
 
     [Header("Combo timing (used for reset)")]
@@ -28,7 +35,7 @@ public class PlayerCombat : MonoBehaviour
     private int currentComboIndex = 0;     // last started combo number (1..N), 0 = none
     private float lastAttackStartTime = -999f;
     // runtime state
-    [SerializeField] private bool _isAttacking;
+    private bool _isAttacking;
     public bool isAttacking
     {
         get => _isAttacking;
@@ -109,6 +116,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void StartAttack(AttackData data)
     {
+        SetWeaponVisual(data.useHandWeapon);
         //Check if air attack limit exceeded
         if (data.Airborne)
         {
@@ -224,7 +232,7 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
-        //animator.Play("Idle");
+        SetWeaponVisual(false); // reset to default weapon visual after attack ends
     }
     
     public void OnDashSkillStart()
@@ -283,6 +291,7 @@ public class PlayerCombat : MonoBehaviour
     }
     private void StartSkill(PlayerSkillData data)
     {
+        SetWeaponVisual(data.useHandWeapon);
         Debug.Log($"[Combat] Start Attack '{data.Name}')");
         currentSkill = data;
         isAttacking = true;
@@ -418,6 +427,7 @@ public class PlayerCombat : MonoBehaviour
     }
     public void ResetAttack()
     {
+        SetWeaponVisual(false); // reset to default weapon visual
         //Reset air limit
         airAttackUsage.Clear();
 
@@ -429,6 +439,15 @@ public class PlayerCombat : MonoBehaviour
         cancelWindowOpen = false;
         isAttacking = false;
         _hitbox.ClearPayload();
+    }
+    public void SetWeaponVisual(bool useHandWeapon)
+    {
+        if (weaponAddBone != null)
+            weaponAddBone.SetActive(!useHandWeapon);
+        if (weaponHandBone_R != null)
+            weaponHandBone_R.SetActive(useHandWeapon);
+        if (weaponHandBone_L != null)
+            weaponHandBone_L.SetActive(useHandWeapon);
     }
     
 }
