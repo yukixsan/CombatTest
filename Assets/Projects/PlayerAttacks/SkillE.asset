@@ -13,11 +13,9 @@ MonoBehaviour:
   m_Name: SkillE
   m_EditorClassIdentifier: 
   Name: SkillE
-  animationClip: {fileID: 7400000, guid: 0d866b5669825644bbd5011a912481c4, type: 2}
+  animationClip: {fileID: 7400000, guid: 0c48590daa434f940a6d13960eba972c, type: 2}
   VFXindex: 1
-  windup: 0.2
-  active: 0.2
-  recovery: 0.1
+  useHandWeapon: 0
   damage: 15
   knockbackForce: 0.5
   launchForce: 5

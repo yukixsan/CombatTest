@@ -14,6 +14,14 @@ public class EnemyHurtbox : MonoBehaviour
             _enemyCombat.TakeHit(hitbox.Payload);
         }
     }
+    // private void OnTriggerStay(Collider other)
+    // {
+    //     var hitbox = other.GetComponent<PlayerHitbox>();
+    //     if (hitbox != null && hitbox.HasPayload)
+    //     {
+    //         _enemyCombat.TakeHit(hitbox.Payload);
+    //     }
+    // }
     public void TryTakeHit(PlayerHitbox hitbox)
     {
         if (hitbox.HasPayload)

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: UpAttack
   m_EditorClassIdentifier: 
   Name: Up Attack
-  animationClip: {fileID: 7400000, guid: 5b1e5b8b11edb9f4aa47166efa6023fc, type: 2}
+  animationClip: {fileID: 7400000, guid: 1fcaa78e88811c34da52055748943a8c, type: 2}
   VFXindex: 0
-  useHandWeapon: 1
+  useHandWeapon: 0
   damage: 10
   knockbackForce: 0
   launchForce: 8
