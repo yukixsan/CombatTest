@@ -47,11 +47,6 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private PlayerSkillData currentSkill = null;
     private PlayerSkillData queuedSkill = null;
 
-
-    void Start()
-    {
-        _hitbox.enabled = false;
-    }
     private void FixedUpdate()
     {
         bool allowBuffer = !isAttacking || cancelWindowOpen;
@@ -164,7 +159,6 @@ public class PlayerCombat : MonoBehaviour
             // handle attack hitbox
         if (currentAttack != null)
         {
-            _hitbox.enabled = true;
             var payload = new HitboxPayload(
                 currentAttack.damage,
                 currentAttack.knockbackForce,
@@ -174,13 +168,12 @@ public class PlayerCombat : MonoBehaviour
                 transform,
                 currentAttack.VFXindex
             );
-            _hitbox.SetPayload(payload);
+            _hitbox.ActivateHitbox(payload);
         }
 
         // handle skill hitbox (or movement / effect)
         if (currentSkill != null)
         {
-            _hitbox.enabled = true;
             var payload = new HitboxPayload(
                 currentSkill.damage,
                 currentSkill.knockbackForce,
@@ -190,16 +183,14 @@ public class PlayerCombat : MonoBehaviour
                 transform,
                 currentSkill.VFXindex
             );
-            _hitbox.SetPayload(payload);
+            _hitbox.ActivateHitbox(payload);
         }
     }
 
     public void OnRecoveryStart()
     {
         if (currentAttack == null&& currentSkill == null) return;
-        _hitbox.ClearPayload();
-
-        _hitbox.enabled = false;
+        _hitbox.DeactivateHitbox();
 
         _stateController.SetMovePermission(true);
         _stateController.SetJumpPermission(true);
@@ -217,6 +208,7 @@ public class PlayerCombat : MonoBehaviour
         cancelWindowOpen = false;
         currentAttack = null;
         currentSkill = null;
+        _hitbox.DeactivateHitbox();
 
         // If queued attack is present (queued during earlier phases), start it now
         if (queuedAttack != null)
@@ -241,7 +233,7 @@ public class PlayerCombat : MonoBehaviour
         Debug.Log("[Combat] Dash skill started");
         _stateController.SetMovePermission(false);
         _stateController.SetJumpPermission(false);
-        _hitbox.enabled = false;
+        _hitbox.DeactivateHitbox();
     }
      private void TryQueuedAttack()
     {

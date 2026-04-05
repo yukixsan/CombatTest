@@ -632,6 +632,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collider: {fileID: 346490973}
+  _enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!65 &346490973
 BoxCollider:
   m_ObjectHideFlags: 0
