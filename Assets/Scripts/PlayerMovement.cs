@@ -12,8 +12,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("Dash Settings")]
     private bool isDashing;
     private float dashTimer;
-    [SerializeField]private float dashDuration;
-    [SerializeField] private float dashSpeed;
+    // [SerializeField]private float dashDuration;
+    // [SerializeField] private float dashSpeed;
+    private float _activeDashSpeed;
+    private float _activeDashDuration;
     private float dashFacing;
 
 
@@ -89,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
         {
             dashTimer -= Time.fixedDeltaTime;
             velocity.y = 0; 
-            externalVelocity = new Vector3(dashFacing * dashSpeed, 0f, 0f);
+            externalVelocity = new Vector3(dashFacing * _activeDashSpeed, 0f, 0f);
 
             if (dashTimer <= 0f)
             {
@@ -163,17 +165,20 @@ public class PlayerMovement : MonoBehaviour
     public void ForceBack(float strength) => LaunchForce(Vector3.left, strength);
     public void ForceDown(float strength) => LaunchForce(Vector3.down, strength);
 
+#region Dash Presets
+    public void setDashSpeed(float speed) => _activeDashSpeed = speed;
+    public void setDashDuration(float duration) => _activeDashDuration = duration;
     
-    public void ForceDashMovement()
+    public void ForceDashForward()
     {
         if (isDashing) return; // Prevent overlapping dashes
 
         isDashing = true;
-        dashTimer = dashDuration;
+        dashTimer = _activeDashDuration;
         dashFacing = Mathf.Sign(_model.localScale.x);
         rb.useGravity = false;
     }
-   
+   #endregion
 
     //Model flip handler
     private void LateUpdate()

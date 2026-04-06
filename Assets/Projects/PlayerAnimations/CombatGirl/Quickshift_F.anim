@@ -71545,8 +71545,22 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0
+    functionName: setDashSpeed
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 25
+    intParameter: 0
+    messageOptions: 0
+  - time: 0
+    functionName: setDashDuration
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0.2
+    intParameter: 0
+    messageOptions: 0
   - time: 0.022222223
-    functionName: ForceDashMovement
+    functionName: ForceDashForward
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
