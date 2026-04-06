@@ -41,8 +41,8 @@ public class PlayerCombat : MonoBehaviour
         get => _isAttacking;
         private set => _isAttacking = value;
     }
+    public bool isInRecovery {get; private set;}
     private bool cancelWindowOpen = false;
-    //private bool _skipNextAttack = false;
     [SerializeField] private AttackData queuedAttack = null;
     [SerializeField] private AttackData currentAttack = null;
     [SerializeField] private PlayerSkillData currentSkill = null;
@@ -196,6 +196,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void OnRecoveryStart()
     {
+        isInRecovery = true;
         if (currentAttack == null&& currentSkill == null) return;
         _hitbox.DeactivateHitbox();
 
@@ -213,6 +214,7 @@ public class PlayerCombat : MonoBehaviour
         Debug.Log($"[Combat] End Attack current");
         
         isAttacking = false;
+        isInRecovery = false;
         cancelWindowOpen = false;
         currentAttack = null;
         currentSkill = null;
@@ -440,6 +442,15 @@ public class PlayerCombat : MonoBehaviour
         cancelWindowOpen = false;
         isAttacking = false;
         _hitbox.ClearPayload();
+    }
+    public void CancelRecovery()
+    {
+         isInRecovery = false;
+        isAttacking = false;
+        cancelWindowOpen = false;
+        currentAttack = null;
+        currentSkill = null;
+        SetWeaponVisual(false);
     }
     public void SetWeaponVisual(bool useHandWeapon)
     {

@@ -46,7 +46,14 @@ public class GroundAttackState : BasePlayerState
         if (!combat.isAttacking)
         {
             controller.SwitchState(controller.GroundedState);
+            return;
         }
+        if(combat.isInRecovery && movement.IsMoving )
+        {
+            combat.CancelRecovery();
+            controller.SwitchState(controller.GroundedState);
+            return;
+        } 
     }
       public override void OnExit()
     {
