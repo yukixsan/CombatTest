@@ -42,6 +42,7 @@ public class PlayerCombat : MonoBehaviour
         private set => _isAttacking = value;
     }
     private bool cancelWindowOpen = false;
+    //private bool _skipNextAttack = false;
     [SerializeField] private AttackData queuedAttack = null;
     [SerializeField] private AttackData currentAttack = null;
     [SerializeField] private PlayerSkillData currentSkill = null;
@@ -83,6 +84,12 @@ public class PlayerCombat : MonoBehaviour
         // Already attacking: if currently in cancel window, interrupt and start new
         if (cancelWindowOpen)
         {
+            // Manual cleanup before chaining — old animation's OnAttackEnd will still fire
+            _hitbox.DeactivateHitbox();
+            currentAttack = null;
+            currentSkill = null;
+            cancelWindowOpen = false;
+
             Debug.Log($"[Combat] Interrupting current for immediate start of {data.Name}");
             StartAttack(data);
             currentComboIndex = nextCombo;
@@ -202,7 +209,8 @@ public class PlayerCombat : MonoBehaviour
     }
     public void OnAttackEnd()
     {
-        //Debug.Log($"[Combat] End Attack '{currentAttack.Name}'");
+        
+        Debug.Log($"[Combat] End Attack current");
         
         isAttacking = false;
         cancelWindowOpen = false;
@@ -242,6 +250,7 @@ public class PlayerCombat : MonoBehaviour
 
         var next = queuedAttack;
         queuedAttack = null;
+
         Debug.Log($"[Combat] Consuming queued attack {next.Name} during cancel window");
         StartAttack(next);
 

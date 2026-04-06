@@ -15,9 +15,7 @@ MonoBehaviour:
   Name: Attack_03
   animationClip: {fileID: 7400000, guid: b8497d323531bf94398e003df6d7e8cd, type: 2}
   VFXindex: 3
-  windup: 0.25
-  active: 0.13
-  recovery: 0.5
+  useHandWeapon: 0
   damage: 10
   knockbackForce: 3
   launchForce: 2

@@ -25,7 +25,7 @@ MonoBehaviour:
   airLimit: 0
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
-  canBeCancelledRecovery: 0
+  canBeCancelledRecovery: 1
   cooldown: 0
   skillPrefab: {fileID: 0}
   spawnOffset: {x: 0, y: 0, z: 0}
