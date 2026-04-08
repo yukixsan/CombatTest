@@ -119,7 +119,7 @@ public class PlayerMovement : MonoBehaviour
         IsMoving = Mathf.Abs(baseX) > 0.1f;
 
         // 5️⃣ JUMP
-        if (_jumpPressed && _isGrounded)
+        if (_jumpPressed && _isGrounded && _stateController.CanJump)
         {
             velocity = rb.linearVelocity;
             velocity.y = jumpForce;
