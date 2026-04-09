@@ -6,6 +6,12 @@ public enum DirectionVariant
     Up = 1,
     Down = -1
 }
+[System.Serializable]
+public struct AttackPhaseVFX
+{
+    public GameObject prefab;
+    public Vector3 localOffset; // relative to _model
+}
 public class CombatActionData : ScriptableObject
 {
     [Header("General")]
@@ -31,4 +37,8 @@ public class CombatActionData : ScriptableObject
     public bool canBeCancelledWindup = true;
     public bool canBeCancelledActive = false;
     public bool canBeCancelledRecovery = true;
+    [Header("VFXs")]
+    public AttackPhaseVFX windupVFX;
+    public AttackPhaseVFX activeVFX;
+    public AttackPhaseVFX recoveryVFX;
 }

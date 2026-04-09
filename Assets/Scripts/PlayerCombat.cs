@@ -118,6 +118,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void StartAttack(AttackData data)
     {
+        AttackVFXManager.Instance.StopAll(); // stop all active VFX immediately on reset
         SetWeaponVisual(data.useHandWeapon);
         //Check if air attack limit exceeded
         if (data.Airborne)
@@ -135,6 +136,7 @@ public class PlayerCombat : MonoBehaviour
 
         Debug.Log($"[Combat] Start Attack '{data.Name}' (combo {data.comboIndex}, dir {data.directionVariant})");
         currentAttack = data;
+        currentSkill = null; // clear current skill if any, since attack takes precedence
         isAttacking = true;
         cancelWindowOpen = false;
         queuedAttack = null;
@@ -146,12 +148,15 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    //Animation events
+    #region Animation events
      public void OnWindupStart()
     {
         cancelWindowOpen = (currentAttack != null && currentAttack.canBeCancelledWindup) ||
                             (currentSkill != null && currentSkill.canBeCancelledWindup);
         Debug.Log($"[Combat] Phase: WINDUP - cancel={cancelWindowOpen}");
+
+        PlayPhaseVFX(GetCurrentVFX()?.windupVFX);
+
         _stateController.SetMovePermission(false);
         _stateController.SetJumpPermission(false);
     }
@@ -163,6 +168,8 @@ public class PlayerCombat : MonoBehaviour
         cancelWindowOpen = (currentAttack != null && currentAttack.canBeCancelledActive) ||
                                     (currentSkill != null && currentSkill.canBeCancelledActive);
         Debug.Log($"[Combat] Phase: ACTIVE - cancel={cancelWindowOpen}");
+                PlayPhaseVFX(GetCurrentVFX()?.activeVFX);
+
             // handle attack hitbox
         if (currentAttack != null)
         {
@@ -199,6 +206,8 @@ public class PlayerCombat : MonoBehaviour
         isInRecovery = true;
         if (currentAttack == null&& currentSkill == null) return;
         _hitbox.DeactivateHitbox();
+        PlayPhaseVFX(GetCurrentVFX()?.recoveryVFX);
+
 
         _stateController.SetMovePermission(true);
         _stateController.SetJumpPermission(true);
@@ -245,6 +254,7 @@ public class PlayerCombat : MonoBehaviour
         _stateController.SetJumpPermission(false);
         _hitbox.DeactivateHitbox();
     }
+    #endregion
      private void TryQueuedAttack()
     {
         if (!cancelWindowOpen) return;
@@ -294,8 +304,10 @@ public class PlayerCombat : MonoBehaviour
     }
     private void StartSkill(PlayerSkillData data)
     {
+        AttackVFXManager.Instance.StopAll(); // stop all active VFX immediately on reset
         SetWeaponVisual(data.useHandWeapon);
         Debug.Log($"[Combat] Start Attack '{data.Name}')");
+        currentAttack = null; // clear current attack if any, since skill takes precedence
         currentSkill = data;
         isAttacking = true;
         cancelWindowOpen = false;
@@ -417,7 +429,7 @@ public class PlayerCombat : MonoBehaviour
         return dashSkills[index];
     }
     
-    //Helpers
+    #region  Helper Methods 
      private static DirectionVariant DirectionToVariant(Vector2 dir)
     {
         if (dir.y > 0.5f) return DirectionVariant.Up;
@@ -438,6 +450,7 @@ public class PlayerCombat : MonoBehaviour
         currentSkill = null;
         queuedAttack = null;
         currentComboIndex = 0;
+        //AttackVFXManager.Instance.StopAll(); // stop all active VFX immediately on reset
         
         cancelWindowOpen = false;
         isAttacking = false;
@@ -450,6 +463,7 @@ public class PlayerCombat : MonoBehaviour
         cancelWindowOpen = false;
         currentAttack = null;
         currentSkill = null;
+        //AttackVFXManager.Instance.StopAll(); // stop all active VFX immediately on reset
         SetWeaponVisual(false);
     }
     public void SetWeaponVisual(bool useHandWeapon)
@@ -461,5 +475,19 @@ public class PlayerCombat : MonoBehaviour
         if (weaponHandBone_L != null)
             weaponHandBone_L.SetActive(useHandWeapon);
     }
+    //VFX Handling 
+    private void PlayPhaseVFX(AttackPhaseVFX? phase)
+    {
+        if (phase == null) return;
+        AttackVFXManager.Instance.Play(phase.Value, _model);
+    }
+
+    private CombatActionData GetCurrentVFX()
+    {
+        if (currentAttack != null) return currentAttack;
+        if (currentSkill != null) return currentSkill;
+        return null;
+    }
+    #endregion
     
 }

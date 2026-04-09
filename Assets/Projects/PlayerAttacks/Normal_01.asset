@@ -15,9 +15,7 @@ MonoBehaviour:
   Name: Attack_01
   animationClip: {fileID: 7400000, guid: 50e15b32fdc3a074c89f4f23dc9d8ed0, type: 2}
   VFXindex: 0
-  windup: 0.12
-  active: 0.08
-  recovery: 0.2
+  useHandWeapon: 0
   damage: 10
   knockbackForce: 1
   launchForce: 0
@@ -28,6 +26,15 @@ MonoBehaviour:
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
   canBeCancelledRecovery: 1
+  windupVFX:
+    prefab: {fileID: 888444077320411739, guid: 021d0277df6b5d948bcc8b495e58e016, type: 3}
+    localOffset: {x: 0, y: 0, z: 0}
+  activeVFX:
+    prefab: {fileID: 0}
+    localOffset: {x: 0, y: 0, z: 0}
+  recoveryVFX:
+    prefab: {fileID: 888444077320411739, guid: 021d0277df6b5d948bcc8b495e58e016, type: 3}
+    localOffset: {x: 0, y: 0, z: 2}
   nextCombo: {fileID: 11400000, guid: 26d18d55de99ca34ca0ec4372e7abc68, type: 2}
   comboIndex: 1
   directionVariant: 0
