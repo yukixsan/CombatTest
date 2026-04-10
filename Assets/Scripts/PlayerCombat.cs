@@ -209,8 +209,7 @@ public class PlayerCombat : MonoBehaviour
         PlayPhaseVFX(GetCurrentVFX()?.recoveryVFX);
 
 
-        _stateController.SetMovePermission(true);
-        _stateController.SetJumpPermission(true);
+  
 
         cancelWindowOpen = (currentAttack != null && currentAttack.canBeCancelledRecovery) ||
                             (currentSkill != null && currentSkill.canBeCancelledRecovery);
@@ -229,6 +228,9 @@ public class PlayerCombat : MonoBehaviour
         currentSkill = null;
         _hitbox.DeactivateHitbox();
 
+      _stateController.SetMovePermission(true);
+        _stateController.SetJumpPermission(true);
+        
         // If queued attack is present (queued during earlier phases), start it now
         if (queuedAttack != null)
         {
@@ -455,16 +457,6 @@ public class PlayerCombat : MonoBehaviour
         cancelWindowOpen = false;
         isAttacking = false;
         _hitbox.ClearPayload();
-    }
-    public void CancelRecovery()
-    {
-         isInRecovery = false;
-        isAttacking = false;
-        cancelWindowOpen = false;
-        currentAttack = null;
-        currentSkill = null;
-        //AttackVFXManager.Instance.StopAll(); // stop all active VFX immediately on reset
-        SetWeaponVisual(false);
     }
     public void SetWeaponVisual(bool useHandWeapon)
     {
