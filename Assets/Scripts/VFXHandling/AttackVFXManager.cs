@@ -16,7 +16,7 @@ public class AttackVFXManager : MonoBehaviour
         Instance = this;
     }
 
-   public GameObject Play(AttackPhaseVFX phaseVFX, Transform attachTo)
+   public GameObject Play(AttackPhaseVFX phaseVFX, Transform attachTo, float facing = 1f)
     {
         if (phaseVFX.prefab == null) return null;
 
@@ -24,9 +24,13 @@ public class AttackVFXManager : MonoBehaviour
 
         if (attachTo != null)
         {
+            Quaternion baseRot = obj.transform.localRotation;
+
             obj.transform.SetParent(attachTo);
-            obj.transform.localPosition = phaseVFX.localOffset;
-            obj.transform.localRotation = Quaternion.identity;
+            obj.transform.localPosition = new Vector3(phaseVFX.localOffset.x * facing,
+            phaseVFX.localOffset.y,
+            phaseVFX.localOffset.z);
+            obj.transform.localRotation = Quaternion.Euler(baseRot.eulerAngles.x, facing < 0 ? 180f : 0f, baseRot.eulerAngles.z);
         }
 
         obj.SetActive(true);

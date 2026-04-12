@@ -26,6 +26,15 @@ MonoBehaviour:
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
   canBeCancelledRecovery: 1
+  windupVFX:
+    prefab: {fileID: 6810844234100877735, guid: 44ca28ddb60176542b303607d27c4f1b, type: 3}
+    localOffset: {x: 0, y: -1.25, z: 0}
+  activeVFX:
+    prefab: {fileID: 1476370121130660084, guid: 7aaf129eb66c79949a1383ff18fa3b3d, type: 3}
+    localOffset: {x: 0, y: 0, z: 0}
+  recoveryVFX:
+    prefab: {fileID: 0}
+    localOffset: {x: 0, y: 0, z: 0}
   cooldown: 0
   skillPrefab: {fileID: 0}
   spawnOffset: {x: 0, y: 0, z: 0}

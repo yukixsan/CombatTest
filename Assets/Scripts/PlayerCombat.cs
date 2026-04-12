@@ -471,7 +471,8 @@ public class PlayerCombat : MonoBehaviour
     private void PlayPhaseVFX(AttackPhaseVFX? phase)
     {
         if (phase == null) return;
-        AttackVFXManager.Instance.Play(phase.Value, _model);
+        float facing = Mathf.Sign(_model.localScale.x);
+        AttackVFXManager.Instance.Play(phase.Value, transform, facing);
     }
 
     private CombatActionData GetCurrentVFX()
