@@ -19,6 +19,8 @@ public class PlayerStateController : MonoBehaviour
     [SerializeField]public bool CanMove { get; private set; } = true;
     public bool CanJump { get; private set; } = true;
     public bool IsAirborne => _movement != null && !_movement.IsGrounded;
+    public bool CanFlip {get; private set; } = true;
+    public void SetFlipPermission(bool canFlip) => CanFlip = canFlip;
 
     
     private void Awake()

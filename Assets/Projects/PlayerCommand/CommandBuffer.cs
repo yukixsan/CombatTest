@@ -12,6 +12,7 @@ public class CommandBuffer : MonoBehaviour
     private CommandType _lastEnqueuedType = CommandType.Attack;
     private int _lastEnqueuedSkill = -1;
 
+    public bool HasBufferedCommands => _queue.Count > 0;
     public void Enqueue(CommandType type, int skillIndex = -1)
     {
         // Debounce: if the exact same command was enqueued very recently, ignore duplicate spamming

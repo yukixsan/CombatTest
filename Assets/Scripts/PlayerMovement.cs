@@ -188,7 +188,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleModelFlip(float moveX)
     {
-        if (!_stateController.CanMove) return;
+        if (!_stateController.CanFlip) return;
 
         if (moveX > 0)
         {

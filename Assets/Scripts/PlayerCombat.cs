@@ -156,9 +156,9 @@ public class PlayerCombat : MonoBehaviour
         Debug.Log($"[Combat] Phase: WINDUP - cancel={cancelWindowOpen}");
 
         PlayPhaseVFX(GetCurrentVFX()?.windupVFX);
-
         _stateController.SetMovePermission(false);
         _stateController.SetJumpPermission(false);
+        _stateController.SetFlipPermission(false);
     }
 
     public void OnActiveStart()
@@ -207,13 +207,10 @@ public class PlayerCombat : MonoBehaviour
         if (currentAttack == null&& currentSkill == null) return;
         _hitbox.DeactivateHitbox();
         PlayPhaseVFX(GetCurrentVFX()?.recoveryVFX);
-
-
-  
-
         cancelWindowOpen = (currentAttack != null && currentAttack.canBeCancelledRecovery) ||
                             (currentSkill != null && currentSkill.canBeCancelledRecovery);
         Debug.Log($"[Combat] Phase: RECOVERY - cancel={cancelWindowOpen}");
+        if(commandBuffer.HasBufferedCommands) _stateController.SetFlipPermission(true); // allow movement during recovery if player is trying to buffer next input
         TryQueuedAttack();
     }
     public void OnAttackEnd()
@@ -230,6 +227,7 @@ public class PlayerCombat : MonoBehaviour
 
       _stateController.SetMovePermission(true);
         _stateController.SetJumpPermission(true);
+        _stateController.SetFlipPermission(true);
         
         // If queued attack is present (queued during earlier phases), start it now
         if (queuedAttack != null)
