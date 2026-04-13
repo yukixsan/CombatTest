@@ -13,21 +13,28 @@ MonoBehaviour:
   m_Name: SkillQ
   m_EditorClassIdentifier: 
   Name: SkillQ
-  animationClip: {fileID: 7400000, guid: 06c732e88cbf4bc4087ab844bc39b5e1, type: 2}
+  animationClip: {fileID: 7400000, guid: ac8c89a7952a6694fafe681520aeb611, type: 2}
   VFXindex: 0
-  windup: 0.2
-  active: 0.1
-  recovery: 0.2
+  useHandWeapon: 0
   damage: 10
-  knockbackForce: 0.2
+  knockbackForce: 2
   launchForce: 0
   launchDir: 0
-  hitstunDuration: 0.02
+  hitstunDuration: 0.05
   Airborne: 0
   airLimit: 0
   canBeCancelledWindup: 0
-  canBeCancelledActive: 1
+  canBeCancelledActive: 0
   canBeCancelledRecovery: 1
+  windupVFX:
+    prefab: {fileID: 0}
+    localOffset: {x: 0, y: 0, z: 0}
+  activeVFX:
+    prefab: {fileID: 0}
+    localOffset: {x: 0, y: 0, z: 0}
+  recoveryVFX:
+    prefab: {fileID: 0}
+    localOffset: {x: 0, y: 0, z: 0}
   cooldown: 0
   skillPrefab: {fileID: 0}
   spawnOffset: {x: 0, y: 0, z: 0}
