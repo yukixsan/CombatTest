@@ -1,93 +1,216 @@
 fileFormatVersion: 2
 guid: 9e5647aaef795d44dad8048e499d236a
-timeCreated: 1462458494
-licenseType: Pro
 ModelImporter:
-  serializedVersion: 19
-  fileIDToRecycleName:
-    100000: B Hair01
-    100002: B Hair02
-    100004: B Hair03
-    100006: Bip
-    100008: Chest
-    100010: Head
-    100012: Hips
-    100014: L Foot
-    100016: L Hand
-    100018: L HorseLink
-    100020: L Lower Arm
-    100022: L Lower Leg
-    100024: L Shoulder
-    100026: L Toes
-    100028: L Upper Arm
-    100030: L Upper Leg
-    100032: Neck
-    100034: R Foot
-    100036: R Hand
-    100038: R HorseLink
-    100040: R Lower Arm
-    100042: R Lower Leg
-    100044: R Shoulder
-    100046: R Toes
-    100048: R Upper Arm
-    100050: R Upper Leg
-    100052: //RootNode
-    100054: Spine
-    400000: B Hair01
-    400002: B Hair02
-    400004: B Hair03
-    400006: Bip
-    400008: Chest
-    400010: Head
-    400012: Hips
-    400014: L Foot
-    400016: L Hand
-    400018: L HorseLink
-    400020: L Lower Arm
-    400022: L Lower Leg
-    400024: L Shoulder
-    400026: L Toes
-    400028: L Upper Arm
-    400030: L Upper Leg
-    400032: Neck
-    400034: R Foot
-    400036: R Hand
-    400038: R HorseLink
-    400040: R Lower Arm
-    400042: R Lower Leg
-    400044: R Shoulder
-    400046: R Toes
-    400048: R Upper Arm
-    400050: R Upper Leg
-    400052: //RootNode
-    400054: Spine
-    7400000: Take 001
-    7400002: R50520120-Stun
-    9500000: //RootNode
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: B Hair01
+  - first:
+      1: 100002
+    second: B Hair02
+  - first:
+      1: 100004
+    second: B Hair03
+  - first:
+      1: 100006
+    second: Bip
+  - first:
+      1: 100008
+    second: Chest
+  - first:
+      1: 100010
+    second: Head
+  - first:
+      1: 100012
+    second: Hips
+  - first:
+      1: 100014
+    second: L Foot
+  - first:
+      1: 100016
+    second: L Hand
+  - first:
+      1: 100018
+    second: L HorseLink
+  - first:
+      1: 100020
+    second: L Lower Arm
+  - first:
+      1: 100022
+    second: L Lower Leg
+  - first:
+      1: 100024
+    second: L Shoulder
+  - first:
+      1: 100026
+    second: L Toes
+  - first:
+      1: 100028
+    second: L Upper Arm
+  - first:
+      1: 100030
+    second: L Upper Leg
+  - first:
+      1: 100032
+    second: Neck
+  - first:
+      1: 100034
+    second: R Foot
+  - first:
+      1: 100036
+    second: R Hand
+  - first:
+      1: 100038
+    second: R HorseLink
+  - first:
+      1: 100040
+    second: R Lower Arm
+  - first:
+      1: 100042
+    second: R Lower Leg
+  - first:
+      1: 100044
+    second: R Shoulder
+  - first:
+      1: 100046
+    second: R Toes
+  - first:
+      1: 100048
+    second: R Upper Arm
+  - first:
+      1: 100050
+    second: R Upper Leg
+  - first:
+      1: 100052
+    second: //RootNode
+  - first:
+      1: 100054
+    second: Spine
+  - first:
+      4: 400000
+    second: B Hair01
+  - first:
+      4: 400002
+    second: B Hair02
+  - first:
+      4: 400004
+    second: B Hair03
+  - first:
+      4: 400006
+    second: Bip
+  - first:
+      4: 400008
+    second: Chest
+  - first:
+      4: 400010
+    second: Head
+  - first:
+      4: 400012
+    second: Hips
+  - first:
+      4: 400014
+    second: L Foot
+  - first:
+      4: 400016
+    second: L Hand
+  - first:
+      4: 400018
+    second: L HorseLink
+  - first:
+      4: 400020
+    second: L Lower Arm
+  - first:
+      4: 400022
+    second: L Lower Leg
+  - first:
+      4: 400024
+    second: L Shoulder
+  - first:
+      4: 400026
+    second: L Toes
+  - first:
+      4: 400028
+    second: L Upper Arm
+  - first:
+      4: 400030
+    second: L Upper Leg
+  - first:
+      4: 400032
+    second: Neck
+  - first:
+      4: 400034
+    second: R Foot
+  - first:
+      4: 400036
+    second: R Hand
+  - first:
+      4: 400038
+    second: R HorseLink
+  - first:
+      4: 400040
+    second: R Lower Arm
+  - first:
+      4: 400042
+    second: R Lower Leg
+  - first:
+      4: 400044
+    second: R Shoulder
+  - first:
+      4: 400046
+    second: R Toes
+  - first:
+      4: 400048
+    second: R Upper Arm
+  - first:
+      4: 400050
+    second: R Upper Leg
+  - first:
+      4: 400052
+    second: //RootNode
+  - first:
+      4: 400054
+    second: Spine
+  - first:
+      74: 7400000
+    second: R50520120-Damage
+  - first:
+      74: 7400002
+    second: R50520120-Stun
+  - first:
+      95: 9500000
+    second: //RootNode
+  externalObjects: {}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: Root
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
       name: R50520120-Stun
       takeName: 
+      internalID: 0
       firstFrame: 0
       lastFrame: 60
       wrapMode: 0
@@ -113,31 +236,84 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: R50520120-Damage
+      takeName: Take 001
+      internalID: 7400000
+      firstFrame: 0
+      lastFrame: 10
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -147,11 +323,19 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

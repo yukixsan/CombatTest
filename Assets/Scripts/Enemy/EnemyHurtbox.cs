@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyHurtbox : MonoBehaviour
 {
     [SerializeField] private EnemyCombat _enemyCombat;
-
+    [SerializeField] private HealthComponent healthComponent;
    
     private void OnTriggerEnter(Collider other)
     {
@@ -13,6 +13,7 @@ public class EnemyHurtbox : MonoBehaviour
         if (hitbox != null && hitbox.HasPayload)
         {
             _enemyCombat.TakeHit(hitbox.Payload);
+            healthComponent.TakeDamage(hitbox.Payload.Damage);
         }
     }
  
@@ -21,6 +22,7 @@ public class EnemyHurtbox : MonoBehaviour
         if (hitbox.HasPayload)
         {
             _enemyCombat.TakeHit(hitbox.Payload);
+            healthComponent.TakeDamage(hitbox.Payload.Damage);
         }
     }
 

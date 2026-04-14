@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyStateAI : MonoBehaviour
@@ -20,6 +22,9 @@ public class EnemyStateAI : MonoBehaviour
         public float delayBeforeHit = 0.5f;
     }
 
+    [Header("Animator")]
+    public Animator anim;
+
     [Header("Target")]
     public string targetTag = "Player";
     private Transform target;
@@ -33,7 +38,7 @@ public class EnemyStateAI : MonoBehaviour
     public float moveSpeed = 3f;
 
     [Header("Attack")]
-    public AttackData[] attacks;
+    public List<AttackData> attacks;
     public float attackCooldown = 2f;
     private bool canAttack = true;
 
@@ -43,11 +48,20 @@ public class EnemyStateAI : MonoBehaviour
     {
         health = GetComponent<HealthComponent>();
         FindTarget();
+
+        if (health != null)
+        {
+            health.OnDamaged += () => anim.SetTrigger("damage");
+            health.OnStun += () => anim.SetBool("stun", true);
+            health.OnDie += () => anim.SetBool("dead", true);
+        }
     }
 
     private void Update()
     {
         if (health != null && health.IsStunned()) return;
+
+        if (health != null && health.currentHealth <= 0) return;
 
         if (target == null)
         {
@@ -81,14 +95,23 @@ public class EnemyStateAI : MonoBehaviour
     {
         Vector3 dir = (target.position - transform.position).normalized;
         transform.position += dir * moveSpeed * Time.deltaTime;
+        anim.SetBool("walk", true);
 
-        if (dir != Vector3.zero)
-            transform.forward = dir;
+        if (dir.x > 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
     }
 
     void TryAttack(float distance)
     {
         if (!canAttack) return;
+
+        anim.SetBool("walk", false);
 
         AttackData selected = GetRandomAttackByDistance(distance);
 
@@ -120,7 +143,12 @@ public class EnemyStateAI : MonoBehaviour
     {
         canAttack = false;
 
-        Debug.Log("Attack: " + attack.attackName);
+        if (anim != null)
+        {
+            int index = attacks.FindIndex(a => a.attackName == attack.attackName);
+            anim.SetInteger("skill", index + 1);
+            Debug.Log("index : " + index);
+        }
 
         yield return new WaitForSeconds(attack.delayBeforeHit);
 
