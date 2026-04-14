@@ -67,6 +67,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collider: {fileID: 839675239247181876}
+  _enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &6981893883298962688
 GameObject:
   m_ObjectHideFlags: 0
@@ -79,6 +82,7 @@ GameObject:
   - component: {fileID: 2095938664603640419}
   - component: {fileID: 3909187340094481341}
   - component: {fileID: 1532217873919053033}
+  - component: {fileID: 4966518855963007363}
   m_Layer: 0
   m_Name: Burst Ring
   m_TagString: Untagged
@@ -183,6 +187,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &4966518855963007363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6981893883298962688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54147eba69dbf374a9d2d40c284338e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8541460820101634551
 GameObject:
   m_ObjectHideFlags: 0

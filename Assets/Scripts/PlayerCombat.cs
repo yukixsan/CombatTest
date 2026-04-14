@@ -242,6 +242,13 @@ public class PlayerCombat : MonoBehaviour
             lastAttackStartTime = Time.time;
             return;
         }
+        if (queuedSkill != null)
+        {
+            var next = queuedSkill;
+            queuedSkill = null;
+            StartSkill(next);
+            return;
+        }
 
         SetWeaponVisual(false); // reset to default weapon visual after attack ends
     }
@@ -258,18 +265,26 @@ public class PlayerCombat : MonoBehaviour
      private void TryQueuedAttack()
     {
         if (!cancelWindowOpen) return;
-        if (queuedAttack == null) return;
-
-        var next = queuedAttack;
-        queuedAttack = null;
-
-        Debug.Log($"[Combat] Consuming queued attack {next.Name} during cancel window");
-        StartAttack(next);
-
-        // advance combo index/timestamp as attack starts
-        currentComboIndex++;
-        //if (currentComboIndex > attacks.Count) currentComboIndex = 1;
-        lastAttackStartTime = Time.time;
+ 
+        if (queuedAttack != null)
+        {
+            var next = queuedAttack;
+            queuedAttack = null;
+            Debug.Log($"[Combat] Consuming queued attack {next.Name} during cancel window");
+            StartAttack(next);
+            currentComboIndex++;
+            lastAttackStartTime = Time.time;
+            return;
+        }
+ 
+        // Consume queued skill during cancel window
+        if (queuedSkill != null)
+        {
+            var next = queuedSkill;
+            queuedSkill = null;
+            Debug.Log($"[Combat] Consuming queued skill {next.Name} during cancel window");
+            StartSkill(next);
+        }
     }
     public void ExecuteSkill(int skillIndex)
     {
@@ -318,7 +333,9 @@ public class PlayerCombat : MonoBehaviour
             Vector3 offset = data.spawnOffset;
             offset.x *= Mathf.Sign(_model.localScale.x);
 
-            GameObject obj = Instantiate(data.skillPrefab,
+             // ✅ Pool spawn instead of Instantiate
+            GameObject obj = SkillObjectPool.Instance.Spawn(
+                data.skillPrefab,
                 transform.position + offset,
                 transform.rotation);
 

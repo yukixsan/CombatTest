@@ -22,7 +22,9 @@ public class BurstSkill : SkillObject
             rb.linearVelocity = dir * speed;
         }
 
-        // Destroy after lifetime expires
-        Destroy(gameObject, lifetime);
+        // Use pool return 
+        var returnComp = GetComponent<SkillObjectReturn>();
+        if (returnComp != null)
+            returnComp.Setup(data.skillPrefab, lifetime);
     }
 }
