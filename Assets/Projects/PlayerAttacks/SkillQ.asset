@@ -17,10 +17,10 @@ MonoBehaviour:
   VFXindex: 0
   useHandWeapon: 0
   damage: 10
-  knockbackForce: 2
-  launchForce: 0
-  launchDir: 0
-  hitstunDuration: 0.05
+  knockbackForce: 5
+  launchForce: 3
+  launchDir: 1
+  hitstunDuration: 0.03
   Airborne: 0
   airLimit: 0
   canBeCancelledWindup: 0
@@ -30,8 +30,8 @@ MonoBehaviour:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
   activeVFX:
-    prefab: {fileID: 0}
-    localOffset: {x: 0, y: 0, z: 0}
+    prefab: {fileID: 1294101409476956, guid: 49f26b2bc1b080042a55c83178b4e33b, type: 3}
+    localOffset: {x: 0.75, y: 0.8, z: 0}
   recoveryVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
