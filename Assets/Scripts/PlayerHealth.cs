@@ -5,6 +5,8 @@ using UnityEngine.Events;
 public class PlayerHealth : MonoBehaviour
 {
     private HealthComponent health => GetComponent<HealthComponent>();
+    private PlayerStateController playerStateController => GetComponent<PlayerStateController>();
+
 
     [Header("EVENT")]
     public UnityEvent OnDamageEvent;
@@ -31,6 +33,8 @@ public class PlayerHealth : MonoBehaviour
     void OnTakeDamage(float dmg)
     {
         Debug.Log("Damage: " + dmg);
+        playerStateController.Animator.Play("Idle");
+        playerStateController.Animator.Play("hit");
         OnDamageEvent?.Invoke();
     }
 
@@ -43,6 +47,8 @@ public class PlayerHealth : MonoBehaviour
     void OnDie()
     {
         Debug.Log("Die");
+        playerStateController.Animator.Play("Idle");
+        playerStateController.Animator.Play("dead");
         OnDieEvent?.Invoke();
     }
 

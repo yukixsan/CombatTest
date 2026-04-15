@@ -72,6 +72,8 @@ public class EnemyStateAI : MonoBehaviour
             }
             else
             {
+                if (target.GetComponent<HealthComponent>().IsDie()) {  return; }
+                Debug.Log("Die : " + target.GetComponent<HealthComponent>().IsDie());
                 TryAttack(distance);
             }
         }
@@ -108,7 +110,7 @@ public class EnemyStateAI : MonoBehaviour
 
         AttackData selected = GetRandomAttackByDistance(distance);
 
-        if (selected != null)
+        if (selected != null && !target.GetComponent<HealthComponent>().IsDie())
         {
             StartCoroutine(DoAttack(selected));
         }

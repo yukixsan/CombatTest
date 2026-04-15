@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class EnemyCombat : MonoBehaviour
 {
-   [Header("Stats")]
+    [Header("Stats")]
     [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float damage;
     private float currentHealth;
 
     [SerializeField]private Rigidbody rb;
@@ -48,5 +49,10 @@ public class EnemyCombat : MonoBehaviour
         Debug.Log($"{name} died!");
         // TODO: play death anim, disable AI, etc.
         Destroy(gameObject);
+    }
+
+    public float GetDamage()
+    {
+        return damage;
     }
 }

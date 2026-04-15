@@ -18,6 +18,7 @@ public class HealthComponent : MonoBehaviour, IHealth
     private bool isStunned = false;
 
     private float lastDamageTime;
+    private bool die;
 
     public event Action<float> OnDamage;
     public event Action<float> OnHeal;
@@ -27,7 +28,6 @@ public class HealthComponent : MonoBehaviour, IHealth
     public event Action OnArmorRecover;
 
     public event Action<float, float> OnHealthChanged;
-
     private void Awake()
     {
         currentHealth = maxHealth;
@@ -143,7 +143,13 @@ public class HealthComponent : MonoBehaviour, IHealth
 
     private void Die()
     {
+        die = true;
         OnDie?.Invoke();
+    }
+
+    public bool IsDie()
+    {
+        return die;
     }
     #endregion
 }
