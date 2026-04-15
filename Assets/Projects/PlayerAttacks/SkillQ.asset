@@ -17,7 +17,7 @@ MonoBehaviour:
   VFXindex: 0
   useHandWeapon: 0
   damage: 10
-  knockbackForce: 5
+  knockbackForce: 4
   launchForce: 3
   launchDir: 1
   hitstunDuration: 0.03
