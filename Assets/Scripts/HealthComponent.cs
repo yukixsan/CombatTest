@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-public class HealthComponent : MonoBehaviour
+public class HealthComponent : MonoBehaviour, IHealth
 {
     [Header("Health")]
     public float maxHealth = 100;
@@ -26,6 +26,8 @@ public class HealthComponent : MonoBehaviour
     public event Action OnArmorBreak;
     public event Action OnArmorRecover;
 
+    public event Action<float, float> OnHealthChanged;
+
     private void Awake()
     {
         currentHealth = maxHealth;
@@ -36,6 +38,11 @@ public class HealthComponent : MonoBehaviour
     {
         HandleArmorRecovery();
     }
+
+    #region HEALTH INTERFACE
+    public float GetCurrentHealth() => currentHealth;
+    public float GetMaxHealth() => maxHealth;
+    #endregion
 
     #region DAMAGE SYSTEM
 
@@ -138,6 +145,5 @@ public class HealthComponent : MonoBehaviour
     {
         OnDie?.Invoke();
     }
-
     #endregion
 }
