@@ -48,13 +48,6 @@ public class EnemyStateAI : MonoBehaviour
     {
         health = GetComponent<HealthComponent>();
         FindTarget();
-
-        if (health != null)
-        {
-            health.OnDamaged += () => anim.SetTrigger("damage");
-            health.OnStun += () => anim.SetBool("stun", true);
-            health.OnDie += () => anim.SetBool("dead", true);
-        }
     }
 
     private void Update()
@@ -97,14 +90,14 @@ public class EnemyStateAI : MonoBehaviour
         transform.position += dir * moveSpeed * Time.deltaTime;
         anim.SetBool("walk", true);
 
+        Vector3 scale = transform.localScale;
+
         if (dir.x > 0)
-        {
-            transform.rotation = Quaternion.Euler(0, 180, 0);
-        }
+            scale.x = -Mathf.Abs(scale.x);
         else
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
+            scale.x = Mathf.Abs(scale.x);
+
+        transform.localScale = scale;
     }
 
     void TryAttack(float distance)
@@ -123,7 +116,7 @@ public class EnemyStateAI : MonoBehaviour
 
     AttackData GetRandomAttackByDistance(float distance)
     {
-        var validAttacks = new System.Collections.Generic.List<AttackData>();
+        var validAttacks = new List<AttackData>();
 
         foreach (var atk in attacks)
         {

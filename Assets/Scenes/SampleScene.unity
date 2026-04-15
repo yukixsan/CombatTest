@@ -8432,6 +8432,8 @@ GameObject:
   - component: {fileID: 1748799572}
   - component: {fileID: 1748799571}
   - component: {fileID: 1748799563}
+  - component: {fileID: 1748799573}
+  - component: {fileID: 1748799574}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -8777,6 +8779,49 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1748799573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1748799556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dde4a9d10dbf47479a69cbd2f332e8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  maxArmor: 50
+  currentArmor: 0
+  armorRecoveryRate: 5
+  armorRecoveryDelay: 3
+  stunDuration: 1.5
+--- !u!114 &1748799574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1748799556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e8bec186bf482741bcfcabf56430047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnDamageEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHealEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDieEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStunEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1801317450
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,7 +21,6 @@ public class HealthComponent : MonoBehaviour
 
     public event Action<float> OnDamage;
     public event Action<float> OnHeal;
-    public event Action OnDamaged;
     public event Action OnDie;
     public event Action OnStun;
     public event Action OnArmorBreak;
@@ -60,8 +59,6 @@ public class HealthComponent : MonoBehaviour
         currentHealth -= damage;
 
         OnDamage?.Invoke(damage);
-
-        OnDamaged?.Invoke();
 
         if (currentHealth <= 0)
         {
