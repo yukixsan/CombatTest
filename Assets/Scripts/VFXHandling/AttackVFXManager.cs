@@ -30,7 +30,23 @@ public class AttackVFXManager : MonoBehaviour
             obj.transform.localPosition = new Vector3(phaseVFX.localOffset.x * facing,
             phaseVFX.localOffset.y,
             phaseVFX.localOffset.z);
-            obj.transform.localRotation = Quaternion.Euler(baseRot.eulerAngles.x, facing < 0 ? 180f : 0f, baseRot.eulerAngles.z);
+
+            if (phaseVFX.flipByRotation)
+            {
+                obj.transform.localRotation = Quaternion.Euler(baseRot.eulerAngles.x, facing < 0 ? 180f : 0f, baseRot.eulerAngles.z);
+            }
+            else
+            {
+                obj.transform.localRotation = Quaternion.Euler(
+                baseRot.eulerAngles.x,
+                baseRot.eulerAngles.y,
+                baseRot.eulerAngles.z);
+
+                Vector3 scale = obj.transform.localScale;
+                scale.x = facing < 0 ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
+                obj.transform.localScale = scale;
+            }
+
         }
 
         obj.SetActive(true);
