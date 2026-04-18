@@ -13,21 +13,31 @@ MonoBehaviour:
   m_Name: Air_02
   m_EditorClassIdentifier: 
   Name: Air_02
-  animationClip: {fileID: 7400000, guid: 620d3045b8005b746b7cfe9351243edb, type: 2}
+  animationClip: {fileID: 7400000, guid: 750bf3ed192dc5b4789425532e010117, type: 2}
   VFXindex: 2
-  windup: 0.2
-  active: 0.12
-  recovery: 0.17
+  useHandWeapon: 1
   damage: 10
   knockbackForce: 4
   launchForce: 15
   launchDir: -1
   hitstunDuration: 0.05
   Airborne: 1
-  airLimit: 0
+  airLimit: 1
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
   canBeCancelledRecovery: 0
+  windupVFX:
+    prefab: {fileID: 0}
+    localOffset: {x: 0, y: 0, z: 0}
+    flipByRotation: 0
+  activeVFX:
+    prefab: {fileID: 7921956108415085024, guid: f873406bc5ab30940a9d5a87ca3ad0d6, type: 3}
+    localOffset: {x: 0, y: 0, z: 0}
+    flipByRotation: 0
+  recoveryVFX:
+    prefab: {fileID: 0}
+    localOffset: {x: 0, y: 0, z: 0}
+    flipByRotation: 0
   nextCombo: {fileID: 0}
   comboIndex: 2
   directionVariant: 0

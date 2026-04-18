@@ -10,35 +10,35 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93e86760c954ca04a8da1402cfaae22b, type: 3}
-  m_Name: Normal_02
+  m_Name: UpAirAttack
   m_EditorClassIdentifier: 
-  Name: Attack_02
-  animationClip: {fileID: 7400000, guid: c804bd04a5195ce45b3759b24b0c8a29, type: 2}
+  Name: UpAir_Attack
+  animationClip: {fileID: 7400000, guid: b20b47cf00378b8459f91ad991ceb65a, type: 2}
   VFXindex: 0
-  useHandWeapon: 0
+  useHandWeapon: 1
   damage: 10
   knockbackForce: 1
-  launchForce: 0
-  launchDir: 0
-  hitstunDuration: 0.02
-  Airborne: 0
+  launchForce: 4
+  launchDir: 1
+  hitstunDuration: 0.03
+  Airborne: 1
   airLimit: 0
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
   canBeCancelledRecovery: 1
   windupVFX:
-    prefab: {fileID: 0}
+    prefab: {fileID: 3919775695780867023, guid: cd1eb32efc0a3d346b74b94158fa5b63, type: 3}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
   activeVFX:
-    prefab: {fileID: 5023200931209090201, guid: b2caa19246afc224885d197c4fae2497, type: 3}
-    localOffset: {x: 0, y: -0.4, z: 0}
+    prefab: {fileID: 0}
+    localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
   recoveryVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
-  nextCombo: {fileID: 11400000, guid: 6b1b65c34d995e747a6199358be6b106, type: 2}
-  comboIndex: 2
-  directionVariant: 0
+  nextCombo: {fileID: 0}
+  comboIndex: 0
+  directionVariant: 1
   absoluteRecovery: 0
