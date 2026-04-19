@@ -118,6 +118,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void StartAttack(AttackData data)
     {
+        ApplyChainFlip();
         AttackVFXManager.Instance.StopAll(); // stop all active VFX immediately on reset
         SetWeaponVisual(data.useHandWeapon);
         //Check if air attack limit exceeded
@@ -125,7 +126,7 @@ public class PlayerCombat : MonoBehaviour
         {
             if (!airAttackUsage.ContainsKey(data))
                 airAttackUsage[data] = 0;
-            if (airAttackUsage[data] > 1)
+            if (data.airLimit > 0 && airAttackUsage[data] >= data.airLimit)
             {
                 Debug.Log($"[Combat] Air attack '{data.Name}' limit exceeded, cannot start");
                 return;
@@ -319,6 +320,7 @@ public class PlayerCombat : MonoBehaviour
     }
     private void StartSkill(PlayerSkillData data)
     {
+        ApplyChainFlip();
         AttackVFXManager.Instance.StopAll(); // stop all active VFX immediately on reset
         SetWeaponVisual(data.useHandWeapon);
         Debug.Log($"[Combat] Start Attack '{data.Name}')");
@@ -456,6 +458,16 @@ public class PlayerCombat : MonoBehaviour
     private bool IsAirborne()
     {
         return _stateController != null && _stateController.IsAirborne;
+    }
+    private void ApplyChainFlip()
+    {
+        // Only force-flip when chaining mid-attack (CanFlip is locked).
+        // When not attacking, LateUpdate HandleModelFlip handles it normally.
+        if (!isAttacking) return;
+
+        float moveX = _stateController.Movement.HorizontalInput;
+        if (Mathf.Abs(moveX) > 0.1f)
+            _model.localScale = new Vector3(Mathf.Sign(moveX), 1f, 1f);
     }
     public void ResetAttack()
     {

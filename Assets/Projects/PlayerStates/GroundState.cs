@@ -10,6 +10,7 @@ public class GroundState : BasePlayerState
     {
         controller.SetMovePermission(true);
         controller.SetJumpPermission(true);
+        controller.SetFlipPermission(true);
 
         currentSubState = new IdleState(controller);
         currentSubState.OnEnter();

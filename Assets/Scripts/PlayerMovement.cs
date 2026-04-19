@@ -12,8 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Dash Settings")]
     private bool isDashing;
     private float dashTimer;
-    // [SerializeField]private float dashDuration;
-    // [SerializeField] private float dashSpeed;
+    
     private float _activeDashSpeed;
     private float _activeDashDuration;
     private float dashFacing;
@@ -29,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveInput;
     [SerializeField]private bool _isGrounded;
     public bool IsMoving { get; private set; }
+    public float HorizontalInput => moveInput.x;
     // Accumulator fields
     private Vector3 pendingLaunchVelocity = Vector3.zero;
     private bool hasPendingVelocity = false;

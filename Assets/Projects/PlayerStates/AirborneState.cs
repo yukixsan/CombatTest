@@ -43,5 +43,6 @@ public class AirborneState : BasePlayerState
         currentSubState?.OnExit();
         controller.SetMovePermission(true);
         controller.SetJumpPermission(true);
+        controller.SetFlipPermission(true);
     }
 }
