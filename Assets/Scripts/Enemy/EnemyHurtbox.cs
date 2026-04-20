@@ -3,27 +3,35 @@ using UnityEngine;
 
 public class EnemyHurtbox : MonoBehaviour
 {
-    [SerializeField] private EnemyCombat _enemyCombat;
-    [SerializeField] private HealthComponent healthComponent;
    
-    private void OnTriggerEnter(Collider other)
-    {
-        print("collide");
-        var hitbox = other.GetComponent<PlayerHitbox>();
-        if (hitbox != null && hitbox.HasPayload)
-        {
-            _enemyCombat.TakeHit(hitbox.Payload);
-            healthComponent.TakeDamage(hitbox.Payload.Damage);
-        }
-    }
+    [SerializeField] private HealthComponent healthComponent;
+    [SerializeField] private Rigidbody rb;
+   
  
     public void TryTakeHit(PlayerHitbox hitbox)
     {
-        if (hitbox.HasPayload)
-        {
-            _enemyCombat.TakeHit(hitbox.Payload);
-            healthComponent.TakeDamage(hitbox.Payload.Damage);
-        }
+        if (!hitbox.HasPayload) return;
+ 
+        HitboxPayload payload = hitbox.Payload;
+ 
+        // Knockback — direction relative to attacker position
+        float facingX = Mathf.Sign(transform.position.x - payload.attacker.position.x);
+        Vector3 knockback = new Vector3(
+            payload.KnockbackForce * facingX,
+            payload.LaunchForce * payload.LaunchDir,
+            0f
+        );
+        rb.AddForce(knockback, ForceMode.Impulse);
+ 
+        // Hit VFX at midpoint between attacker and this enemy
+        Vector3 hitPoint = (payload.attacker.position + transform.position) * 0.5f;
+        HitVFXManager.Instance.SpawnVFX(payload.VFXindex, hitPoint, Quaternion.identity);
+ 
+        // Hitstop
+        HitStopManager.Instance.StartHitstop(payload.HitstopDuration);
+ 
+        // Health — all downstream events (damage, stun, die) flow through HealthComponent → EnemyHealth
+        healthComponent.TakeDamage(payload.Damage);
     }
 
     
