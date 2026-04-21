@@ -52,39 +52,46 @@ public class EnemyStateAI : MonoBehaviour
         FindTarget();
     }
 
-    private void Update()
+    void Update()
     {
         if (health != null && health.IsStunned()) return;
-
         if (health != null && health.currentHealth <= 0) return;
 
-        if (target != null)
+        if (target == null)
         {
-            var hp = target.GetComponent<HealthComponent>();
-            if (hp != null && hp.IsDie())
-            {
-                anim.SetInteger("skill", 0);
-                anim.SetBool("walk", false);
-                return;
-            }
+            FindTarget();
+            return;
+        }
+
+        var hp = target.GetComponent<HealthComponent>();
+        if (hp != null && hp.IsDie())
+        {
+            anim.SetInteger("skill", 0);
+            anim.SetBool("walk", false);
+            return;
         }
 
         float distance = Vector3.Distance(transform.position, target.position);
 
         if (distance <= detectRange)
         {
-            if (distance > attackRange)
+            if (distance > chaseRange)
+            {
+                anim.SetBool("walk", false);
+            }
+            else if (distance > attackRange)
             {
                 ChaseTarget();
             }
             else
             {
-                if (!target.GetComponent<HealthComponent>().IsDie())
-                {
-                    Debug.Log("Die : " + target.GetComponent<HealthComponent>().IsDie());
-                    TryAttack(distance);
-                }
+                anim.SetBool("walk", false);
+                TryAttack(distance);
             }
+        }
+        else
+        {
+            anim.SetBool("walk", false);
         }
     }
 
