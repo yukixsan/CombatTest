@@ -7,7 +7,7 @@ public class PlayerHurtbox : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Layer : " + other.gameObject.layer);
-        if (other.gameObject.layer == 6)
+        if (other.gameObject.layer == 9)
         {
             print("collide : "+ other.transform.root.GetComponent<EnemyStateAI>().gameObject.name);
             var hit = other.transform.root.GetComponent<EnemyStateAI>();
