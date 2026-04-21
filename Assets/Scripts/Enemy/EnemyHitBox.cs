@@ -6,11 +6,11 @@ public class EnemyHitBox : MonoBehaviour
 
     public void Active()
     {
-        hitBoxObject.SetActive(true);
+        hitBoxObject.GetComponent<BoxCollider>().enabled = true;
     }
 
     public void Deactive()
     {
-        hitBoxObject.SetActive(false);
+        hitBoxObject.GetComponent<BoxCollider>().enabled = false;
     }
 }

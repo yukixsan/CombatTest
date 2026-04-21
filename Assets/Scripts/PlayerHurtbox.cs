@@ -6,15 +6,18 @@ public class PlayerHurtbox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print("collide");
+        Debug.Log("Layer : " + other.gameObject.layer);
         if (other.gameObject.layer == 6)
         {
-            var hit = other.transform.root.GetComponent<EnemyCombat>();
-            if(hit != null)
+            print("collide : "+ other.transform.root.GetComponent<EnemyStateAI>().gameObject.name);
+            var hit = other.transform.root.GetComponent<EnemyStateAI>();
+            if (hit != null)
             {
+                Debug.Log("damage : "+ hit.GetDamage());
                 if (!healthComponent.IsDie())
                 {
-                    healthComponent.TakeDamage(hit.GetDamage());
+                    Debug.Log("damage : "+ hit.GetDamage());
+                    healthComponent.TakeDamage(hit.GetDamage(), hit.GetPoiseDamage());
                 }
             }
         }

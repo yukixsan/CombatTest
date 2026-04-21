@@ -43,6 +43,8 @@ public class EnemyStateAI : MonoBehaviour
     private bool canAttack = true;
 
     private HealthComponent health;
+    private float Damage;
+    private float PoiseDamage;
 
     private void Start()
     {
@@ -56,10 +58,15 @@ public class EnemyStateAI : MonoBehaviour
 
         if (health != null && health.currentHealth <= 0) return;
 
-        if (target == null)
+        if (target != null)
         {
-            FindTarget();
-            return;
+            var hp = target.GetComponent<HealthComponent>();
+            if (hp != null && hp.IsDie())
+            {
+                anim.SetInteger("skill", 0);
+                anim.SetBool("walk", false);
+                return;
+            }
         }
 
         float distance = Vector3.Distance(transform.position, target.position);
@@ -72,9 +79,11 @@ public class EnemyStateAI : MonoBehaviour
             }
             else
             {
-                if (target.GetComponent<HealthComponent>().IsDie()) {  return; }
-                Debug.Log("Die : " + target.GetComponent<HealthComponent>().IsDie());
-                TryAttack(distance);
+                if (!target.GetComponent<HealthComponent>().IsDie())
+                {
+                    Debug.Log("Die : " + target.GetComponent<HealthComponent>().IsDie());
+                    TryAttack(distance);
+                }
             }
         }
     }
@@ -142,22 +151,45 @@ public class EnemyStateAI : MonoBehaviour
         {
             int index = attacks.FindIndex(a => a.attackName == attack.attackName);
             anim.SetInteger("skill", index + 1);
-            Debug.Log("index : " + index);
+
+            Damage = attack.damage;
+            PoiseDamage = attack.poiseDamage;
         }
 
         yield return new WaitForSeconds(attack.delayBeforeHit);
 
-        if (target != null)
+        if (target == null) yield break;
+
+        var hp = target.GetComponent<HealthComponent>();
+        if (hp == null || hp.IsDie())
         {
-            var hp = target.GetComponent<HealthComponent>();
-            if (hp != null)
-            {
-                hp.TakeDamage(attack.damage, attack.poiseDamage);
-            }
+            ResetAttack();
+            yield break;
         }
 
         yield return new WaitForSeconds(attackCooldown);
 
+        ResetAttack();
+    }
+
+    void ResetAttack()
+    {
         canAttack = true;
+
+        if (anim != null)
+        {
+            anim.SetInteger("skill", 0);
+            anim.SetBool("walk", false);
+        }
+    }
+
+    public float GetDamage()
+    {
+        return Damage;
+    }
+
+    public float GetPoiseDamage()
+    {
+        return PoiseDamage;
     }
 }
