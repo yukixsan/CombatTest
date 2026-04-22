@@ -7,6 +7,7 @@ public class EnemyHealth : MonoBehaviour
 {
     private HealthComponent health => GetComponent<HealthComponent>();
     private EnemyStateAI enemyStateAI => GetComponent<EnemyStateAI>();
+    private UIHealthBar healthBar => GetComponent<UIHealthBar>();
 
     [Header("EVENT")]
     public UnityEvent OnDamageEvent;
@@ -27,6 +28,12 @@ public class EnemyHealth : MonoBehaviour
         health.OnHeal -= OnHeal;
         health.OnDie -= OnDie;
         health.OnStun -= OnStun;
+    }
+
+    private void Start()
+    {
+        Debug.Log("health : "+ healthBar.gameObject.name);
+        healthBar.SetTarget(health);
     }
 
     void OnTakeDamage(float dmg)

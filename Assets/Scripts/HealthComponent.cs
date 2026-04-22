@@ -65,6 +65,7 @@ public class HealthComponent : MonoBehaviour, IHealth
 
         currentHealth -= damage;
 
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
         OnDamage?.Invoke(damage);
 
         if (currentHealth <= 0)
@@ -85,6 +86,7 @@ public class HealthComponent : MonoBehaviour, IHealth
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
         OnHeal?.Invoke(amount);
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
     #endregion
