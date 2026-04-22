@@ -81,8 +81,11 @@ public class HitFX : MonoBehaviour
             OnDisable?.Invoke();
         }
 
-        transform.localPosition = originalPos;
-        transform.localRotation = originalRot;
+        if (shake)
+        {
+            transform.localPosition = originalPos;
+            transform.localRotation = originalRot;
+        }
         SetOriginalColor();
     }
 

@@ -6,7 +6,7 @@ public class PlayerHealth : MonoBehaviour
 {
     private HealthComponent health => GetComponent<HealthComponent>();
     private PlayerStateController playerStateController => GetComponent<PlayerStateController>();
-
+    private UIHealthBar healthBar => GetComponent<UIHealthBar>();
 
     [Header("EVENT")]
     public UnityEvent OnDamageEvent;
@@ -28,6 +28,11 @@ public class PlayerHealth : MonoBehaviour
         health.OnHeal -= OnHeal;
         health.OnDie -= OnDie;
         health.OnStun -= OnStun;
+    }
+
+    private void Start()
+    {
+        healthBar.SetTarget(health);
     }
 
     void OnTakeDamage(float dmg)
