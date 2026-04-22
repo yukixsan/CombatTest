@@ -8773,6 +8773,7 @@ MonoBehaviour:
   _movement: {fileID: 1748799569}
   _combat: {fileID: 1748799565}
   _animator: {fileID: 1748799572}
+  _health: {fileID: 1748799573}
 --- !u!136 &1748799571
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8836,7 +8837,7 @@ MonoBehaviour:
   currentArmor: 0
   armorRecoveryRate: 5
   armorRecoveryDelay: 3
-  stunDuration: 0.44
+  stunDuration: 0.3
 --- !u!114 &1748799574
 MonoBehaviour:
   m_ObjectHideFlags: 0

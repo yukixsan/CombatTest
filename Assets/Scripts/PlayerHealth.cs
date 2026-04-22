@@ -33,8 +33,7 @@ public class PlayerHealth : MonoBehaviour
     void OnTakeDamage(float dmg)
     {
         Debug.Log("Damage: " + dmg);
-        playerStateController.Animator.Play("Idle");
-        playerStateController.Animator.Play("hit");
+        playerStateController.TriggerDamaged();
         OnDamageEvent?.Invoke();
     }
 
@@ -47,8 +46,7 @@ public class PlayerHealth : MonoBehaviour
     void OnDie()
     {
         Debug.Log("Die");
-        playerStateController.Animator.Play("Idle");
-        playerStateController.Animator.Play("dead");
+        playerStateController.TriggerDeath();
         OnDieEvent?.Invoke();
     }
 

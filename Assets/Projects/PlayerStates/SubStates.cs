@@ -131,3 +131,77 @@ public class AirRecoveryState : BasePlayerState
         //animator.Play("Fall");
     }
 }
+public class DamagedState : BasePlayerState
+{
+    private float _timer;
+ 
+    public DamagedState(PlayerStateController controller) : base(controller) { }
+ 
+    public override void OnEnter()
+    {
+        Debug.Log($"[State Enter] {GetType().Name}");
+        Reset();
+    }
+ 
+    // Called by PlayerStateController.TriggerDamaged() when already in this state
+    // so repeated hits restart the stun without a full state switch
+    public void Reset()
+    {
+        _timer = controller.Health.stunDuration;
+ 
+        // Clear any lingering attack hitboxes — prevents player's own
+        // hitbox staying active and dealing damage mid-stun
+        combat.ResetAttack();
+ 
+        controller.SetMovePermission(false);
+        controller.SetJumpPermission(false);
+        controller.SetFlipPermission(false);
+ 
+        // Force-interrupt whatever animation is playing, including mid-recovery
+        animator.Play("hit", 0, 0f);
+    }
+ 
+    public override void OnUpdate()
+    {
+        _timer -= Time.deltaTime;
+        if (_timer <= 0f)
+        {
+            controller.SwitchState(
+                movement.IsGrounded
+                    ? (BasePlayerState)controller.GroundedState
+                    : controller.AirborneState
+            );
+        }
+    }
+ 
+    public override void OnExit()
+    {
+        controller.SetMovePermission(true);
+        controller.SetJumpPermission(true);
+        controller.SetFlipPermission(true);
+    }
+}
+ 
+public class DeadState : BasePlayerState
+{
+    public DeadState(PlayerStateController controller) : base(controller) { }
+ 
+    public override void OnEnter()
+    {
+        Debug.Log($"[State Enter] {GetType().Name}");
+        combat.ResetAttack();
+        controller.SetMovePermission(false);
+        controller.SetJumpPermission(false);
+        controller.SetFlipPermission(false);
+        animator.Play("dead", 0, 0f);
+    }
+ 
+    // No OnUpdate exit — dead is permanent until scene reload / respawn
+    public override void OnExit()
+    {
+        // Restore permissions if a respawn system calls SwitchState later
+        controller.SetMovePermission(true);
+        controller.SetJumpPermission(true);
+        controller.SetFlipPermission(true);
+    }
+}

@@ -6,15 +6,19 @@ public class PlayerStateController : MonoBehaviour
     [SerializeField] private PlayerMovement _movement;
     [SerializeField] private PlayerCombat _combat;
     [SerializeField] private Animator _animator;
+    [SerializeField] private HealthComponent _health;
 
     public PlayerMovement Movement => _movement;
     public PlayerCombat Combat => _combat;
     public Animator Animator => _animator;
+    public HealthComponent Health => _health;
 
     private BasePlayerState currentState;
 
     public GroundState GroundedState { get; private set; }
     public AirborneState AirborneState { get; private set; }
+    public DamagedState DamagedState { get; private set; }
+    public DeadState DeadState { get; private set; }
 
     [SerializeField]public bool CanMove { get; private set; } = true;
     public bool CanJump { get; private set; } = true;
@@ -27,14 +31,11 @@ public class PlayerStateController : MonoBehaviour
     {
         GroundedState = new GroundState(this);
         AirborneState = new AirborneState(this);
+        DamagedState = new DamagedState(this);
+        DeadState = new DeadState(this);
         SwitchState(GroundedState);
 
     }
-
-
-    // private void Start()
-    // {
-    // }
 
     private void Update()
     {
@@ -47,6 +48,24 @@ public class PlayerStateController : MonoBehaviour
         currentState?.OnExit();
         currentState = newState;
         currentState.OnEnter();
+    }
+    public void TriggerDamaged()
+    {
+         if (currentState == DeadState) return; // dead stays dead
+ 
+        if (currentState == DamagedState)
+        {
+            // Already damaged — reset the stun timer and replay animation
+            DamagedState.Reset();
+        }
+        else
+        {
+            SwitchState(DamagedState);
+        }
+    }
+    public void TriggerDeath()
+    {
+        SwitchState(DeadState); 
     }
        public void SetMovePermission(bool canMove) => CanMove = canMove;
     public void SetJumpPermission(bool canJump) => CanJump = canJump;
