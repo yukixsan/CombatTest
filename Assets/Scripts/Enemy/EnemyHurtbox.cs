@@ -31,7 +31,7 @@ public class EnemyHurtbox : MonoBehaviour
         HitStopManager.Instance.StartHitstop(payload.HitstopDuration);
  
         // Health — all downstream events (damage, stun, die) flow through HealthComponent → EnemyHealth
-        healthComponent.TakeDamage(payload.Damage);
+        healthComponent.TakeDamage(payload.Damage, 20);
     }
 
     

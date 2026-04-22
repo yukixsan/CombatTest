@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyStateAI : MonoBehaviour
@@ -29,7 +28,7 @@ public class EnemyStateAI : MonoBehaviour
     public string targetTag = "Player";
     private Transform target;
 
-    [Header("Distance Setting")]
+    [Header("Distance")]
     public float detectRange = 15f;
     public float chaseRange = 10f;
     public float attackRange = 2.5f;
@@ -40,22 +39,55 @@ public class EnemyStateAI : MonoBehaviour
     [Header("Attack")]
     public List<AttackData> attacks;
     public float attackCooldown = 2f;
+
     private bool canAttack = true;
+    private Coroutine attackRoutine;
 
     private HealthComponent health;
-    private float Damage;
-    private float PoiseDamage;
+
+    private float currentDamage;
+    private float currentPoiseDamage;
+    public float GetDamage() => currentDamage;
+    public float GetPoiseDamage() => currentPoiseDamage;
 
     private void Start()
     {
         health = GetComponent<HealthComponent>();
         FindTarget();
+
+        if (health != null)
+        {
+            health.OnStun += HandleStun;
+            health.OnStunEnd += HandleStunEnd;
+            health.OnDie += HandleDie;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (health != null)
+        {
+            health.OnStun -= HandleStun;
+            health.OnStunEnd -= HandleStunEnd;
+            health.OnDie -= HandleDie;
+        }
     }
 
     void Update()
     {
-        if (health != null && health.IsStunned()) return;
-        if (health != null && health.currentHealth <= 0) return;
+        if (health == null) return;
+
+        if (health.IsDie())
+        {
+            StopAllActions();
+            return;
+        }
+
+        if (health.IsStunned())
+        {
+            StopAllActions();
+            return;
+        }
 
         if (target == null)
         {
@@ -63,11 +95,10 @@ public class EnemyStateAI : MonoBehaviour
             return;
         }
 
-        var hp = target.GetComponent<HealthComponent>();
-        if (hp != null && hp.IsDie())
+        var targetHp = target.GetComponent<HealthComponent>();
+        if (targetHp != null && targetHp.IsDie())
         {
-            anim.SetInteger("skill", 0);
-            anim.SetBool("walk", false);
+            Idle();
             return;
         }
 
@@ -77,7 +108,7 @@ public class EnemyStateAI : MonoBehaviour
         {
             if (distance > chaseRange)
             {
-                anim.SetBool("walk", false);
+                Idle();
             }
             else if (distance > attackRange)
             {
@@ -85,13 +116,12 @@ public class EnemyStateAI : MonoBehaviour
             }
             else
             {
-                anim.SetBool("walk", false);
                 TryAttack(distance);
             }
         }
         else
         {
-            anim.SetBool("walk", false);
+            Idle();
         }
     }
 
@@ -102,19 +132,27 @@ public class EnemyStateAI : MonoBehaviour
             target = obj.transform;
     }
 
+    void Idle()
+    {
+        if (anim != null)
+        {
+            anim.SetBool("walk", false);
+            anim.SetInteger("skill", 0);
+        }
+    }
+
     void ChaseTarget()
     {
+        if (target == null) return;
+
         Vector3 dir = (target.position - transform.position).normalized;
         transform.position += dir * moveSpeed * Time.deltaTime;
-        anim.SetBool("walk", true);
+
+        if (anim != null)
+            anim.SetBool("walk", true);
 
         Vector3 scale = transform.localScale;
-
-        if (dir.x > 0)
-            scale.x = -Mathf.Abs(scale.x);
-        else
-            scale.x = Mathf.Abs(scale.x);
-
+        scale.x = dir.x > 0 ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
         transform.localScale = scale;
     }
 
@@ -122,32 +160,27 @@ public class EnemyStateAI : MonoBehaviour
     {
         if (!canAttack) return;
 
-        anim.SetBool("walk", false);
-
         AttackData selected = GetRandomAttackByDistance(distance);
 
-        if (selected != null && !target.GetComponent<HealthComponent>().IsDie())
+        if (selected != null)
         {
-            StartCoroutine(DoAttack(selected));
+            attackRoutine = StartCoroutine(DoAttack(selected));
         }
     }
 
     AttackData GetRandomAttackByDistance(float distance)
     {
-        var validAttacks = new List<AttackData>();
+        List<AttackData> valid = new List<AttackData>();
 
         foreach (var atk in attacks)
         {
             if (distance >= atk.minRange && distance <= atk.maxRange)
-            {
-                validAttacks.Add(atk);
-            }
+                valid.Add(atk);
         }
 
-        if (validAttacks.Count == 0) return null;
+        if (valid.Count == 0) return null;
 
-        int rand = Random.Range(0, validAttacks.Count);
-        return validAttacks[rand];
+        return valid[Random.Range(0, valid.Count)];
     }
 
     IEnumerator DoAttack(AttackData attack)
@@ -156,23 +189,29 @@ public class EnemyStateAI : MonoBehaviour
 
         if (anim != null)
         {
-            int index = attacks.FindIndex(a => a.attackName == attack.attackName);
+            int index = attacks.IndexOf(attack);
             anim.SetInteger("skill", index + 1);
-
-            Damage = attack.damage;
-            PoiseDamage = attack.poiseDamage;
+            anim.SetBool("walk", false);
+            currentDamage = attack.damage;
+            currentPoiseDamage = attack.poiseDamage;
         }
 
         yield return new WaitForSeconds(attack.delayBeforeHit);
 
-        if (target == null) yield break;
-
-        var hp = target.GetComponent<HealthComponent>();
-        if (hp == null || hp.IsDie())
+        if (health.IsStunned() || health.IsDie())
         {
             ResetAttack();
             yield break;
         }
+
+        //if (target != null)
+        //{
+        //    var hp = target.GetComponent<HealthComponent>();
+        //    if (hp != null && !hp.IsDie())
+        //    {
+        //        hp.TakeDamage(attack.damage, attack.poiseDamage);
+        //    }
+        //}
 
         yield return new WaitForSeconds(attackCooldown);
 
@@ -186,17 +225,45 @@ public class EnemyStateAI : MonoBehaviour
         if (anim != null)
         {
             anim.SetInteger("skill", 0);
-            anim.SetBool("walk", false);
         }
     }
 
-    public float GetDamage()
+    void StopAllActions()
     {
-        return Damage;
+        if (attackRoutine != null)
+        {
+            StopCoroutine(attackRoutine);
+            attackRoutine = null;
+        }
+
+        canAttack = true;
+
+        if (anim != null)
+        {
+            anim.SetBool("walk", false);
+            anim.SetInteger("skill", 0);
+        }
     }
 
-    public float GetPoiseDamage()
+    void HandleStun()
     {
-        return PoiseDamage;
+        StopAllActions();
+
+        if (anim != null)
+            anim.SetBool("stun", true);
+    }
+
+    void HandleStunEnd()
+    {
+        if (anim != null)
+            anim.SetBool("stun", false);
+    }
+
+    void HandleDie()
+    {
+        StopAllActions();
+
+        if (anim != null)
+            anim.SetBool("dead", true);
     }
 }

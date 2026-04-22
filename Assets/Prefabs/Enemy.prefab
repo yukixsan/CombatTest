@@ -163,7 +163,7 @@ MonoBehaviour:
   currentArmor: 0
   armorRecoveryRate: 5
   armorRecoveryDelay: 3
-  stunDuration: 1.5
+  stunDuration: 3
 --- !u!114 &5822102002144376022
 MonoBehaviour:
   m_ObjectHideFlags: 0

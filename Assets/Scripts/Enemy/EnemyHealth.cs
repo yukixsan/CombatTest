@@ -59,7 +59,6 @@ public class EnemyHealth : MonoBehaviour
     void OnStun()
     {
         Debug.Log("Stun!");
-        enemyStateAI.anim.SetBool("stun", true);
         OnStunEvent?.Invoke();
     }
 }

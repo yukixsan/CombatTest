@@ -24,6 +24,7 @@ public class HealthComponent : MonoBehaviour, IHealth
     public event Action<float> OnHeal;
     public event Action OnDie;
     public event Action OnStun;
+    public event Action OnStunEnd;
     public event Action OnArmorBreak;
     public event Action OnArmorRecover;
 
@@ -132,6 +133,8 @@ public class HealthComponent : MonoBehaviour, IHealth
     {
         yield return new WaitForSeconds(stunDuration);
         isStunned = false;
+
+        OnStunEnd?.Invoke();
     }
 
     public bool IsStunned()
