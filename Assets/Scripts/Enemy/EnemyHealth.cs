@@ -32,7 +32,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("health : "+ healthBar.gameObject.name);
+        //Debug.Log("health : "+ healthBar.gameObject.name);
         healthBar.SetTarget(health);
     }
 

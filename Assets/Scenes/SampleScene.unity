@@ -7780,9 +7780,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 669112453454119293, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+      propertyPath: shake
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4342659591351156941, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 4917888377305500145, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4917888377305500145, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4917888377305500145, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4917888377305500145, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4917888377305500145, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4928203712268403394, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7823,6 +7847,38 @@ PrefabInstance:
     - target: {fileID: 4928203712268403394, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5495748245614765680, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 1644814955}
+    - target: {fileID: 7765645273612745702, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+      propertyPath: moveLockDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9153543722055249889, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9153543722055249889, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9153543722055249889, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9153543722055249889, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9153543722055249889, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9161459673844458589, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+      propertyPath: stunDuration
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8382,6 +8438,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.024354674, y: 7.7964063, z: 1}
   m_Center: {x: 0, y: 3.3982036, z: 0}
+--- !u!54 &1644814955 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 4631789588829961447, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+  m_PrefabInstance: {fileID: 1262504557}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1699893829
 GameObject:
   m_ObjectHideFlags: 0
@@ -9275,7 +9336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 625c14eee3ad46c99df7c7c891ef668a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damping: {x: 0.1, y: 20, z: 0.3}
+  Damping: {x: 0.1, y: 0, z: 0.3}
   ShoulderOffset: {x: 0, y: -1.12, z: -11.74}
   VerticalArmLength: 2.8
   CameraSide: 1
@@ -9422,6 +9483,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthComponent: {fileID: 0}
   rb: {fileID: 0}
+  moveLockDuration: 0.25
 --- !u!65 &1961994168
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -34,6 +34,10 @@ public class EnemyStateAI : MonoBehaviour
     public float attackRange = 2.5f;
 
     [Header("Movement")]
+    [SerializeField] private Rigidbody rb;
+    [SerializeField]private bool isKnockedBack = false;
+    private float knockbackTimer = 0f;
+    private const float KNOCKBACK_LOCKOUT = 0.25f; 
     public float moveSpeed = 3f;
 
     [Header("Attack")]
@@ -89,6 +93,16 @@ public class EnemyStateAI : MonoBehaviour
             return;
         }
 
+        //Knocback checks
+        if (isKnockedBack)
+        {
+            knockbackTimer -= Time.deltaTime;
+            if(knockbackTimer <= 0f)
+            
+                isKnockedBack = false;
+            return;
+        }
+
         if (target == null)
         {
             FindTarget();
@@ -134,6 +148,7 @@ public class EnemyStateAI : MonoBehaviour
 
     void Idle()
     {
+        rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
         if (anim != null)
         {
             anim.SetBool("walk", false);
@@ -146,7 +161,8 @@ public class EnemyStateAI : MonoBehaviour
         if (target == null) return;
 
         Vector3 dir = (target.position - transform.position).normalized;
-        transform.position += dir * moveSpeed * Time.deltaTime;
+        
+        rb.linearVelocity = new Vector3(dir.x * moveSpeed, rb.linearVelocity.y,0);
 
         if (anim != null)
             anim.SetBool("walk", true);
@@ -265,5 +281,12 @@ public class EnemyStateAI : MonoBehaviour
 
         if (anim != null)
             anim.SetBool("dead", true);
+    }
+
+    //Handle knocback 
+    public void ApplyKnocback(float lockDuration)
+    {
+        isKnockedBack = true;
+        knockbackTimer = lockDuration;
     }
 }

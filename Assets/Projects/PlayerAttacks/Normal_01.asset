@@ -29,12 +29,15 @@ MonoBehaviour:
   windupVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
+    flipByRotation: 0
   activeVFX:
     prefab: {fileID: 4978730031260219467, guid: 4ab2015a06de2f64ab94f10b6b4e373e, type: 3}
     localOffset: {x: 0, y: 0, z: 0}
+    flipByRotation: 0
   recoveryVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
+    flipByRotation: 0
   nextCombo: {fileID: 11400000, guid: 26d18d55de99ca34ca0ec4372e7abc68, type: 2}
   comboIndex: 1
   directionVariant: 0

@@ -6,7 +6,9 @@ public class EnemyHurtbox : MonoBehaviour
    
     [SerializeField] private HealthComponent healthComponent;
     [SerializeField] private Rigidbody rb;
-   
+
+    [SerializeField] private float moveLockDuration = 0.5f;
+
  
     public void TryTakeHit(PlayerHitbox hitbox)
     {
@@ -22,7 +24,11 @@ public class EnemyHurtbox : MonoBehaviour
             0f
         );
         rb.AddForce(knockback, ForceMode.Impulse);
- 
+        var enemyAI = GetComponentInParent<EnemyStateAI>();
+        if (enemyAI != null)
+        {
+            enemyAI.ApplyKnocback(moveLockDuration);
+        }
         // Hit VFX at midpoint between attacker and this enemy
         Vector3 hitPoint = (payload.attacker.position + transform.position) * 0.5f;
         HitVFXManager.Instance.SpawnVFX(payload.VFXindex, hitPoint, Quaternion.identity);

@@ -9,7 +9,7 @@ public class IdleState : BasePlayerState
         controller.SetJumpPermission(true);
         combat.ResetAttack();
         animator.Play("Idle");
-                    Debug.Log($"[State Enter] {GetType().Name}");
+                    //Debug.Log($"[State Enter] {GetType().Name}");
 
     }
 }
@@ -94,7 +94,7 @@ public class FallingState : BasePlayerState
 
     public override void OnEnter()
     {
-        Debug.Log($"[State Enter] {GetType().Name}");
+        //Debug.Log($"[State Enter] {GetType().Name}");
 
         animator.Play("Fall");
     }
