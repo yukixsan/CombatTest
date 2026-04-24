@@ -26,6 +26,18 @@ MonoBehaviour:
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
   canBeCancelledRecovery: 0
+  windupVFX:
+    prefab: {fileID: 0}
+    localOffset: {x: 0, y: 0, z: 0}
+    flipByRotation: 0
+  activeVFX:
+    prefab: {fileID: 231859285092543605, guid: d1992f0333b1f2940860d518b9f4c684, type: 3}
+    localOffset: {x: 0, y: 0.5, z: 0}
+    flipByRotation: 0
+  recoveryVFX:
+    prefab: {fileID: 0}
+    localOffset: {x: 0, y: 0, z: 0}
+    flipByRotation: 0
   nextCombo: {fileID: 0}
   comboIndex: 3
   directionVariant: 0
