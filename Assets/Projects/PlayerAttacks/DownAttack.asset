@@ -15,9 +15,7 @@ MonoBehaviour:
   Name: Down attack
   animationClip: {fileID: 7400000, guid: 0f19f90ddc61a5e4e8970f839737bd80, type: 2}
   VFXindex: 0
-  windup: 0.2
-  active: 0.2
-  recovery: 0.1
+  useHandWeapon: 1
   damage: 10
   knockbackForce: 5
   launchForce: 0
@@ -27,7 +25,19 @@ MonoBehaviour:
   airLimit: 0
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
-  canBeCancelledRecovery: 0
+  canBeCancelledRecovery: 1
+  windupVFX:
+    prefab: {fileID: 0}
+    localOffset: {x: 0, y: 0, z: 0}
+    flipByRotation: 0
+  activeVFX:
+    prefab: {fileID: 2974655373335665311, guid: d0f3cce1a793f4c46ad23156a5be46d3, type: 3}
+    localOffset: {x: 0, y: 0.67, z: 0}
+    flipByRotation: 1
+  recoveryVFX:
+    prefab: {fileID: 0}
+    localOffset: {x: 0, y: 0, z: 0}
+    flipByRotation: 0
   nextCombo: {fileID: 0}
   comboIndex: 0
   directionVariant: -1

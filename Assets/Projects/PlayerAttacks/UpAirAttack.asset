@@ -18,7 +18,7 @@ MonoBehaviour:
   useHandWeapon: 1
   damage: 10
   knockbackForce: 1
-  launchForce: 4
+  launchForce: 5
   launchDir: 1
   hitstunDuration: 0.03
   Airborne: 1

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84920fce873cd9d438592c66055a30fc, type: 3}
   m_Name: AirDashSkill
   m_EditorClassIdentifier: 
-  Name: Dash_Ground
-  animationClip: {fileID: 7400000, guid: 907282829a276ae469ac389152a0e114, type: 2}
+  Name: Dash_Air
+  animationClip: {fileID: 7400000, guid: 71d6d63be85b64a488c8a2c32a90cec9, type: 2}
   VFXindex: 0
   useHandWeapon: 0
   damage: 0
@@ -22,7 +22,7 @@ MonoBehaviour:
   launchDir: 0
   hitstunDuration: 0
   Airborne: 1
-  airLimit: 2
+  airLimit: 1
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
   canBeCancelledRecovery: 1

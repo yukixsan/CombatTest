@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8971108858862795366}
   - component: {fileID: 2772653831431088067}
   - component: {fileID: 3553672464917872961}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SparksCore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4923,7 +4923,7 @@ GameObject:
   - component: {fileID: 2326974265062267420}
   - component: {fileID: 6700165194243266518}
   - component: {fileID: 4281683506637453053}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9828,7 +9828,7 @@ GameObject:
   - component: {fileID: 7340696434647010789}
   - component: {fileID: 8455655683907514423}
   - component: {fileID: 8661683234597024324}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Distortion(Delete for Mobile)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14731,7 +14731,7 @@ GameObject:
   - component: {fileID: 4426748523214257634}
   - component: {fileID: 5708712694059849729}
   - component: {fileID: 3807102940598563873}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19634,7 +19634,7 @@ GameObject:
   - component: {fileID: 1266713849458976921}
   - component: {fileID: 8375697261142166257}
   - component: {fileID: 8042581135951369380}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24537,7 +24537,7 @@ GameObject:
   - component: {fileID: 8756940624935788845}
   - component: {fileID: 2504907666863065689}
   - component: {fileID: 1186145055912900302}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Attack1_Active
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29453,7 +29453,7 @@ GameObject:
   - component: {fileID: 2653066370719524828}
   - component: {fileID: 5629375011807292792}
   - component: {fileID: 8569361166537219794}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
