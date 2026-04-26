@@ -27,7 +27,9 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private GameObject weaponHandBone_L;  // child of Hand bone
     private bool usingHandWeapon = false;
 
+    // Airborne tracking
     private Dictionary<AttackData, int> airAttackUsage = new();
+    private Dictionary<PlayerSkillData, int> airSkillUsage = new();    
 
     [Header("Combo timing (used for reset)")]
     [SerializeField] private float comboResetTime = 0.5f;
@@ -320,6 +322,18 @@ public class PlayerCombat : MonoBehaviour
     }
     private void StartSkill(PlayerSkillData data)
     {
+        if(data.Airborne)
+        {
+            if (!airSkillUsage.ContainsKey(data))
+                airSkillUsage[data] = 0;
+            if (data.airLimit > 0 && airSkillUsage[data] >= data.airLimit)
+            {
+                //Debug.Log($"[Combat] Air skill '{data.Name}' limit exceeded, cannot start");
+                return;
+            }
+            airSkillUsage[data]++;
+        }
+
         ApplyChainFlip();
         AttackVFXManager.Instance.StopAll(); // stop all active VFX immediately on reset
         SetWeaponVisual(data.useHandWeapon);
@@ -474,6 +488,7 @@ public class PlayerCombat : MonoBehaviour
         SetWeaponVisual(false); // reset to default weapon visual
         //Reset air limit
         airAttackUsage.Clear();
+        airSkillUsage.Clear();
 
         currentAttack = null;
         currentSkill = null;
