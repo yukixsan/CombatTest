@@ -44,6 +44,15 @@ public class EnemyStateAI : MonoBehaviour
     public List<AttackData> attacks;
     public float attackCooldown = 2f;
 
+    [Header("Ground Check")]
+    [SerializeField] private Transform groundCheckPoint;
+    [SerializeField] private float groundCheckDistance = 0.2f;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float groundBufferTime = 0.1f;
+
+    public bool isGrounded;
+    private float groundTimer;
+
     private bool canAttack = true;
     private Coroutine attackRoutine;
 
@@ -79,6 +88,14 @@ public class EnemyStateAI : MonoBehaviour
 
     void Update()
     {
+        CheckGround();
+
+        if (!isGrounded)
+        {
+            StopAirborneActions();
+            return;
+        }
+
         if (health == null) return;
 
         if (health.IsDie())
@@ -139,6 +156,35 @@ public class EnemyStateAI : MonoBehaviour
         }
     }
 
+    void CheckGround()
+    {
+        if (groundCheckPoint == null) return;
+
+        bool hit = Physics.CheckSphere(
+            groundCheckPoint.position,
+            groundCheckDistance,
+            groundLayer
+        );
+
+        isGrounded = hit;
+
+        if (hit)
+            groundTimer = groundBufferTime;
+        else
+            groundTimer -= Time.deltaTime;
+
+        bool newGrounded = groundTimer > 0f;
+
+        isGrounded = newGrounded;
+
+        if (anim != null)
+        {
+            bool isFalling = !isGrounded && rb.linearVelocity.y <= 0f;
+
+            anim.SetBool("fall", isFalling);
+        }
+    }
+
     void FindTarget()
     {
         GameObject obj = GameObject.FindGameObjectWithTag(targetTag);
@@ -176,6 +222,8 @@ public class EnemyStateAI : MonoBehaviour
     {
         if (!canAttack) return;
 
+        if (!isGrounded) return;
+
         AttackData selected = GetRandomAttackByDistance(distance);
 
         if (selected != null)
@@ -201,9 +249,15 @@ public class EnemyStateAI : MonoBehaviour
 
     IEnumerator DoAttack(AttackData attack)
     {
+        if (!isGrounded)
+        {
+            ResetAttack();
+            yield break;
+        }
+
         canAttack = false;
 
-        if (anim != null)
+        if (anim != null && isGrounded)
         {
             int index = attacks.IndexOf(attack);
             anim.SetInteger("skill", index + 1);
@@ -214,20 +268,17 @@ public class EnemyStateAI : MonoBehaviour
 
         yield return new WaitForSeconds(attack.delayBeforeHit);
 
-        if (health.IsStunned() || health.IsDie())
+        if (!isGrounded)
         {
             ResetAttack();
             yield break;
         }
 
-        //if (target != null)
-        //{
-        //    var hp = target.GetComponent<HealthComponent>();
-        //    if (hp != null && !hp.IsDie())
-        //    {
-        //        hp.TakeDamage(attack.damage, attack.poiseDamage);
-        //    }
-        //}
+        if (health.IsStunned() || health.IsDie() || !isGrounded)
+        {
+            ResetAttack();
+            yield break;
+        }
 
         yield return new WaitForSeconds(attackCooldown);
 
@@ -265,14 +316,38 @@ public class EnemyStateAI : MonoBehaviour
     {
         StopAllActions();
 
-        if (anim != null)
-            anim.SetBool("stun", true);
+        if (!isGrounded)
+        {
+            if (anim != null)
+                anim.SetBool("stun", true);
+            StopAirborneActions();
+            return;
+        }
     }
 
     void HandleStunEnd()
     {
         if (anim != null)
             anim.SetBool("stun", false);
+    }
+
+    void StopAirborneActions()
+    {
+        rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+
+        if (attackRoutine != null)
+        {
+            StopCoroutine(attackRoutine);
+            attackRoutine = null;
+        }
+
+        canAttack = true;
+
+        if (anim != null)
+        {
+            anim.SetBool("walk", false);
+            anim.SetInteger("skill", 0);
+        }
     }
 
     void HandleDie()
@@ -288,5 +363,17 @@ public class EnemyStateAI : MonoBehaviour
     {
         isKnockedBack = true;
         knockbackTimer = lockDuration;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (groundCheckPoint == null) return;
+
+        Gizmos.color = isGrounded ? Color.green : Color.red;
+
+        Gizmos.DrawWireSphere(
+            groundCheckPoint.position,
+            groundCheckDistance
+        );
     }
 }
