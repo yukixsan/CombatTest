@@ -8623,6 +8623,7 @@ GameObject:
   - component: {fileID: 1699893832}
   - component: {fileID: 1699893833}
   - component: {fileID: 1699893834}
+  - component: {fileID: 1699893835}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -8698,6 +8699,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca603a5a77fc7f04e818e7124809a7ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1699893835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699893829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 718e94ca5d863e1419684f58707e21a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfxSourcePrefab: {fileID: 5208608750282006509, guid: 844effda9e39ec24abac5d8ab5b2e40c, type: 3}
+  poolSize: 10
 --- !u!1 &1748799556
 GameObject:
   m_ObjectHideFlags: 0

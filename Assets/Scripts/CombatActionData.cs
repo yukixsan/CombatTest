@@ -12,6 +12,8 @@ public struct AttackPhaseVFX
     public GameObject prefab;
     public Vector3 localOffset; // relative to _model
     public bool flipByRotation;
+    public AudioClip sfx;
+    public float sfxVolume;
 }
 public class CombatActionData : ScriptableObject
 {

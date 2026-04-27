@@ -159,6 +159,7 @@ public class PlayerCombat : MonoBehaviour
         Debug.Log($"[Combat] Phase: WINDUP - cancel={cancelWindowOpen}");
 
         PlayPhaseVFX(GetCurrentVFX()?.windupVFX);
+        PlayPhaseSFX(GetCurrentVFX()?.windupVFX);
         _stateController.SetMovePermission(false);
         _stateController.SetJumpPermission(false);
         _stateController.SetFlipPermission(false);
@@ -172,7 +173,7 @@ public class PlayerCombat : MonoBehaviour
                                     (currentSkill != null && currentSkill.canBeCancelledActive);
         Debug.Log($"[Combat] Phase: ACTIVE - cancel={cancelWindowOpen}");
                 PlayPhaseVFX(GetCurrentVFX()?.activeVFX);
-
+                PlayPhaseSFX(GetCurrentVFX()?.activeVFX);
             // handle attack hitbox
         if (currentAttack != null)
         {
@@ -209,7 +210,10 @@ public class PlayerCombat : MonoBehaviour
         isInRecovery = true;
         if (currentAttack == null&& currentSkill == null) return;
         _hitbox.DeactivateHitbox();
+        
         PlayPhaseVFX(GetCurrentVFX()?.recoveryVFX);
+        PlayPhaseSFX(GetCurrentVFX()?.recoveryVFX);
+
         cancelWindowOpen = (currentAttack != null && currentAttack.canBeCancelledRecovery) ||
                             (currentSkill != null && currentSkill.canBeCancelledRecovery);
         Debug.Log($"[Combat] Phase: RECOVERY - cancel={cancelWindowOpen}");
@@ -515,6 +519,13 @@ public class PlayerCombat : MonoBehaviour
         if (phase == null) return;
         float facing = Mathf.Sign(_model.localScale.x);
         AttackVFXManager.Instance.Play(phase.Value, transform, facing);
+    }
+    private void PlayPhaseSFX(AttackPhaseVFX? clip)
+    {
+        if (clip == null || clip.Value.sfx == null) return;
+        CombatActionData data = GetCurrentVFX();
+
+        SFXManager.Instance.PlaySFX(clip.Value.sfx, clip.Value.sfxVolume);
     }
 
     private CombatActionData GetCurrentVFX()

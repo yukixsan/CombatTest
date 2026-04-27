@@ -30,14 +30,20 @@ MonoBehaviour:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    sfx: {fileID: 8300000, guid: 97c0bb72d4490d04cb05c579199d7606, type: 3}
+    sfxVolume: 1
   activeVFX:
     prefab: {fileID: 4978730031260219467, guid: 4ab2015a06de2f64ab94f10b6b4e373e, type: 3}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    sfx: {fileID: 8300000, guid: 97c0bb72d4490d04cb05c579199d7606, type: 3}
+    sfxVolume: 0.5
   recoveryVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    sfx: {fileID: 8300000, guid: 97c0bb72d4490d04cb05c579199d7606, type: 3}
+    sfxVolume: 1
   nextCombo: {fileID: 11400000, guid: 26d18d55de99ca34ca0ec4372e7abc68, type: 2}
   comboIndex: 1
   directionVariant: 0
