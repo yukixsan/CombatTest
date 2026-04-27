@@ -316,10 +316,11 @@ public class EnemyStateAI : MonoBehaviour
     {
         StopAllActions();
 
+        if (anim != null && isGrounded)
+            anim.SetBool("stun", true);
+
         if (!isGrounded)
         {
-            if (anim != null)
-                anim.SetBool("stun", true);
             StopAirborneActions();
             return;
         }
