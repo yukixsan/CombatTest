@@ -1,0 +1,21 @@
+{
+    "name": "GameCreator.Editor.Cinemachine",
+    "rootNamespace": "GameCreator.Editor.Cinemachine",
+    "references": [
+        "GUID:fa216a02d195f46dfac1c6346fe5a4ee",
+        "GUID:406c89e0bc84d48f4b079c3c4cd13320",
+        "GUID:8ea9cff881c014deca8fcfb4f539e751",
+        "GUID:4307f53044263cf4b835bd812fc161a4"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
