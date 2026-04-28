@@ -1,16 +1,17 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using System.Runtime.InteropServices;
 
 public class PlayerInputReader : MonoBehaviour
 {
     [SerializeField] private PlayerInputActions inputActions;
     [SerializeField] private CommandBuffer commandBuffer;
     [SerializeField] private CommandInterpreter interpreter;
-
+    
     private void Awake()
     {
-    inputActions = new PlayerInputActions();
+        inputActions = new PlayerInputActions();
     }
 
     private void OnEnable()
@@ -50,6 +51,7 @@ public class PlayerInputReader : MonoBehaviour
         Vector2 dir = ctx.ReadValue<Vector2>();
         interpreter.UpdateDirection(dir);
     }
+
 
     private void OnAttackPerformed(InputAction.CallbackContext ctx)
     {

@@ -30,7 +30,8 @@ public class GroundState : BasePlayerState
         // substate transitions
         if (combat.isAttacking)
             SwitchSubState(new GroundAttackState(controller));
-        
+        else if (controller.IsCrouching)
+            SwitchSubState(new CrouchingState(controller));
         else if (movement.IsMoving)
             SwitchSubState(new MovingState(controller));
         else

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -23,6 +24,10 @@ public class PlayerMovement : MonoBehaviour
     public float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer;
 
+    [Header("One way collision checks")]
+    [SerializeField] private OneWayPlatformHandler oneWayHandler;
+
+    // Components
     private Rigidbody rb;
     private PlayerInputActions inputActions;
     private Vector2 moveInput;
@@ -56,7 +61,11 @@ public class PlayerMovement : MonoBehaviour
         inputActions.Gameplay.Move.canceled += ctx => moveInput = Vector2.zero;
 
         // Bind Jump
-        inputActions.Gameplay.Jump.performed += ctx => _jumpPressed = true;
+        inputActions.Gameplay.Jump.performed += OnJumpPerformed;
+
+        //Bind Crouch
+        inputActions.Gameplay.Crouch.performed += ctx => _stateController.SetCrouching(true);
+        inputActions.Gameplay.Crouch.canceled += ctx => _stateController.SetCrouching(false);
     }
 
     private void OnEnable()
@@ -71,6 +80,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Check correcct collision
+        //HandleOneWayCollisions();
         // 1️⃣ GROUND CHECK
         _isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
 
@@ -134,6 +145,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void OnJumpPerformed(InputAction.CallbackContext ctx)
+    {
+        if (_stateController.IsCrouching && oneWayHandler != null)
+        {
+            oneWayHandler.DropThrough();
+                    rb.linearVelocity = new Vector3(rb.linearVelocity.x, -10, 0f);
+
+            return;
+        }
+        _jumpPressed = true;
+    }
+
     private void LaunchVelocity(Vector3 dir, float strength)
     {
         float facing = Mathf.Sign(_model.localScale.x); 
@@ -179,6 +202,37 @@ public class PlayerMovement : MonoBehaviour
         rb.useGravity = false;
     }
    #endregion
+
+// #region One Way Collision Handling
+//     private void HandleOneWayCollisions()
+//     {
+//         // Get nearby one-way platforms
+//     Collider[] platforms = Physics.OverlapBox(
+//         playerCollider.bounds.center,
+//         playerCollider.bounds.extents,
+//         Quaternion.identity,
+//         oneWayLayer
+//     );
+
+//     float feetY = groundCheck.position.y;
+//     float velocityY = rb.linearVelocity.y;
+
+//     foreach (var platform in platforms)
+//     {
+//         float platformTop = platform.bounds.max.y;
+
+//         bool feetAbove = feetY >= platformTop - 0.08f;
+//         bool isFalling = velocityY > 0.05f;
+
+//         // Only collide when landing from above
+//         bool shouldIgnore = !(feetAbove && isFalling);
+
+//         Physics.IgnoreCollision(playerCollider, platform, shouldIgnore);
+//     }
+         
+//     }
+    
+// #endregion
 
     //Model flip handler
     private void LateUpdate()

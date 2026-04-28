@@ -26,6 +26,28 @@ public class MovingState : BasePlayerState
     }
 }
 
+public class CrouchingState : BasePlayerState
+{
+    public CrouchingState(PlayerStateController controller) : base(controller) { }
+
+    public override void OnEnter()
+    {        
+        Debug.Log($"[State Enter] {GetType().Name}");
+        controller.SetMovePermission(false);
+        animator.SetBool("isCrouching", true);
+
+    }
+    public override void OnUpdate()
+    {
+       if(combat.isAttacking) return; // don't allow movement state changes while attacking
+    }
+    public override void OnExit()
+    {
+        controller.SetMovePermission(true);
+        animator.SetBool("isCrouching", false);
+    }
+}
+
 public class GroundAttackState : BasePlayerState
 {
     public GroundAttackState(PlayerStateController controller) : base(controller) { }
