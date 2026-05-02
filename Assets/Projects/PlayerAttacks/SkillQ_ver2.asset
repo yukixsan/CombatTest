@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84920fce873cd9d438592c66055a30fc, type: 3}
   m_Name: SkillQ_ver2
   m_EditorClassIdentifier: 
-  Name: SkillQ
+  Name: SkillQ_ver2
   animationClip: {fileID: 7400000, guid: 6d6475c4c1db5aa47bc1c93ec6358b59, type: 2}
   VFXindex: 0
   useHandWeapon: 1
