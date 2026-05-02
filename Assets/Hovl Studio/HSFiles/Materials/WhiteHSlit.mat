@@ -11,10 +11,9 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 456f62aa2a1d4b7448998cd3cc4f20d1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords:
+  m_ValidKeywords:
   - _DISABLE_SSR_TRANSPARENT
-  - _EMISSION
+  m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
