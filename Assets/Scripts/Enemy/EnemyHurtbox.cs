@@ -23,11 +23,12 @@ public class EnemyHurtbox : MonoBehaviour
             payload.LaunchForce * payload.LaunchDir,
             0f
         );
-        rb.AddForce(knockback, ForceMode.Impulse);
+        //rb.AddForce(knockback, ForceMode.Impulse);
         var enemyAI = GetComponentInParent<EnemyStateAI>();
         if (enemyAI != null)
         {
-            enemyAI.ApplyKnocback(moveLockDuration);
+            //enemyAI.ApplyKnocback(moveLockDuration);
+            enemyAI.ApplyKnockback(knockback, moveLockDuration);
         }
         // Hit VFX at midpoint between attacker and this enemy
         Vector3 hitPoint = (payload.attacker.position + transform.position) * 0.5f;

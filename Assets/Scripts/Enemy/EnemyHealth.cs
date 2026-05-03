@@ -39,10 +39,7 @@ public class EnemyHealth : MonoBehaviour
     void OnTakeDamage(float dmg)
     {
         Debug.Log("Damage: " + dmg);
-        if (enemyStateAI.isGrounded)
-        {
-            enemyStateAI.anim.SetTrigger("damage");
-        }
+        enemyStateAI.anim.SetTrigger("damage");
         OnDamageEvent?.Invoke();
     }
 

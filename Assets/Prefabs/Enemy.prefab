@@ -109,7 +109,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -129,7 +129,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -143,9 +143,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &9161459673844458589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dde4a9d10dbf47479a69cbd2f332e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 200
   currentHealth: 0
   maxArmor: 50
   currentArmor: 0
@@ -250,12 +250,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 1936334654464051754}
+  rb: {fileID: 4631789588829961447}
+  target: {fileID: 0}
   targetTag: Player
   detectRange: 15
   chaseRange: 10
   attackRange: 2.5
-  rb: {fileID: 4631789588829961447}
-  isKnockedBack: 0
   moveSpeed: 3
   attacks:
   - attackName: Skill0-1
@@ -276,8 +276,6 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  groundBufferTime: 0.1
-  isGrounded: 0
 --- !u!114 &7515559027336513368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,8 +356,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.4015548, y: 3.9763653, z: 1}
-  m_Center: {x: 0, y: 0.57676303, z: 0}
+  m_Size: {x: 3.8434687, y: 4.566792, z: 1}
+  m_Center: {x: -0.17149782, y: 0.57676303, z: 0}
 --- !u!1 &6103455513589023580
 GameObject:
   m_ObjectHideFlags: 0

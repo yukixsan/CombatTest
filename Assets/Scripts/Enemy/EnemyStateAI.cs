@@ -4,277 +4,305 @@ using UnityEngine;
 
 public class EnemyStateAI : MonoBehaviour
 {
+    public enum State
+    {
+        Idle,
+        Chase,
+        Attack,
+        Stunned,
+        Dead,
+        Knockback
+    }
+
     [System.Serializable]
     public class AttackData
     {
         public string attackName;
-
-        [Header("Damage")]
         public float damage = 10;
         public float poiseDamage = 5;
 
-        [Header("Range")]
         public float minRange = 0f;
         public float maxRange = 3f;
 
-        [Header("Timing")]
         public float delayBeforeHit = 0.5f;
     }
 
-    [Header("Animator")]
+    #region REFERENCES
     public Animator anim;
+    public Rigidbody rb;
+    public Transform target;
+    private HealthComponent health;
+    #endregion
 
-    [Header("Target")]
+    #region DETECTION
     public string targetTag = "Player";
-    private Transform target;
-
-    [Header("Distance")]
     public float detectRange = 15f;
     public float chaseRange = 10f;
     public float attackRange = 2.5f;
+    #endregion
 
-    [Header("Movement")]
-    [SerializeField] private Rigidbody rb;
-    [SerializeField]private bool isKnockedBack = false;
-    private float knockbackTimer = 0f;
-    private const float KNOCKBACK_LOCKOUT = 0.25f; 
+    #region MOVEMENT
     public float moveSpeed = 3f;
+    private Vector3 moveVelocity;
+    #endregion
 
-    [Header("Attack")]
+    #region ATTACK
     public List<AttackData> attacks;
     public float attackCooldown = 2f;
-
-    [Header("Ground Check")]
-    [SerializeField] private Transform groundCheckPoint;
-    [SerializeField] private float groundCheckDistance = 0.2f;
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private float groundBufferTime = 0.1f;
-
-    public bool isGrounded;
-    private float groundTimer;
 
     private bool canAttack = true;
     private Coroutine attackRoutine;
 
-    private HealthComponent health;
-
     private float currentDamage;
     private float currentPoiseDamage;
+
     public float GetDamage() => currentDamage;
     public float GetPoiseDamage() => currentPoiseDamage;
+    #endregion
 
-    private void Start()
+    #region KNOCKBACK
+    private bool isKnockedBack;
+    private float knockbackTimer;
+    #endregion
+
+    #region GROUND
+    public Transform groundCheckPoint;
+    public float groundCheckDistance = 0.2f;
+    public LayerMask groundLayer;
+    private bool isGrounded;
+    #endregion
+
+    private State currentState;
+
+    #region UNITY
+
+    void Awake()
+    {
+        rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+
+        rb.isKinematic = true;
+        rb.useGravity = false;
+    }
+
+    void Start()
     {
         health = GetComponent<HealthComponent>();
         FindTarget();
 
         if (health != null)
         {
-            health.OnStun += HandleStun;
-            health.OnStunEnd += HandleStunEnd;
-            health.OnDie += HandleDie;
-        }
-    }
-
-    private void OnDestroy()
-    {
-        if (health != null)
-        {
-            health.OnStun -= HandleStun;
-            health.OnStunEnd -= HandleStunEnd;
-            health.OnDie -= HandleDie;
+            health.OnStun += OnStun;
+            health.OnStunEnd += OnStunEnd;
+            health.OnDie += OnDie;
         }
     }
 
     void Update()
     {
-        CheckGround();
+        UpdateGround();
+        UpdateState();
+        HandleState();
+    }
 
-        if (!isGrounded)
+    void FixedUpdate()
+    {
+        ApplyMovement();
+    }
+
+    void OnDestroy()
+    {
+        if (health != null)
         {
-            StopAirborneActions();
-            return;
+            health.OnStun -= OnStun;
+            health.OnStunEnd -= OnStunEnd;
+            health.OnDie -= OnDie;
         }
+    }
 
+    #endregion
+
+    #region STATE CORE
+
+    void UpdateState()
+    {
         if (health == null) return;
 
         if (health.IsDie())
         {
-            StopAllActions();
+            ChangeState(State.Dead);
             return;
         }
 
         if (health.IsStunned())
         {
-            StopAllActions();
+            ChangeState(State.Stunned);
             return;
         }
 
-        //Knocback checks
         if (isKnockedBack)
         {
             knockbackTimer -= Time.deltaTime;
-            if(knockbackTimer <= 0f)
-            
+
+            if (knockbackTimer <= 0f && isGrounded)
+            {
                 isKnockedBack = false;
+
+                rb.linearVelocity = Vector3.zero;
+                rb.isKinematic = true;
+                rb.useGravity = false;
+            }
+
+            ChangeState(State.Knockback);
             return;
         }
 
         if (target == null)
         {
             FindTarget();
+            ChangeState(State.Idle);
             return;
         }
 
-        var targetHp = target.GetComponent<HealthComponent>();
-        if (targetHp != null && targetHp.IsDie())
-        {
-            Idle();
-            return;
-        }
+        float dist = Vector3.Distance(transform.position, target.position);
 
-        float distance = Vector3.Distance(transform.position, target.position);
-
-        if (distance <= detectRange)
-        {
-            if (distance > chaseRange)
-            {
-                Idle();
-            }
-            else if (distance > attackRange)
-            {
-                ChaseTarget();
-            }
-            else
-            {
-                TryAttack(distance);
-            }
-        }
-        else
-        {
-            Idle();
-        }
+        if (dist > detectRange) ChangeState(State.Idle);
+        else if (dist > chaseRange) ChangeState(State.Idle);
+        else if (dist > attackRange) ChangeState(State.Chase);
+        else ChangeState(State.Attack);
     }
 
-    void CheckGround()
+    void HandleState()
     {
-        if (groundCheckPoint == null) return;
-
-        bool hit = Physics.CheckSphere(
-            groundCheckPoint.position,
-            groundCheckDistance,
-            groundLayer
-        );
-
-        isGrounded = hit;
-
-        if (hit)
-            groundTimer = groundBufferTime;
-        else
-            groundTimer -= Time.deltaTime;
-
-        bool newGrounded = groundTimer > 0f;
-
-        isGrounded = newGrounded;
-
-        if (anim != null)
+        switch (currentState)
         {
-            bool isFalling = !isGrounded && rb.linearVelocity.y <= 0f;
-
-            anim.SetBool("fall", isFalling);
+            case State.Idle: Idle(); break;
+            case State.Chase: Chase(); break;
+            case State.Attack: Attack(); break;
+            case State.Stunned: Stunned(); break;
+            case State.Dead: Dead(); break;
+            case State.Knockback: break;
         }
     }
 
-    void FindTarget()
+    void ChangeState(State newState)
     {
-        GameObject obj = GameObject.FindGameObjectWithTag(targetTag);
-        if (obj != null)
-            target = obj.transform;
+        if (currentState == newState) return;
+
+        ExitState(currentState);
+        currentState = newState;
+        EnterState(newState);
     }
+
+    void EnterState(State state)
+    {
+        if (state == State.Attack)
+            TryAttack();
+    }
+
+    void ExitState(State state)
+    {
+        if (state == State.Attack)
+            StopAttack();
+    }
+
+    #endregion
+
+    #region STATES
 
     void Idle()
     {
-        rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
-        if (anim != null)
-        {
-            anim.SetBool("walk", false);
-            anim.SetInteger("skill", 0);
-        }
+        moveVelocity = Vector3.zero;
+        SetAnim(walk: false);
     }
 
-    void ChaseTarget()
+    void Chase()
     {
         if (target == null) return;
 
         Vector3 dir = (target.position - transform.position).normalized;
-        
-        rb.linearVelocity = new Vector3(dir.x * moveSpeed, rb.linearVelocity.y,0);
 
-        if (anim != null)
-            anim.SetBool("walk", true);
+        moveVelocity = new Vector3(dir.x * moveSpeed, 0, 0);
 
-        Vector3 scale = transform.localScale;
-        scale.x = dir.x > 0 ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
-        transform.localScale = scale;
+        Flip(dir.x);
+        SetAnim(walk: true);
     }
 
-    void TryAttack(float distance)
+    void Attack()
+    {
+        moveVelocity = Vector3.zero;
+        SetAnim(walk: false);
+    }
+
+    void Stunned()
+    {
+        moveVelocity = Vector3.zero;
+        SetAnim(stun: true);
+    }
+
+    void Dead()
+    {
+        moveVelocity = Vector3.zero;
+        rb.excludeLayers = LayerMask.GetMask("Default");
+        SetAnim(dead: true);
+    }
+
+    #endregion
+
+    #region MOVEMENT
+
+    void ApplyMovement()
+    {
+        if (isKnockedBack) return;
+
+        rb.MovePosition(transform.position + moveVelocity * Time.fixedDeltaTime);
+    }
+
+    #endregion
+
+    #region KNOCKBACK
+
+    public void ApplyKnockback(Vector3 force, float duration)
+    {
+        isKnockedBack = true;
+        knockbackTimer = duration;
+
+        rb.isKinematic = false;
+        rb.useGravity = true;
+
+        rb.linearVelocity = Vector3.zero;
+        rb.AddForce(force, ForceMode.Impulse);
+
+        SetFallAnim(true);
+    }
+
+    #endregion
+
+    #region ATTACK
+
+    void TryAttack()
     {
         if (!canAttack) return;
 
-        if (!isGrounded) return;
+        float dist = Vector3.Distance(transform.position, target.position);
+        AttackData atk = GetAttack(dist);
 
-        AttackData selected = GetRandomAttackByDistance(distance);
-
-        if (selected != null)
-        {
-            attackRoutine = StartCoroutine(DoAttack(selected));
-        }
+        if (atk != null)
+            attackRoutine = StartCoroutine(DoAttack(atk));
     }
 
-    AttackData GetRandomAttackByDistance(float distance)
+    IEnumerator DoAttack(AttackData atk)
     {
-        List<AttackData> valid = new List<AttackData>();
-
-        foreach (var atk in attacks)
-        {
-            if (distance >= atk.minRange && distance <= atk.maxRange)
-                valid.Add(atk);
-        }
-
-        if (valid.Count == 0) return null;
-
-        return valid[Random.Range(0, valid.Count)];
-    }
-
-    IEnumerator DoAttack(AttackData attack)
-    {
-        if (!isGrounded)
-        {
-            ResetAttack();
-            yield break;
-        }
-
         canAttack = false;
 
-        if (anim != null && isGrounded)
-        {
-            int index = attacks.IndexOf(attack);
-            anim.SetInteger("skill", index + 1);
-            anim.SetBool("walk", false);
-            currentDamage = attack.damage;
-            currentPoiseDamage = attack.poiseDamage;
-        }
+        int index = attacks.IndexOf(atk);
+        SetAnim(skill: index + 1);
 
-        yield return new WaitForSeconds(attack.delayBeforeHit);
+        currentDamage = atk.damage;
+        currentPoiseDamage = atk.poiseDamage;
 
-        if (!isGrounded)
-        {
-            ResetAttack();
-            yield break;
-        }
+        yield return new WaitForSeconds(atk.delayBeforeHit);
 
-        if (health.IsStunned() || health.IsDie() || !isGrounded)
+        if (currentState != State.Attack)
         {
             ResetAttack();
             yield break;
@@ -285,96 +313,116 @@ public class EnemyStateAI : MonoBehaviour
         ResetAttack();
     }
 
+    void StopAttack()
+    {
+        if (attackRoutine != null)
+        {
+            StopCoroutine(attackRoutine);
+            attackRoutine = null;
+        }
+
+        ResetAttack();
+    }
+
     void ResetAttack()
     {
         canAttack = true;
-
-        if (anim != null)
-        {
-            anim.SetInteger("skill", 0);
-        }
+        SetAnim(skill: 0);
     }
 
-    void StopAllActions()
+    AttackData GetAttack(float dist)
     {
-        if (attackRoutine != null)
+        List<AttackData> valid = new List<AttackData>();
+
+        foreach (var atk in attacks)
         {
-            StopCoroutine(attackRoutine);
-            attackRoutine = null;
+            if (dist >= atk.minRange && dist <= atk.maxRange)
+                valid.Add(atk);
         }
 
-        canAttack = true;
+        if (valid.Count == 0) return null;
 
-        if (anim != null)
-        {
-            anim.SetBool("walk", false);
-            anim.SetInteger("skill", 0);
-        }
+        return valid[Random.Range(0, valid.Count)];
     }
 
-    void HandleStun()
-    {
-        StopAllActions();
+    #endregion
 
-        if (anim != null && isGrounded)
-            anim.SetBool("stun", true);
+    #region GROUND + FALL
 
-        if (!isGrounded)
-        {
-            StopAirborneActions();
-            return;
-        }
-    }
-
-    void HandleStunEnd()
-    {
-        if (anim != null)
-            anim.SetBool("stun", false);
-    }
-
-    void StopAirborneActions()
-    {
-        rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
-
-        if (attackRoutine != null)
-        {
-            StopCoroutine(attackRoutine);
-            attackRoutine = null;
-        }
-
-        canAttack = true;
-
-        if (anim != null)
-        {
-            anim.SetBool("walk", false);
-            anim.SetInteger("skill", 0);
-        }
-    }
-
-    void HandleDie()
-    {
-        StopAllActions();
-
-        if (anim != null)
-            anim.SetBool("dead", true);
-    }
-
-    //Handle knocback 
-    public void ApplyKnocback(float lockDuration)
-    {
-        isKnockedBack = true;
-        knockbackTimer = lockDuration;
-    }
-
-    void OnDrawGizmosSelected()
+    void UpdateGround()
     {
         if (groundCheckPoint == null) return;
 
-        Gizmos.color = isGrounded ? Color.green : Color.red;
-
-        Gizmos.DrawWireSphere(
+        isGrounded = Physics.CheckSphere(
             groundCheckPoint.position,
-            groundCheckDistance
+            groundCheckDistance,
+            groundLayer
         );
+
+        bool isFalling = !isGrounded && !rb.isKinematic && rb.linearVelocity.y < -0.1f;
+
+        SetFallAnim(isFalling);
+
+        if (isGrounded)
+        {
+            SetFallAnim(false);
+        }
     }
+
+    #endregion
+
+    #region HELPERS
+
+    void Flip(float dirX)
+    {
+        Vector3 scale = transform.localScale;
+        scale.x = dirX > 0 ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
+        transform.localScale = scale;
+    }
+
+    void SetAnim(bool walk = false, bool stun = false, bool dead = false, int skill = -1)
+    {
+        if (anim == null) return;
+
+        anim.SetBool("walk", walk);
+        anim.SetBool("stun", stun);
+        anim.SetBool("dead", dead);
+
+        if (skill != -1)
+            anim.SetInteger("skill", skill);
+    }
+
+    void SetFallAnim(bool value)
+    {
+        if (anim == null) return;
+        anim.SetBool("fall", value);
+    }
+
+    #endregion
+
+    #region EVENTS
+
+    void OnStun()
+    {
+        ChangeState(State.Stunned);
+    }
+
+    void OnStunEnd()
+    {
+        SetAnim(stun: false);
+    }
+
+    void OnDie()
+    {
+        ChangeState(State.Dead);
+    }
+
+    void FindTarget()
+    {
+        GameObject obj = GameObject.FindGameObjectWithTag(targetTag);
+        if (obj != null)
+            target = obj.transform;
+    }
+
+    #endregion
 }
