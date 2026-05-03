@@ -18,10 +18,10 @@ MonoBehaviour:
     m_Value: 1
   ApplyFXAA:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   OutlineWidth:
     m_OverrideState: 1
-    m_Value: 1.5
+    m_Value: 0.94
   OutlineColor:
     m_OverrideState: 1
     m_Value: {r: 0, g: 0, b: 0, a: 1}

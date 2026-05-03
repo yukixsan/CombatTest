@@ -123,7 +123,8 @@ MonoBehaviour:
   - {fileID: -1899658520697321284}
   - {fileID: -1508959099889046296}
   - {fileID: -805629644481558483}
-  m_RendererFeatureMap: 9aa77b9d4d8368716c25aa4a75ee4645a04eb49a30794c62bcc84ae7a30ea3e5e82c8586b1190feb2d0827541bd4d1f4
+  - {fileID: 5026116597292994786}
+  m_RendererFeatureMap: 9aa77b9d4d8368716c25aa4a75ee4645a04eb49a30794c62bcc84ae7a30ea3e5e82c8586b1190feb2d0827541bd4d1f4e210586d6a5ac045
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -198,6 +199,20 @@ MonoBehaviour:
   ShadowFadeRatio: 0.2
   UseScreenSpaceShadowPass: 0
   ScreenSpaceShadowColor: {r: 0, g: 0, b: 0, a: 0.38431373}
+--- !u!114 &5026116597292994786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e32e72b6a3f58a24c9033e2b9275eea0, type: 3}
+  m_Name: ScreenSpaceShadows
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  m_Shader: {fileID: 4800000, guid: 0f854b35a0cf61a429bd5dcfea30eddd, type: 3}
 --- !u!114 &7083169563607846560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,4 +240,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   m_layer: 0
-  m_renderingLayerMask: 2
+  m_renderingLayerMask: 0
