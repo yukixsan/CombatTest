@@ -180,7 +180,7 @@ public class EnemyStateAI : MonoBehaviour
         if (anim != null)
         {
             bool isFalling = !isGrounded && rb.linearVelocity.y <= 0f;
-
+            Debug.Log("isFalling: " + isFalling);
             anim.SetBool("fall", isFalling);
         }
     }
@@ -194,6 +194,12 @@ public class EnemyStateAI : MonoBehaviour
 
     void Idle()
     {
+        if (!isGrounded)
+        {
+            ResetAttack();
+            return;
+        }
+
         rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
         if (anim != null)
         {
