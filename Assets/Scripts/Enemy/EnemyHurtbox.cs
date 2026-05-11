@@ -30,8 +30,9 @@ public class EnemyHurtbox : MonoBehaviour
             //enemyAI.ApplyKnocback(moveLockDuration);
             enemyAI.ApplyKnockback(knockback, moveLockDuration);
         }
-        // Hit VFX at midpoint between attacker and this enemy
-        Vector3 hitPoint = (payload.attacker.position + transform.position) * 0.5f;
+        // Hit VFX at enemy hurtbox center
+        Collider collider = GetComponent<Collider>();
+        Vector3 hitPoint = collider != null ? collider.bounds.center : transform.position;
         HitVFXManager.Instance.SpawnVFX(payload.VFXindex, hitPoint, Quaternion.identity);
  
         // Hitstop
