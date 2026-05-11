@@ -25,6 +25,8 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _RECEIVE_ASP_SHADOW
+  - _RECEIVE_OFFSETED_SHADOW_ON
   - _STYLE_CELSHADING
   m_InvalidKeywords:
   - _FLATTENADDITIONALLIGHTING
@@ -216,8 +218,8 @@ Material:
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _RampOcclusionStrength: 0
-    - _ReceiveASPShadow: 0
-    - _ReceiveOffsetedDepthMap: 0
+    - _ReceiveASPShadow: 1
+    - _ReceiveOffsetedDepthMap: 1
     - _ReceiveShadows: 1
     - _RimIntensity: 0.42
     - _RimLightAlign: 0
@@ -253,7 +255,7 @@ Material:
     m_Colors:
     - _AlphaClipUVCtrl: {r: 1, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CharacterCenterWS: {r: -0.11746043, g: -1.4413728, b: 0, a: 0}
+    - _CharacterCenterWS: {r: -0.13746043, g: -1.7913728, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DepthRimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

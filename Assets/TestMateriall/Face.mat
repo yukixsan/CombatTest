@@ -27,6 +27,7 @@ Material:
   m_ValidKeywords:
   - _FACESHADOW
   - _RECEIVE_ASP_SHADOW
+  - _RECEIVE_OFFSETED_SHADOW_ON
   - _SPECULAR_LIGHTING_ON
   - _SSSMAP
   - _STYLE_FACE
@@ -345,7 +346,7 @@ Material:
     - _QueueOffset: 0
     - _RampOcclusionStrength: 0
     - _ReceiveASPShadow: 1
-    - _ReceiveOffsetedDepthMap: 0
+    - _ReceiveOffsetedDepthMap: 1
     - _ReceiveShadows: 1
     - _RimIntensity: 0
     - _RimLight: 0
@@ -411,7 +412,7 @@ Material:
     - _AlphaClipUVCtrl: {r: 1, g: 0, b: 0, a: 0}
     - _Ap_RimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CharacterCenterWS: {r: -0.11746043, g: -1.4413728, b: 0, a: 0}
+    - _CharacterCenterWS: {r: -0.13746043, g: -1.7913728, b: 0, a: 0}
     - _Color: {r: 1, g: 0.85014516, b: 0.7216981, a: 1}
     - _ColorShift: {r: 0, g: 0, b: 0, a: 1}
     - _DepthRimLightColor: {r: 1, g: 1, b: 1, a: 1}
