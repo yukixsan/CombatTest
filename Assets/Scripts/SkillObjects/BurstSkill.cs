@@ -18,7 +18,8 @@ public class BurstSkill : SkillObject
         if (rb == null) rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            Vector2 dir =  Vector2.right * _facing;
+            // Move along local x-axis (forward), accounting for object's z-rotation
+            Vector2 dir = (Vector2)transform.right * _facing;
             rb.linearVelocity = dir * speed;
         }
 

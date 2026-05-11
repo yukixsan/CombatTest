@@ -192,6 +192,7 @@ public class PlayerCombat : MonoBehaviour
         // handle skill hitbox (or movement / effect)
         if (currentSkill != null)
         {
+            SpawnSkillObject(currentSkill);
             var payload = new HitboxPayload(
                 currentSkill.damage,
                 currentSkill.knockbackForce,
@@ -348,24 +349,6 @@ public class PlayerCombat : MonoBehaviour
         cancelWindowOpen = false;
         queuedAttack = null;
 
-        if (data.skillPrefab != null)
-        {
-            Vector3 offset = data.spawnOffset;
-            offset.x *= Mathf.Sign(_model.localScale.x);
-
-             // ✅ Pool spawn instead of Instantiate
-            GameObject obj = SkillObjectPool.Instance.Spawn(
-                data.skillPrefab,
-                transform.position + offset,
-                transform.rotation);
-
-            SkillObject skill = obj.GetComponent<SkillObject>();
-            if (skill != null)
-                skill.Initialize(data, _model);
-
-            if (data.attachToPlayer)
-                obj.transform.SetParent(_model, worldPositionStays: true);
-        }
         if (animator != null && data.animationClip != null)
         {
             try { animator.Play(data.animationClip.name,0,0f); }
@@ -466,6 +449,27 @@ public class PlayerCombat : MonoBehaviour
         return dashSkills[index];
     }
     
+    private void SpawnSkillObject(PlayerSkillData data)
+    {
+        if (data == null || data.skillPrefab == null) return;
+
+        Vector3 offset = data.spawnOffset;
+        offset.x *= Mathf.Sign(_model.localScale.x);
+
+        // ✅ Pool spawn instead of Instantiate
+        GameObject obj = SkillObjectPool.Instance.Spawn(
+            data.skillPrefab,
+            transform.position + offset, 
+            data.skillPrefab.transform.rotation);
+
+        SkillObject skill = obj.GetComponent<SkillObject>();
+        if (skill != null)
+            skill.Initialize(data, _model);
+
+        if (data.attachToPlayer)
+            obj.transform.SetParent(_model, worldPositionStays: true);
+    }
+
     #region  Helper Methods 
      private static DirectionVariant DirectionToVariant(Vector2 dir)
     {

@@ -13,20 +13,37 @@ MonoBehaviour:
   m_Name: SkillQ_Airborne
   m_EditorClassIdentifier: 
   Name: SkillQ
-  animationClip: {fileID: 7400000, guid: 4e7ad8cb2abcc3e42849f827b6bd713c, type: 2}
-  windup: 0.2
-  active: 0.1
-  recovery: 0.2
+  animationClip: {fileID: 7400000, guid: ec81d60b27f7f604795a53261a3873c2, type: 2}
+  VFXindex: 0
+  useHandWeapon: 1
   damage: 10
   knockbackForce: 3
   launchForce: 0
   launchDir: 0
   hitstunDuration: 0.03
   Airborne: 1
-  airLimit: 0
+  airLimit: 2
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
   canBeCancelledRecovery: 1
+  windupVFX:
+    prefab: {fileID: 0}
+    localOffset: {x: 0, y: 0, z: 0}
+    flipByRotation: 0
+    sfx: {fileID: 0}
+    sfxVolume: 0
+  activeVFX:
+    prefab: {fileID: 0}
+    localOffset: {x: 0, y: 0, z: 0}
+    flipByRotation: 0
+    sfx: {fileID: 0}
+    sfxVolume: 0
+  recoveryVFX:
+    prefab: {fileID: 0}
+    localOffset: {x: 0, y: 0, z: 0}
+    flipByRotation: 0
+    sfx: {fileID: 0}
+    sfxVolume: 0
   cooldown: 0
   skillPrefab: {fileID: 6981893883298962688, guid: 4cca850db587df242ad0ab3c96a7ede2, type: 3}
   spawnOffset: {x: 0, y: 0, z: 0}

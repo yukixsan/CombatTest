@@ -14,12 +14,19 @@ public class SkillObject : MonoBehaviour
         actualOffset.x *= _facing;
 
         transform.position = player.position + actualOffset;
-        transform.rotation = player.rotation;
+        // Don't apply player rotation - keep skill object's own z-rotation
+        // Mirror rotation when facing left
+        if (_facing < 0)
+        {
+            Vector3 eulerAngles = transform.eulerAngles;
+            eulerAngles.z = -eulerAngles.z;
+            transform.eulerAngles = eulerAngles;
+        }
         // optional: flip visuals if assigned
-        if (_model != null && _facing < 0)
+        if (_model != null)
         {
             Vector3 scale = _model.localScale;
-            scale.x *= -1;
+            scale.x = Mathf.Abs(scale.x) * _facing;  // Always set explicitly based on facing
             _model.localScale = scale;
         }
         
