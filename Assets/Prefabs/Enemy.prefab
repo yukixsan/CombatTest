@@ -115,10 +115,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.6828967
+  m_Radius: 0.9179797
   m_Height: 3.7053146
   m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0.3865447, z: -0.00000011920929}
+  m_Center: {x: -0.16089964, y: 0.3865447, z: -0.00000011920929}
 --- !u!54 &4631789588829961447
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -271,6 +271,7 @@ MonoBehaviour:
     maxRange: 5
     delayBeforeHit: 2
   attackCooldown: 2
+  isKnockedBack: 0
   groundCheckPoint: {fileID: 1792560901677482331}
   groundCheckDistance: 0.2
   groundLayer:
@@ -497,7 +498,7 @@ Transform:
   m_GameObject: {fileID: 8864136417775311847}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.17, y: 2.61, z: 0}
+  m_LocalPosition: {x: -0.17, y: 1.77, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -536,7 +537,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1
+  m_Radius: 0.7088646
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1936334654454579018
 PrefabInstance:
@@ -1038,6 +1039,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100092, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
       insertIndex: -1
       addedObject: {fileID: 669112453454119293}
+    - targetCorrespondingSourceObject: {fileID: 100092, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8034605594659160624}
   m_SourcePrefab: {fileID: 100100000, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
 --- !u!1 &1936334654454544822 stripped
 GameObject:
@@ -1082,6 +1086,33 @@ MonoBehaviour:
   OnDisable:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8034605594659160624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936334654454544822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d1c549d247b7f0419a3188b7b78bda4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentBackFaceOutlineMethod: 0
+  BackfaceOutlineColor: {r: 0, g: 0, b: 0, a: 0}
+  BackFaceOutlineWidth: 0
+  BackFaceOutlineFadeStartEnd: {x: 50, y: 50}
+  ScaleWidthAsScreenSpaceOutline: 0
+  CenterPositionOffset: {x: 0, y: 0, z: 0}
+  _overrideMode: 0
+  _mainLightColorOverride: 0
+  _mainLightColorOverrideValue: {r: 0, g: 0, b: 0, a: 0}
+  _mainLightStrengthOverrideValue: 0
+  _overrideLightAngle: {x: 0, y: 0, z: 0}
+  HeadBoneTransform: {fileID: 0}
+  _CharacterCenterCubeSize: 1
+  UseSimpleAABBCutOffForCharacterShadow: 0
+  CreateMaterialInstanceOnPlay: 0
 --- !u!4 &1936334654454703510 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400092, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}

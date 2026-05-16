@@ -39,7 +39,7 @@ public class EnemyHealth : MonoBehaviour
     void OnTakeDamage(float dmg)
     {
         Debug.Log("Damage: " + dmg);
-        enemyStateAI.anim.SetTrigger("damage");
+        enemyStateAI.PlayDamage();
         OnDamageEvent?.Invoke();
     }
 

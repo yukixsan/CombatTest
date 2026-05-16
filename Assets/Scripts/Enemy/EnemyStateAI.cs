@@ -63,6 +63,7 @@ public class EnemyStateAI : MonoBehaviour
     #region KNOCKBACK
     private bool isKnockedBack;
     private float knockbackTimer;
+    private LayerMask originalExcludeLayers;
     #endregion
 
     #region GROUND
@@ -70,6 +71,14 @@ public class EnemyStateAI : MonoBehaviour
     public float groundCheckDistance = 0.2f;
     public LayerMask groundLayer;
     private bool isGrounded;
+    #endregion
+
+    #region DAMAGE
+    [Header("Damage")]
+    public bool isTakingDamage;
+    public float damageDuration = 0.3f;
+
+    private Coroutine damageRoutine;
     #endregion
 
     private State currentState;
@@ -82,6 +91,7 @@ public class EnemyStateAI : MonoBehaviour
 
         rb.isKinematic = true;
         rb.useGravity = false;
+        originalExcludeLayers = rb.excludeLayers;
     }
 
     void Start()
@@ -148,8 +158,12 @@ public class EnemyStateAI : MonoBehaviour
                 isKnockedBack = false;
 
                 rb.linearVelocity = Vector3.zero;
+
                 rb.isKinematic = true;
                 rb.useGravity = false;
+
+                rb.excludeLayers = originalExcludeLayers;
+
             }
 
             ChangeState(State.Knockback);
@@ -212,23 +226,34 @@ public class EnemyStateAI : MonoBehaviour
     void Idle()
     {
         moveVelocity = Vector3.zero;
-        SetAnim(walk: false);
+        anim.ResetTrigger("damage");
+
+        if (!isTakingDamage)
+            SetAnim(walk: false);
     }
 
     void Chase()
     {
-        if (target == null) return;
+        if (target == null || isTakingDamage) return;
 
         Vector3 dir = (target.position - transform.position).normalized;
 
         moveVelocity = new Vector3(dir.x * moveSpeed, 0, 0);
 
         Flip(dir.x);
+
+        anim.ResetTrigger("damage");
         SetAnim(walk: true);
     }
 
     void Attack()
     {
+        if (isTakingDamage)
+        {
+            ChangeState(State.Idle);
+            return;
+        }
+
         moveVelocity = Vector3.zero;
         SetAnim(walk: false);
     }
@@ -252,8 +277,18 @@ public class EnemyStateAI : MonoBehaviour
 
     void ApplyMovement()
     {
-        if (isKnockedBack) return;
+        if (isKnockedBack || isTakingDamage) return;
 
+        if(moveVelocity.x < 0)
+        {
+        anim.ResetTrigger("damage");
+            SetAnim(walk: false);
+        }
+        else
+        {
+        anim.ResetTrigger("damage");
+            SetAnim(walk: true);
+        }
         rb.MovePosition(transform.position + moveVelocity * Time.fixedDeltaTime);
     }
 
@@ -261,16 +296,39 @@ public class EnemyStateAI : MonoBehaviour
 
     #region KNOCKBACK
 
+    public float knockbackHorizontalForce = 4f;
+    private float knockbackVelocityX;
+
     public void ApplyKnockback(Vector3 force, float duration)
     {
+        Debug.Log($"vector 3 : {force.x}, {force.y}, {force.z}");
+
         isKnockedBack = true;
         knockbackTimer = duration;
 
         rb.isKinematic = false;
         rb.useGravity = true;
 
+        rb.excludeLayers = LayerMask.GetMask("Player");
+
         rb.linearVelocity = Vector3.zero;
-        rb.AddForce(force, ForceMode.Impulse);
+
+        if (force.y > 5)
+        {
+            Debug.Log("up");
+
+            rb.AddForce(Vector3.up * force.y, ForceMode.Impulse);
+        }
+        else
+        {
+            Debug.Log("back");
+
+            float dir = force.x > 0 ? 1f : -1f;
+
+            knockbackVelocityX = dir * 10f;
+
+            rb.AddForce(Vector3.right * knockbackVelocityX, ForceMode.Impulse);
+        }
 
         SetFallAnim(true);
     }
@@ -366,6 +424,7 @@ public class EnemyStateAI : MonoBehaviour
         if (isGrounded)
         {
             SetFallAnim(false);
+            Idle();
         }
     }
 
@@ -414,6 +473,7 @@ public class EnemyStateAI : MonoBehaviour
 
     void OnDie()
     {
+        rb.excludeLayers = LayerMask.GetMask("Player");
         ChangeState(State.Dead);
     }
 
@@ -424,5 +484,30 @@ public class EnemyStateAI : MonoBehaviour
             target = obj.transform;
     }
 
+    #endregion
+
+    #region DAMAGE
+    public void PlayDamage()
+    {
+        if (damageRoutine != null)
+            StopCoroutine(damageRoutine);
+
+        damageRoutine = StartCoroutine(DamageRoutine());
+    }
+
+    IEnumerator DamageRoutine()
+    {
+        isTakingDamage = true;
+
+        moveVelocity = Vector3.zero;
+
+        anim.SetTrigger("damage");
+
+        yield return new WaitForSeconds(damageDuration);
+
+        isTakingDamage = false;
+
+        anim.ResetTrigger("damage");
+    }
     #endregion
 }
