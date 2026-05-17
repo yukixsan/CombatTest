@@ -128,7 +128,7 @@ public class AirAttackState : BasePlayerState
 
     public override void OnEnter()
     {
-        
+        controller.Movement.SetFallMult(1f); // reset fall mult in case it was modified by a previous attack
         Debug.Log($"[State Enter] {GetType().Name}");
 
     }
@@ -139,6 +139,10 @@ public class AirAttackState : BasePlayerState
         {
             controller.SwitchState(controller.AirborneState);
         }
+    }
+    public override void OnExit()
+    {
+        controller.Movement.ResetFallMult(); // ensure fall mult reset when exiting air attack
     }
       
 }

@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float _fallMult;
+    private float tempFallMult;
     [SerializeField] private Transform _model;
     private Vector3 externalVelocity;
     [Header("Dash Settings")]
@@ -203,36 +204,6 @@ public class PlayerMovement : MonoBehaviour
     }
    #endregion
 
-// #region One Way Collision Handling
-//     private void HandleOneWayCollisions()
-//     {
-//         // Get nearby one-way platforms
-//     Collider[] platforms = Physics.OverlapBox(
-//         playerCollider.bounds.center,
-//         playerCollider.bounds.extents,
-//         Quaternion.identity,
-//         oneWayLayer
-//     );
-
-//     float feetY = groundCheck.position.y;
-//     float velocityY = rb.linearVelocity.y;
-
-//     foreach (var platform in platforms)
-//     {
-//         float platformTop = platform.bounds.max.y;
-
-//         bool feetAbove = feetY >= platformTop - 0.08f;
-//         bool isFalling = velocityY > 0.05f;
-
-//         // Only collide when landing from above
-//         bool shouldIgnore = !(feetAbove && isFalling);
-
-//         Physics.IgnoreCollision(playerCollider, platform, shouldIgnore);
-//     }
-         
-//     }
-    
-// #endregion
 
     //Model flip handler
     private void LateUpdate()
@@ -254,6 +225,18 @@ public class PlayerMovement : MonoBehaviour
             _model.localScale = new Vector3(-1, 1, 1);
         }
     }
+
+    //Fall mult manipulation
+    public void SetFallMult(float speed)
+    {
+        tempFallMult = _fallMult;
+        _fallMult = speed;
+    }
+    public void ResetFallMult()
+    {
+        _fallMult = tempFallMult;
+    }
+
     private void OnDrawGizmosSelected()
     {
         if (groundCheck != null)
