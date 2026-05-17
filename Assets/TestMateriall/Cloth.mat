@@ -25,10 +25,15 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _DEPTH_RIMLIGHTING_ON
   - _RECEIVE_ASP_SHADOW
   - _RECEIVE_OFFSETED_SHADOW_ON
+  - _RIMLIGHTING_ON
+  - _SSSMAP
   - _STYLE_CELSHADING
+  - _USE_BAKED_NORAML
   m_InvalidKeywords:
+  - _ENABLESSSRAMP
   - _FLATTENADDITIONALLIGHTING
   - _RECEIVESHADOWS
   m_LightmapFlags: 4
@@ -109,7 +114,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RampMap:
-        m_Texture: {fileID: 2800000, guid: 35fa27f4a6db51e44aea9939770bb4eb, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9c7122b9f08626742a4e370165f74223, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RampOcclusionMap:
@@ -121,7 +126,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SSSRampMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 43cdc710d3297ab48ac20bf70c64438b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -165,7 +170,7 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DebugGI: 0
-    - _DepthRimLightOn: 0
+    - _DepthRimLightOn: 1
     - _DepthRimLightStrength: 0.1
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
@@ -174,12 +179,12 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EmissionToggle: 0
-    - _EnableSSSRamp: 0
+    - _EnableSSSRamp: 1
     - _EnvironmentReflections: 1
     - _FOVShiftX: 0
     - _FaceShadowMapPow: 0.2
     - _FaceShadowSmoothness: 0
-    - _FakeLightIntensity: 1
+    - _FakeLightIntensity: 3
     - _FlattenAdditionalLighting: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -207,7 +212,7 @@ Material:
     - _MetallicStrength: 0
     - _OcclusionStrength: 1
     - _OffsetShadowDistance: 15
-    - _OutlineWidth: 2
+    - _OutlineWidth: 4.3
     - _OverrideLightColorIntensityToggle: 1
     - _OverrideLightDirToggle: 0
     - _OverrideZTest: 0
@@ -222,14 +227,14 @@ Material:
     - _ReceiveOffsetedDepthMap: 1
     - _ReceiveShadows: 1
     - _RimIntensity: 0.42
-    - _RimLightAlign: 0
-    - _RimLightOn: 0
+    - _RimLightAlign: -0.03
+    - _RimLightOn: 1
     - _RimLightOverShadow: 1
-    - _RimLightSmoothness: 0.2
-    - _RimLightStrength: 0.35
+    - _RimLightSmoothness: 0.384
+    - _RimLightStrength: 0.468
     - _RimPower: 0.5
     - _SampleGI: 0
-    - _ScaleAsScreenSpaceOutline: 0
+    - _ScaleAsScreenSpaceOutline: 1
     - _ShadeIntensity: 0.705
     - _ShadeThreshold: 0
     - _ShadowColorMode: 2
@@ -255,14 +260,14 @@ Material:
     m_Colors:
     - _AlphaClipUVCtrl: {r: 1, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CharacterCenterWS: {r: -0.13746043, g: -1.7913728, b: 0, a: 0}
+    - _CharacterCenterWS: {r: -1.3574605, g: -1.7913728, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DepthRimLightColor: {r: 1, g: 1, b: 1, a: 1}
+    - _DepthRimLightColor: {r: 0.21404415, g: 0.27233747, b: 0.6981132, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FaceFrontDirection: {r: 1.0000001, g: 0, b: -0.00000011920929, a: 0}
     - _FaceRightDirection: {r: -0.00000011920929, g: 0, b: -1.0000001, a: 0}
     - _FaceUVCtrl: {r: 0, g: 1, b: 0, a: 0}
-    - _FakeLightColor: {r: 1, g: 0.9482902, b: 0.8820755, a: 0}
+    - _FakeLightColor: {r: 1, g: 0.9686971, b: 0.88235295, a: 0}
     - _FakeLightEuler: {r: 180, g: 0, b: 0, a: 0}
     - _HairLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _HairUVCtrl: {r: 0, g: 0, b: 1, a: 0}
@@ -270,9 +275,9 @@ Material:
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
     - _OutlineDistancFade: {r: 50, g: 50, b: 0, a: 0}
     - _OverrideGIColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ReceivedShadowColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+    - _ReceivedShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 0.12705822, g: 0.095941596, b: 0.26415092, a: 1}
-    - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimLightColor: {r: 0, g: 0.13096553, b: 0.5471698, a: 1}
     - _RimMaskUVCtrl: {r: 1, g: 0, b: 0, a: 0}
     - _ShadeColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}

@@ -30,6 +30,7 @@ Material:
   - _RECEIVE_OFFSETED_SHADOW_ON
   - _SPECULAR_LIGHTING_ON
   - _STYLE_CELSHADING
+  - _USE_BAKED_NORAML
   m_InvalidKeywords:
   - _RECEIVESHADOWS
   m_LightmapFlags: 4
@@ -179,7 +180,7 @@ Material:
     - _FOVShiftX: 0
     - _FaceShadowMapPow: 0.2
     - _FaceShadowSmoothness: 0
-    - _FakeLightIntensity: 1
+    - _FakeLightIntensity: 3
     - _FlattenAdditionalLighting: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -207,7 +208,7 @@ Material:
     - _MetallicStrength: 0
     - _OcclusionStrength: 1
     - _OffsetShadowDistance: 15
-    - _OutlineWidth: 2
+    - _OutlineWidth: 4.3
     - _OverrideLightColorIntensityToggle: 1
     - _OverrideLightDirToggle: 0
     - _OverrideZTest: 0
@@ -229,7 +230,7 @@ Material:
     - _RimLightStrength: 0.35
     - _RimPower: 10
     - _SampleGI: 0
-    - _ScaleAsScreenSpaceOutline: 0
+    - _ScaleAsScreenSpaceOutline: 1
     - _ShadeIntensity: 0
     - _ShadeThreshold: 0
     - _ShadowColorMode: 0
@@ -256,14 +257,14 @@ Material:
     m_Colors:
     - _AlphaClipUVCtrl: {r: 1, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CharacterCenterWS: {r: -0.13746043, g: -1.7913728, b: 0, a: 0}
+    - _CharacterCenterWS: {r: -1.3574605, g: -1.7913728, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DepthRimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FaceFrontDirection: {r: 1.0000001, g: 0, b: -0.00000011920929, a: 0}
     - _FaceRightDirection: {r: -0.00000011920929, g: 0, b: -1.0000001, a: 0}
     - _FaceUVCtrl: {r: 0, g: 1, b: 0, a: 0}
-    - _FakeLightColor: {r: 1, g: 0.9482902, b: 0.8820755, a: 0}
+    - _FakeLightColor: {r: 1, g: 0.9686971, b: 0.88235295, a: 0}
     - _FakeLightEuler: {r: 180, g: 0, b: 0, a: 0}
     - _HairLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _HairUVCtrl: {r: 0, g: 0, b: 1, a: 0}

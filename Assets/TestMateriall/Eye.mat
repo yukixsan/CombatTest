@@ -38,6 +38,7 @@ Material:
   - _RECEIVESHADOWS
   - _STYLE_EYE
   - _USEPUPILMASK
+  - _USE_BAKED_NORAML
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -236,7 +237,7 @@ Material:
     - _EnvironmentReflections: 1
     - _EyeHighlightRotateDegree: 90
     - _FOVShiftX: 0
-    - _FakeLightIntensity: 1
+    - _FakeLightIntensity: 3
     - _Farthest_Distance: 100
     - _FlattenAdditionalLighting: 0
     - _GI_Intensity: 0
@@ -299,7 +300,7 @@ Material:
     - _Offset_X_Axis_BLD: -0.05
     - _Offset_Y_Axis_BLD: 0.09
     - _Offset_Z: 0
-    - _OutlineWidth: 2
+    - _OutlineWidth: 4.3
     - _Outline_Width: 0
     - _OverrideLightColorIntensityToggle: 1
     - _OverrideLightDirToggle: 0
@@ -321,7 +322,7 @@ Material:
     - _Rotate_MatCapUV: 0
     - _Rotate_NormalMapForMatCapUV: 0
     - _SampleGI: 0
-    - _ScaleAsScreenSpaceOutline: 0
+    - _ScaleAsScreenSpaceOutline: 1
     - _Scroll_EmissiveU: 0
     - _Scroll_EmissiveV: 0
     - _Set_SystemShadowsToBase: 1
@@ -369,7 +370,7 @@ Material:
     - _AlphaClipUVCtrl: {r: 1, g: 0, b: 0, a: 0}
     - _Ap_RimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CharacterCenterWS: {r: -0.13746043, g: -1.7913728, b: 0, a: 0}
+    - _CharacterCenterWS: {r: -1.3574605, g: -1.7913728, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorShift: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
@@ -377,7 +378,7 @@ Material:
     - _EyeHighlightColor: {r: 1, g: 1, b: 1, a: 1}
     - _FaceFrontDirection: {r: 1.0000001, g: 0, b: -0.00000011920929, a: 0}
     - _FaceRightDirection: {r: -0.00000011920929, g: 0, b: -1.0000001, a: 0}
-    - _FakeLightColor: {r: 1, g: 0.9482902, b: 0.8820755, a: 0}
+    - _FakeLightColor: {r: 1, g: 0.9686971, b: 0.88235295, a: 0}
     - _FakeLightEuler: {r: 180, g: 0, b: 0, a: 0}
     - _HighColor: {r: 0, g: 0, b: 0, a: 1}
     - _LambertReceivedShadowColor: {r: 0, g: 0, b: 0, a: 1}

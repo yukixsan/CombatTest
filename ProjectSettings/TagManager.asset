@@ -18,7 +18,7 @@ TagManager:
   - EnemyHitBox
   - PlayerHitbox
   - Platform
-  - 
+  - Background
   - 
   - 
   - 
@@ -48,3 +48,4 @@ TagManager:
   m_RenderingLayers:
   - Default
   - VFXs
+  - Outline

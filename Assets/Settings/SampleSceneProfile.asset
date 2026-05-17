@@ -71,7 +71,7 @@ MonoBehaviour:
     m_Value: 0.5
   OutlineColor:
     m_OverrideState: 1
-    m_Value: {r: 0.044946074, g: 0, b: 0.2735849, a: 1}
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
   EnableOuterline:
     m_OverrideState: 1
     m_Value: 1
@@ -107,7 +107,7 @@ MonoBehaviour:
     m_Value: 1
   DepthEdgeWeight:
     m_OverrideState: 0
-    m_Value: 20
+    m_Value: 28
   DepthEdgeBias:
     m_OverrideState: 0
     m_Value: 2
@@ -119,7 +119,7 @@ MonoBehaviour:
     m_Value: 1
   NormalsEdgeWeight:
     m_OverrideState: 0
-    m_Value: 1
+    m_Value: 2.37
   NormalsEdgeBias:
     m_OverrideState: 0
     m_Value: 3
@@ -133,7 +133,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: {x: 2, y: 20.982906}
   FadingWidthByDistance:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   WidthFadingStartEndDistance:
     m_OverrideState: 1
@@ -142,8 +142,8 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 0
   DebugBackground:
-    m_OverrideState: 0
-    m_Value: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
   ScreenSpaceOutlineDebugMode:
     m_OverrideState: 0
     m_Value: 0

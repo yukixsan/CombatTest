@@ -664,7 +664,7 @@ Material:
     - _BaseColor: {r: 0.6415094, g: 0.43271625, b: 0.43271625, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColorMaskColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CharacterCenterWS: {r: 0, g: 1, b: -2.5, a: 0}
+    - _CharacterCenterWS: {r: -0.36, g: 0.42, b: -0.54, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorShift: {r: 0, g: 0, b: 0, a: 1}
     - _DepthRimLightColor: {r: 1, g: 1, b: 1, a: 1}
@@ -674,8 +674,8 @@ Material:
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _Emissive_Color: {r: 0, g: 0, b: 0, a: 1}
-    - _FaceFrontDirection: {r: 0, g: 0, b: 1, a: 0}
-    - _FaceRightDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _FaceFrontDirection: {r: 0.29454082, g: 0, b: -0.955639, a: 0}
+    - _FaceRightDirection: {r: -0.955639, g: 0, b: -0.29454082, a: 0}
     - _FaceUVCtrl: {r: 0, g: 1, b: 0, a: 0}
     - _FakeLightColor: {r: 0, g: 0, b: 0, a: 0}
     - _FakeLightEuler: {r: 601.2, g: -179.3, b: 0, a: 0}
