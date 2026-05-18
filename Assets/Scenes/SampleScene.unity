@@ -10957,6 +10957,7 @@ GameObject:
   - component: {fileID: 1748799574}
   - component: {fileID: 1748799575}
   - component: {fileID: 1748799576}
+  - component: {fileID: 1748799578}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -11293,7 +11294,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1748799556}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: b02f7765ace5dff4a866b767512e4a05, type: 3}
+  m_Avatar: {fileID: 9000000, guid: fbae7d32e88054d4d9c70a994f6b82f4, type: 3}
   m_Controller: {fileID: 9100000, guid: 5021fce948bc6b949929d5e9e230ce98, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -11421,6 +11422,19 @@ MonoBehaviour:
   platformScanRadius: 2
   dropDuration: 0.3
   surfaceBuffer: 0.15
+--- !u!114 &1748799578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1748799556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c9d549a3fb295a4b84290bc0fd94aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitAction: {fileID: 0}
 --- !u!1001 &1754341350
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13748,7 +13762,7 @@ GameObject:
   - component: {fileID: 2053238853}
   - component: {fileID: 2053238854}
   m_Layer: 0
-  m_Name: Shake
+  m_Name: NormalHitShake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13887,7 +13901,7 @@ MonoBehaviour:
     DissipationMode: 2
     DissipationDistance: 100
     PropagationSpeed: 343
-  DefaultVelocity: {x: 0.5, y: 0, z: 0}
+  DefaultVelocity: {x: 0.2, y: 0.7, z: 0}
 --- !u!1 &2059237711
 GameObject:
   m_ObjectHideFlags: 0

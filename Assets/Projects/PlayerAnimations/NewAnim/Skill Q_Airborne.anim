@@ -27506,13 +27506,6 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.033333335
-    functionName: SetFloatMult
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 1
-    intParameter: 0
-    messageOptions: 0
   - time: 0.1
     functionName: setDashSpeed
     data: 
@@ -27543,13 +27536,6 @@ AnimationClip:
     messageOptions: 0
   - time: 0.43333334
     functionName: ForceDashForward
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.53333336
-    functionName: ResetFallMult
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

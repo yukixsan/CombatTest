@@ -28,4 +28,14 @@ public class BurstSkill : SkillObject
         if (returnComp != null)
             returnComp.Setup(data.skillPrefab, lifetime);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            Destroy(gameObject);
+        }
+
+        
+    }
 }
