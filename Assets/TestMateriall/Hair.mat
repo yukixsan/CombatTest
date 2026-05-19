@@ -249,7 +249,7 @@ Material:
     - _FaceFrontDirection: {r: 1.0000001, g: 0, b: -0.00000011920929, a: 0}
     - _FaceRightDirection: {r: -0.00000011920929, g: 0, b: -1.0000001, a: 0}
     - _FaceUVCtrl: {r: 0, g: 1, b: 0, a: 0}
-    - _FakeLightColor: {r: 1, g: 0.9686971, b: 0.88235295, a: 0}
+    - _FakeLightColor: {r: 1, g: 0.97861636, b: 0.9198113, a: 0}
     - _FakeLightEuler: {r: 180, g: 0, b: 0, a: 0}
     - _HairLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _HairUVCtrl: {r: 0, g: 0, b: 1, a: 0}
