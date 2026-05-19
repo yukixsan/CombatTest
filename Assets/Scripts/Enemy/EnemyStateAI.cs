@@ -325,7 +325,7 @@ public class EnemyStateAI : MonoBehaviour
 
             float dir = force.x > 0 ? 1f : -1f;
 
-            knockbackVelocityX = dir * knockbackHorizontalForce;
+            knockbackVelocityX = dir * force.x;
 
             rb.AddForce(Vector3.right * knockbackVelocityX, ForceMode.Impulse);
         }
