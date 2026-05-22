@@ -26,12 +26,10 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _EMISSION
-  - _MATCAP_HIGHLIGHT_MAP
-  - _NORMALMAP
   - _PARALLAX
-  - _RECEIVE_SHADOWS_OFF
   m_InvalidKeywords:
   - _EYESTYLE_FLATLIGHTING
+  - _EYESTYLE_LAMBERTLIGHTING
   - _HIGHLIGHTALPHACLIP
   - _HIGHLIGHTDARKEN
   - _OVERRIDEZTEST
@@ -68,7 +66,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: d2cbc6f9ad282ae4ab7d22ec9597463c, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ClipMap:
@@ -88,7 +86,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: a3237b61ed47b44479e0ef998db8db42, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Emissive_Tex:
@@ -112,7 +110,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCapReflectionMap:
-        m_Texture: {fileID: 2800000, guid: c9aa329764979c2489c66ab56aa0fc70, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCap_Sampler:
@@ -148,7 +146,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _PupilMask:
-        m_Texture: {fileID: 2800000, guid: f9b2ffd8221a8584bb0198fe1857f143, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Set_1st_ShadePosition:
@@ -215,7 +213,7 @@ Material:
     - _BlendModePreserveSpecular: 1
     - _BlendOp: 0
     - _BlurLevelMatcap: 0
-    - _BumpScale: 1
+    - _BumpScale: 0
     - _BumpScaleMatcap: 1
     - _CameraRolling_Stabilizer: 0
     - _CharacterCenterCubeSize: 1
@@ -235,7 +233,7 @@ Material:
     - _EmissionToggle: 1
     - _EnableParallaxEffect: 1
     - _EnvironmentReflections: 1
-    - _EyeHighlightRotateDegree: 90
+    - _EyeHighlightRotateDegree: 89.4
     - _FOVShiftX: 0
     - _FakeLightIntensity: 3
     - _Farthest_Distance: 100
@@ -250,13 +248,13 @@ Material:
     - _Group7: 0
     - _GroupHighlightLayer1: 0
     - _GroupMatCap: 0
-    - _HasMatCapNormal: 1
+    - _HasMatCapNormal: 0
     - _HighColor_Power: 0
     - _HighLightAlphaClip: 1
     - _HighlightDarken: 1
     - _Inverse_MatcapMask: 0
     - _Inverse_Z_Axis_BLD: 1
-    - _IsUsingMatcapReflectMap: 1
+    - _IsUsingMatcapReflectMap: 0
     - _Is_BLD: 0
     - _Is_BakedNormal: 0
     - _Is_BlendAddToHiColor: 0
@@ -288,8 +286,8 @@ Material:
     - _LambertShadowColorMode: 0
     - _LightDirection_MaskOn: 0
     - _MatCap: 0
-    - _MatCapReflectionStrength: 0.34
-    - _MatCapRollStabilize: 1
+    - _MatCapReflectionStrength: 0.67
+    - _MatCapRollStabilize: 0.863
     - _MaterialID: 4
     - _Metallic: 0
     - _MetallicStrength: 0
@@ -300,18 +298,18 @@ Material:
     - _Offset_X_Axis_BLD: -0.05
     - _Offset_Y_Axis_BLD: 0.09
     - _Offset_Z: 0
-    - _OutlineWidth: 4.3
+    - _OutlineWidth: 0
     - _Outline_Width: 0
     - _OverrideLightColorIntensityToggle: 1
     - _OverrideLightDirToggle: 0
     - _OverrideZTest: 1
     - _Parallax: 0.005
-    - _ParallaxHeight: 0.04
+    - _ParallaxHeight: -0.25
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveASPShadow: 0
     - _ReceiveOffsetedDepthMap: 0
-    - _ReceiveShadows: 0
+    - _ReceiveShadows: 1
     - _RimIntensity: 0
     - _RimLight: 0
     - _RimLight_FeatherOff: 0
@@ -373,7 +371,7 @@ Material:
     - _CharacterCenterWS: {r: -1.3574605, g: -1.7913728, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorShift: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _Emissive_Color: {r: 0, g: 0, b: 0, a: 1}
     - _EyeHighlightColor: {r: 1, g: 1, b: 1, a: 1}
     - _FaceFrontDirection: {r: 1.0000001, g: 0, b: -0.00000011920929, a: 0}
@@ -391,7 +389,7 @@ Material:
     - _ReceivedShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SelfUnlitAreaColor: {r: 0.20225169, g: 0.25997937, b: 0.4245283, a: 1}
+    - _SelfUnlitAreaColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadeColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SurfaceUVCtrl: {r: 1, g: 0, b: 0, a: 0}

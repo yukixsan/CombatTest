@@ -335,7 +335,7 @@ Material:
     - _Offset_X_Axis_BLD: -0.05
     - _Offset_Y_Axis_BLD: 0.09
     - _Offset_Z: 0
-    - _OutlineWidth: 4.3
+    - _OutlineWidth: 0
     - _Outline_Width: 0
     - _OverrideLightColorIntensityToggle: 1
     - _OverrideLightDirToggle: 0
@@ -373,7 +373,7 @@ Material:
     - _ShadeColor_Step: 0
     - _ShadeIntensity: 0.447
     - _ShadeThreshold: 0.262
-    - _ShadowColorMode: 1
+    - _ShadowColorMode: 2
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularFalloff: 0.5
@@ -434,7 +434,7 @@ Material:
     - _OutlineDistancFade: {r: 50, g: 50, b: 0, a: 0}
     - _Outline_Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _OverrideGIColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ReceivedShadowColor: {r: 0.5377358, g: 0.4939238, b: 0.4185208, a: 1}
+    - _ReceivedShadowColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimLightColor: {r: 0, g: 0.49479738, b: 0.754717, a: 1}
     - _RimMaskUVCtrl: {r: 1, g: 0, b: 0, a: 0}
