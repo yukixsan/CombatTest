@@ -64,6 +64,7 @@ public class EnemyStateAI : MonoBehaviour
     private bool isKnockedBack;
     private float knockbackTimer;
     private LayerMask originalExcludeLayers;
+    private bool isAirborne;
     #endregion
 
     #region GROUND
@@ -140,6 +141,12 @@ public class EnemyStateAI : MonoBehaviour
         if (health.IsDie())
         {
             ChangeState(State.Dead);
+            return;
+        }
+
+        if (isAirborne)
+        {
+            ChangeState(State.Knockback);
             return;
         }
 
@@ -277,18 +284,13 @@ public class EnemyStateAI : MonoBehaviour
 
     void ApplyMovement()
     {
-        if (isKnockedBack || isTakingDamage) return;
+        if (isKnockedBack || isTakingDamage || isAirborne)
+            return;
 
-        if(moveVelocity.x < 0)
-        {
-        anim.ResetTrigger("damage");
-            SetAnim(walk: false);
-        }
-        else
-        {
-        anim.ResetTrigger("damage");
-            SetAnim(walk: true);
-        }
+        bool isMoving = Mathf.Abs(moveVelocity.x) > 0.01f;
+
+        SetAnim(walk: isMoving);
+
         rb.MovePosition(transform.position + moveVelocity * Time.fixedDeltaTime);
     }
 
@@ -301,8 +303,6 @@ public class EnemyStateAI : MonoBehaviour
 
     public void ApplyKnockback(Vector3 force, float duration)
     {
-        Debug.Log($"vector 3 : {force.x}, {force.y}, {force.z}");
-
         isKnockedBack = true;
         knockbackTimer = duration;
 
@@ -313,15 +313,21 @@ public class EnemyStateAI : MonoBehaviour
 
         rb.linearVelocity = Vector3.zero;
 
-        if (force.y > 5)
+        moveVelocity = Vector3.zero;
+
+        StopAttack();
+
+        if (force.y > 5f)
         {
-            Debug.Log("up");
+            isAirborne = true;
 
             rb.AddForce(Vector3.up * force.y, ForceMode.Impulse);
+
+            SetFallAnim(true);
         }
         else
         {
-            Debug.Log("back");
+            anim.SetTrigger("damage");
 
             float dir = force.x > 0 ? 1f : -1f;
 
@@ -329,8 +335,6 @@ public class EnemyStateAI : MonoBehaviour
 
             rb.AddForce(Vector3.right * knockbackVelocityX, ForceMode.Impulse);
         }
-
-        SetFallAnim(true);
     }
 
     #endregion
@@ -417,14 +421,27 @@ public class EnemyStateAI : MonoBehaviour
             groundLayer
         );
 
-        bool isFalling = !isGrounded && !rb.isKinematic && rb.linearVelocity.y < -0.1f;
-
-        SetFallAnim(isFalling);
-
-        if (isGrounded)
+        if (isAirborne)
         {
-            SetFallAnim(false);
-            Idle();
+            bool isFalling =
+                !isGrounded &&
+                rb.linearVelocity.y < -0.1f;
+
+            SetFallAnim(isFalling);
+
+            if (isGrounded)
+            {
+                isAirborne = false;
+
+                SetFallAnim(false);
+
+                rb.linearVelocity = Vector3.zero;
+
+                rb.isKinematic = true;
+                rb.useGravity = false;
+            }
+
+            return;
         }
     }
 
@@ -489,6 +506,8 @@ public class EnemyStateAI : MonoBehaviour
     #region DAMAGE
     public void PlayDamage()
     {
+        if (isAirborne) return;
+
         if (damageRoutine != null)
             StopCoroutine(damageRoutine);
 
