@@ -79,6 +79,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Skill04",
+                    "type": "Button",
+                    "id": "36663951-e3a2-4746-82d1-56215cfe3e26",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Interact",
                     "type": "Button",
                     "id": "852140f2-7766-474d-8707-702459ba45f3",
@@ -529,6 +538,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Skill03",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "49b2b28a-7176-4735-aaa6-fffbe75aba19",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill04",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

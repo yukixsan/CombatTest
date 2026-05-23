@@ -30,6 +30,7 @@ public class PlayerInputReader : MonoBehaviour
         inputActions.Gameplay.Skill01.performed += ctx => commandBuffer.Enqueue(CommandType.Skill, 0);
         inputActions.Gameplay.Skill02.performed += ctx => commandBuffer.Enqueue(CommandType.Skill, 1);
         inputActions.Gameplay.Skill03.performed += ctx => commandBuffer.Enqueue(CommandType.Skill, 2);
+        inputActions.Gameplay.Skill04.performed += ctx => commandBuffer.Enqueue(CommandType.Skill, 3);
 
 
         // Dash
