@@ -13530,7 +13530,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5495748245614765680, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5495748245614765680, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
       propertyPath: damageDuration

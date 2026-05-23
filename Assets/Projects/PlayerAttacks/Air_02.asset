@@ -17,7 +17,7 @@ MonoBehaviour:
   VFXindex: 2
   useHandWeapon: 1
   damage: 10
-  knockbackForce: 4
+  knockbackForce: 0
   launchForce: 15
   launchDir: -1
   hitstunDuration: 0.05
@@ -30,14 +30,20 @@ MonoBehaviour:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    sfx: {fileID: 0}
+    sfxVolume: 0
   activeVFX:
     prefab: {fileID: 7921956108415085024, guid: f873406bc5ab30940a9d5a87ca3ad0d6, type: 3}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    sfx: {fileID: 0}
+    sfxVolume: 0
   recoveryVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    sfx: {fileID: 0}
+    sfxVolume: 0
   nextCombo: {fileID: 0}
   comboIndex: 2
   directionVariant: 0
