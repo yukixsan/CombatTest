@@ -406,15 +406,15 @@ public class PlayerCombat : MonoBehaviour
         }
 
         // Step 3: Optional fallback (e.g., if air attack missing, fall back to ground)
-        if (isAirborne && groundAttacks.Count > 0)
-        {
-            foreach (var a in groundAttacks)
-            {
-                if (a == null) continue;
-                if (a.comboIndex == comboIndex && a.directionVariant == variant)
-                    return a;
-            }
-        }
+        // if (isAirborne && groundAttacks.Count > 0)
+        // {
+        //     foreach (var a in groundAttacks)
+        //     {
+        //         if (a == null) continue;
+        //         if (a.comboIndex == comboIndex && a.directionVariant == variant)
+        //             return a;
+        //     }
+        // }
 
         return null;
     }
