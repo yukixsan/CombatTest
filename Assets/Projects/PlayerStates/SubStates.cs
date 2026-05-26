@@ -116,7 +116,7 @@ public class FallingState : BasePlayerState
 
     public override void OnEnter()
     {
-        //Debug.Log($"[State Enter] {GetType().Name}");
+        Debug.Log($"[State Enter] {GetType().Name}");
 
         animator.Play("Fall");
     }

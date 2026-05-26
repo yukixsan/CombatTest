@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Attack_03
   animationClip: {fileID: 7400000, guid: b8497d323531bf94398e003df6d7e8cd, type: 2}
-  VFXindex: 3
+  VFXindex: 7
   useHandWeapon: 0
   damage: 10
   knockbackForce: 3
@@ -30,14 +30,20 @@ MonoBehaviour:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    sfx: {fileID: 0}
+    sfxVolume: 0
   activeVFX:
     prefab: {fileID: 231859285092543605, guid: d1992f0333b1f2940860d518b9f4c684, type: 3}
     localOffset: {x: 0, y: 0.5, z: 0}
     flipByRotation: 0
+    sfx: {fileID: 0}
+    sfxVolume: 0
   recoveryVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    sfx: {fileID: 0}
+    sfxVolume: 0
   nextCombo: {fileID: 0}
   comboIndex: 3
   directionVariant: 0
