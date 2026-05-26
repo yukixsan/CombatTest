@@ -822,7 +822,7 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
-    Standalone: MAGICACLOTH2;UNITY_PIPELINE_URP
+    Standalone: MAGICACLOTH2;UNITY_PIPELINE_URP;MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

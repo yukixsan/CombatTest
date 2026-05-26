@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: SkillR
   animationClip: {fileID: 7400000, guid: 4b15c65951f1c924794bade92693b235, type: 2}
-  VFXindex: 0
+  VFXindex: 5
   useHandWeapon: 1
   damage: 10
   knockbackForce: 5
