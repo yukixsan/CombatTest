@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93e86760c954ca04a8da1402cfaae22b, type: 3}
-  m_Name: TA_Norrmal3
+  m_Name: TA_UpAttack
   m_EditorClassIdentifier: 
-  Name: Normal 3
-  animationClip: {fileID: 7400000, guid: a3a7a244d232f7643bf7cde83b4ae609, type: 2}
+  Name: Up Attack
+  animationClip: {fileID: 7400000, guid: fc59ad85bf4ab7f46ae12163020006dc, type: 2}
   VFXindex: 0
-  useHandWeapon: 1
+  useHandWeapon: 0
   damage: 10
-  knockbackForce: 5
-  launchForce: 0
-  launchDir: 0
-  hitstunDuration: 0
+  knockbackForce: 0
+  launchForce: 8
+  launchDir: 1
+  hitstunDuration: 0.04
   Airborne: 0
   airLimit: 0
-  canBeCancelledWindup: 0
+  canBeCancelledWindup: 1
   canBeCancelledActive: 0
-  canBeCancelledRecovery: 0
+  canBeCancelledRecovery: 1
   windupVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
@@ -33,8 +33,8 @@ MonoBehaviour:
     sfx: {fileID: 0}
     sfxVolume: 0
   activeVFX:
-    prefab: {fileID: 0}
-    localOffset: {x: 0, y: 0, z: 0}
+    prefab: {fileID: 94176900098861024, guid: c8f4dd5e4ad26bb43a478e76a918b73e, type: 3}
+    localOffset: {x: 0.4, y: 1.4, z: 0}
     flipByRotation: 0
     sfx: {fileID: 0}
     sfxVolume: 0
@@ -45,6 +45,6 @@ MonoBehaviour:
     sfx: {fileID: 0}
     sfxVolume: 0
   nextCombo: {fileID: 0}
-  comboIndex: 3
-  directionVariant: 0
-  absoluteRecovery: 0
+  comboIndex: 0
+  directionVariant: 1
+  absoluteRecovery: 1
