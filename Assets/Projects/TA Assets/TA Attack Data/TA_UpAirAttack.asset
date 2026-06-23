@@ -18,7 +18,7 @@ MonoBehaviour:
   useHandWeapon: 1
   damage: 10
   knockbackForce: 1
-  launchForce: 5
+  launchForce: 7
   launchDir: 1
   hitstunDuration: 0.03
   Airborne: 1
@@ -30,14 +30,20 @@ MonoBehaviour:
     prefab: {fileID: 3919775695780867023, guid: cd1eb32efc0a3d346b74b94158fa5b63, type: 3}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    sfx: {fileID: 0}
+    sfxVolume: 0
   activeVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    sfx: {fileID: 0}
+    sfxVolume: 0
   recoveryVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    sfx: {fileID: 0}
+    sfxVolume: 0
   nextCombo: {fileID: 0}
   comboIndex: 0
   directionVariant: 1

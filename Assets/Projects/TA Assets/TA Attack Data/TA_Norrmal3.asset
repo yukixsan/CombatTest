@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Normal 3
   animationClip: {fileID: 7400000, guid: f6aef4a38f4936d41ad4e3214022251f, type: 2}
-  VFXindex: 0
+  VFXindex: 7
   useHandWeapon: 1
   damage: 10
-  knockbackForce: 5
+  knockbackForce: 4
   launchForce: 0
   launchDir: 0
   hitstunDuration: 0
@@ -33,8 +33,8 @@ MonoBehaviour:
     sfx: {fileID: 0}
     sfxVolume: 0
   activeVFX:
-    prefab: {fileID: 0}
-    localOffset: {x: 0, y: 0, z: 0}
+    prefab: {fileID: 231859285092543605, guid: 2af34f34822c0ad47a1a05167aca2ead, type: 3}
+    localOffset: {x: 0.85, y: 0.55, z: 0}
     flipByRotation: 0
     sfx: {fileID: 0}
     sfxVolume: 0

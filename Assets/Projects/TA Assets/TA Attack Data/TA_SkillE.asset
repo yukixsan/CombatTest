@@ -9,33 +9,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93e86760c954ca04a8da1402cfaae22b, type: 3}
-  m_Name: TA_Norrmal2
+  m_Script: {fileID: 11500000, guid: 84920fce873cd9d438592c66055a30fc, type: 3}
+  m_Name: TA_SkillE
   m_EditorClassIdentifier: 
-  Name: Normal 2
-  animationClip: {fileID: 7400000, guid: cf5a3bae3dd35df479aa31e694e4ead5, type: 2}
-  VFXindex: 1
+  Name: SkillE
+  animationClip: {fileID: 7400000, guid: 7b0226d78107f9b4c9b7313edba9ab01, type: 2}
+  VFXindex: 6
   useHandWeapon: 1
-  damage: 10
-  knockbackForce: 2
-  launchForce: 0
-  launchDir: 0
-  hitstunDuration: 0
+  damage: 15
+  knockbackForce: 0.5
+  launchForce: 5
+  launchDir: 1
+  hitstunDuration: 0.07
   Airborne: 0
   airLimit: 0
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
-  canBeCancelledRecovery: 1
+  canBeCancelledRecovery: 0
   windupVFX:
-    prefab: {fileID: 0}
-    localOffset: {x: 0, y: 0, z: 0}
+    prefab: {fileID: 6810844234100877735, guid: 44ca28ddb60176542b303607d27c4f1b, type: 3}
+    localOffset: {x: 0, y: -1.25, z: 0}
     flipByRotation: 0
     sfx: {fileID: 0}
     sfxVolume: 0
   activeVFX:
-    prefab: {fileID: 5023200931209090201, guid: 237f570ebc57f1b4d9cc4f1c18690980, type: 3}
+    prefab: {fileID: 1476370121130660084, guid: 7aaf129eb66c79949a1383ff18fa3b3d, type: 3}
     localOffset: {x: 0, y: 0, z: 0}
-    flipByRotation: 0
+    flipByRotation: 1
     sfx: {fileID: 0}
     sfxVolume: 0
   recoveryVFX:
@@ -44,7 +44,7 @@ MonoBehaviour:
     flipByRotation: 0
     sfx: {fileID: 0}
     sfxVolume: 0
-  nextCombo: {fileID: 11400000}
-  comboIndex: 2
-  directionVariant: 0
-  absoluteRecovery: 0
+  cooldown: 0
+  skillPrefab: {fileID: 0}
+  spawnOffset: {x: 0, y: 0, z: 0}
+  attachToPlayer: 0
