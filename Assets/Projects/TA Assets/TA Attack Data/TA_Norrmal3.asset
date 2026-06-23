@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TA_Norrmal3
   m_EditorClassIdentifier: 
   Name: Normal 3
-  animationClip: {fileID: 7400000, guid: a3a7a244d232f7643bf7cde83b4ae609, type: 2}
+  animationClip: {fileID: 7400000, guid: f6aef4a38f4936d41ad4e3214022251f, type: 2}
   VFXindex: 0
   useHandWeapon: 1
   damage: 10
