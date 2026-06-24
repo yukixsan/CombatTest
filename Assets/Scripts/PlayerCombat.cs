@@ -218,7 +218,8 @@ public class PlayerCombat : MonoBehaviour
         cancelWindowOpen = (currentAttack != null && currentAttack.canBeCancelledRecovery) ||
                             (currentSkill != null && currentSkill.canBeCancelledRecovery);
         Debug.Log($"[Combat] Phase: RECOVERY - cancel={cancelWindowOpen}");
-        if(commandBuffer.HasBufferedCommands) _stateController.SetFlipPermission(true); // allow movement during recovery if player is trying to buffer next input
+        _stateController.SetFlipPermission(true); // allow movement during recovery if player is trying to buffer next input
+        //_stateController.SetMovePermission(true);
         TryQueuedAttack();
     }
     public void OnAttackEnd()
@@ -369,6 +370,7 @@ public class PlayerCombat : MonoBehaviour
     private void StartDash(PlayerSkillData dashData)
     {
         StartSkill(dashData);
+        airAttackUsage.Clear();
         //Iframes here if needed, or handled by the skill prefab itself
     }
     private AttackData FindMatchingAttack(int comboIndex, DirectionVariant variant)
@@ -405,16 +407,6 @@ public class PlayerCombat : MonoBehaviour
             }
         }
 
-        // Step 3: Optional fallback (e.g., if air attack missing, fall back to ground)
-        // if (isAirborne && groundAttacks.Count > 0)
-        // {
-        //     foreach (var a in groundAttacks)
-        //     {
-        //         if (a == null) continue;
-        //         if (a.comboIndex == comboIndex && a.directionVariant == variant)
-        //             return a;
-        //     }
-        // }
 
         return null;
     }

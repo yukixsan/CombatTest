@@ -330,8 +330,8 @@ public class EnemyStateAI : MonoBehaviour
             anim.SetTrigger("damage");
 
             float dir = force.x > 0 ? 1f : -1f;
-
-            knockbackVelocityX = dir * force.x;
+            print("Enemy knockback dir : " + dir);
+            knockbackVelocityX = force.x;
 
             rb.AddForce(Vector3.right * knockbackVelocityX, ForceMode.Impulse);
         }
