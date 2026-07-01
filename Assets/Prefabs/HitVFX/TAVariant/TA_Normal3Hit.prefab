@@ -170,7 +170,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    ImpulseDuration: 0.05
+    ImpulseDuration: 0.1
     ImpulseType: 0
     DissipationRate: 0.25
     RawSignal: {fileID: 0}
@@ -201,7 +201,7 @@ MonoBehaviour:
     DissipationMode: 2
     DissipationDistance: 100
     PropagationSpeed: 343
-  DefaultVelocity: {x: 0.4, y: 0.7, z: 0}
+  DefaultVelocity: {x: 0.6, y: 0.6, z: 0}
 --- !u!1001 &5004502675690986983
 PrefabInstance:
   m_ObjectHideFlags: 0
