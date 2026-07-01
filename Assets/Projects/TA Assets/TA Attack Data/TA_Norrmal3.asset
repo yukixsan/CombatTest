@@ -20,7 +20,7 @@ MonoBehaviour:
   knockbackForce: 4
   launchForce: 0
   launchDir: 0
-  hitstunDuration: 0
+  hitstunDuration: 0.07
   Airborne: 0
   airLimit: 0
   canBeCancelledWindup: 0
