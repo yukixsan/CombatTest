@@ -14,34 +14,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Down Attack
   animationClip: {fileID: 7400000, guid: 72e8e30bd2f98f244942e81536da39dd, type: 2}
-  VFXindex: 0
+  VFXindex: 6
   useHandWeapon: 1
   damage: 10
-  knockbackForce: 0
-  launchForce: 8
+  knockbackForce: 5
+  launchForce: 2
   launchDir: 1
-  hitstunDuration: 0.04
+  hitstunDuration: 0
   Airborne: 0
   airLimit: 0
   canBeCancelledWindup: 1
   canBeCancelledActive: 0
   canBeCancelledRecovery: 1
   windupVFX:
-    prefab: {fileID: 0}
+    prefab: {fileID: 4925020554770876159, guid: 7592d9b51093d7143b8111b0201d3ca3, type: 3}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    parentToTransform: 1
     sfx: {fileID: 0}
     sfxVolume: 0
   activeVFX:
-    prefab: {fileID: 3814142615868619576, guid: 145591e81834fd94082984f2041682f3, type: 3}
-    localOffset: {x: 0.4, y: 0, z: 0}
+    prefab: {fileID: 3889517905211257801, guid: d25c434dbac2e694594babd756b87723, type: 3}
+    localOffset: {x: 12, y: 0, z: 0}
     flipByRotation: 0
+    parentToTransform: 0
     sfx: {fileID: 0}
     sfxVolume: 0
   recoveryVFX:
-    prefab: {fileID: 0}
+    prefab: {fileID: 3814142615868619576, guid: 145591e81834fd94082984f2041682f3, type: 3}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    parentToTransform: 1
     sfx: {fileID: 0}
     sfxVolume: 0
   nextCombo: {fileID: 0}

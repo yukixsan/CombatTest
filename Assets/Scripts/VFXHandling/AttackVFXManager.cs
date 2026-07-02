@@ -21,32 +21,56 @@ public class AttackVFXManager : MonoBehaviour
         if (phaseVFX.prefab == null) return null;
 
         var obj = GetFromPool(phaseVFX.prefab);
+        Vector3 offset = new Vector3(phaseVFX.localOffset.x * facing,
+            phaseVFX.localOffset.y,
+            phaseVFX.localOffset.z);
 
         if (attachTo != null)
         {
             Quaternion baseRot = obj.transform.localRotation;
 
-            obj.transform.SetParent(attachTo);
-            obj.transform.localPosition = new Vector3(phaseVFX.localOffset.x * facing,
-            phaseVFX.localOffset.y,
-            phaseVFX.localOffset.z);
-
-            if (phaseVFX.flipByRotation)
+            if (phaseVFX.parentToTransform)
             {
-                obj.transform.localRotation = Quaternion.Euler(baseRot.eulerAngles.x, facing < 0 ? 180f : 0f, baseRot.eulerAngles.z);
+                obj.transform.SetParent(attachTo, false);
+                obj.transform.localPosition = offset;
+
+                if (phaseVFX.flipByRotation)
+                {
+                    obj.transform.localRotation = Quaternion.Euler(baseRot.eulerAngles.x, facing < 0 ? 180f : 0f, baseRot.eulerAngles.z);
+                }
+                else
+                {
+                    obj.transform.localRotation = Quaternion.Euler(
+                    baseRot.eulerAngles.x,
+                    baseRot.eulerAngles.y,
+                    baseRot.eulerAngles.z);
+
+                    Vector3 scale = obj.transform.localScale;
+                    scale.x = facing < 0 ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
+                    obj.transform.localScale = scale;
+                }
             }
             else
             {
-                obj.transform.localRotation = Quaternion.Euler(
-                baseRot.eulerAngles.x,
-                baseRot.eulerAngles.y,
-                baseRot.eulerAngles.z);
+                obj.transform.SetParent(null);
+                obj.transform.position = attachTo.position + offset;
 
-                Vector3 scale = obj.transform.localScale;
-                scale.x = facing < 0 ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
-                obj.transform.localScale = scale;
+                if (phaseVFX.flipByRotation)
+                {
+                    obj.transform.rotation = Quaternion.Euler(baseRot.eulerAngles.x, facing < 0 ? 180f : 0f, baseRot.eulerAngles.z);
+                }
+                else
+                {
+                    obj.transform.rotation = Quaternion.Euler(
+                    baseRot.eulerAngles.x,
+                    baseRot.eulerAngles.y,
+                    baseRot.eulerAngles.z);
+
+                    Vector3 scale = obj.transform.localScale;
+                    scale.x = facing < 0 ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
+                    obj.transform.localScale = scale;
+                }
             }
-
         }
 
         obj.SetActive(true);

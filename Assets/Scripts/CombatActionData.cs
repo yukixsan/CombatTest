@@ -10,8 +10,9 @@ public enum DirectionVariant
 public struct AttackPhaseVFX
 {
     public GameObject prefab;
-    public Vector3 localOffset; // relative to _model
+    public Vector3 localOffset; // relative to the attach target when parented
     public bool flipByRotation;
+    public bool parentToTransform;
     public AudioClip sfx;
     public float sfxVolume;
 }
