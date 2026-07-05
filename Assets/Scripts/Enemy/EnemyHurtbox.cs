@@ -15,7 +15,14 @@ public class EnemyHurtbox : MonoBehaviour
         if (!hitbox.HasPayload) return;
  
         HitboxPayload payload = hitbox.Payload;
- 
+        var enemyAI = GetComponentInParent<EnemyStateAI>();
+        var stateController = GetComponentInParent<EnemyStateController>();
+
+        // Interrupt enemy attack if the payload's armor value is sufficient
+        if (enemyAI != null && healthComponent.CanBeInterruptedBy(payload.AttackerArmor))
+        {
+           // enemyAI.ForceInterrupt();
+        }
         // Knockback — direction relative to attacker position
         float facingX = Mathf.Sign(transform.position.x - payload.attacker.position.x);
         Vector3 knockback = new Vector3(
@@ -24,12 +31,17 @@ public class EnemyHurtbox : MonoBehaviour
             0f
         );
         //rb.AddForce(knockback, ForceMode.Impulse);
-        var enemyAI = GetComponentInParent<EnemyStateAI>();
-        if (enemyAI != null)
+        // if (enemyAI != null)
+        // {
+        //     //enemyAI.ApplyKnocback(moveLockDuration);
+        //     enemyAI.ApplyKnockback(knockback, moveLockDuration);
+        // }
+
+        if (stateController != null)
         {
-            //enemyAI.ApplyKnocback(moveLockDuration);
-            enemyAI.ApplyKnockback(knockback, moveLockDuration);
+            stateController.TriggerDamaged(payload);
         }
+
         // Hit VFX at enemy hurtbox center
         Collider collider = GetComponent<Collider>();
         Vector3 hitPoint = collider != null ? collider.bounds.center : transform.position;

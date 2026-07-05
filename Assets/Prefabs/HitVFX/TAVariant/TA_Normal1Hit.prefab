@@ -86,8 +86,7 @@ MonoBehaviour:
     m_Instructions:
     - rid: 3197985056017875024
     - rid: 8597997912148934811
-    - rid: 6922839260811493457
-    - rid: 6922839260811493460
+    - rid: 7983917967542845533
   references:
     version: 2
     RefIds:
@@ -103,23 +102,31 @@ MonoBehaviour:
     - rid: 3197985056017875026
       type: {class: GetGameObjectSelf, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data: 
-    - rid: 6922839260811493457
-      type: {class: InstructionCommonDebugBeep, ns: GameCreator.Runtime.VisualScripting, asm: GameCreator.Runtime.Core}
+    - rid: 7983917967542845533
+      type: {class: InstructionCommonAudioSFXPlay, ns: GameCreator.Runtime.VisualScripting, asm: GameCreator.Runtime.Core}
       data:
         m_Breakpoint: 0
         m_IsEnabled: 1
-    - rid: 6922839260811493460
-      type: {class: InstructionCommonDebugText, ns: GameCreator.Runtime.VisualScripting, asm: GameCreator.Runtime.Core}
-      data:
-        m_Breakpoint: 0
-        m_IsEnabled: 1
-        m_Message:
+        m_AudioClip:
           m_Property:
-            rid: 6922839260811493461
-    - rid: 6922839260811493461
-      type: {class: GetStringString, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
+            rid: 7983917967542845534
+        m_WaitToComplete: 0
+        m_Config:
+          m_Volume: 3
+          m_Pitch: {x: 1, y: 1}
+          m_TransitionIn: 0
+          m_UpdateMode: 1
+          m_SpatialBlend: 0
+          m_Target:
+            m_Property:
+              rid: 7983917967542845535
+    - rid: 7983917967542845534
+      type: {class: GetAudioClip, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data:
-        m_Value: Hit fx 1
+        m_Value: {fileID: 8300000, guid: ff57bd371ac581e42b59a294e6b73f80, type: 3}
+    - rid: 7983917967542845535
+      type: {class: GetGameObjectNone, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
+      data: 
     - rid: 8597997912148934811
       type: {class: InstructionLogicCallMethod, ns: GameCreator.Runtime.VisualScripting, asm: GameCreator.Runtime.Core}
       data:

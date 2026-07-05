@@ -19,6 +19,7 @@ public class EnemyStateAI : MonoBehaviour
     {
         public string attackName;
         public float damage = 10;
+        public float attackArmor = 0f;
         public float poiseDamage = 5;
 
         public float minRange = 0f;
@@ -54,9 +55,11 @@ public class EnemyStateAI : MonoBehaviour
     private Coroutine attackRoutine;
 
     private float currentDamage;
+    private float currentAttackArmor;
     private float currentPoiseDamage;
 
     public float GetDamage() => currentDamage;
+    public float GetAttackArmor() => currentAttackArmor;
     public float GetPoiseDamage() => currentPoiseDamage;
     #endregion
 
@@ -360,6 +363,7 @@ public class EnemyStateAI : MonoBehaviour
         SetAnim(skill: index + 1);
 
         currentDamage = atk.damage;
+        currentAttackArmor = atk.attackArmor;
         currentPoiseDamage = atk.poiseDamage;
 
         yield return new WaitForSeconds(atk.delayBeforeHit);

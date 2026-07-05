@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(EnemyStateAI))]
+// [RequireComponent(typeof(EnemyStateAI))]
 [RequireComponent(typeof(HealthComponent))]
 public class EnemyHealth : MonoBehaviour
 {

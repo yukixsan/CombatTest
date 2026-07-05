@@ -179,6 +179,7 @@ public class PlayerCombat : MonoBehaviour
         {
             var payload = new HitboxPayload(
                 currentAttack.damage,
+                currentAttack.attackArmor,
                 currentAttack.knockbackForce,
                 currentAttack.launchForce,
                 currentAttack.launchDir,
@@ -195,6 +196,7 @@ public class PlayerCombat : MonoBehaviour
             SpawnSkillObject(currentSkill);
             var payload = new HitboxPayload(
                 currentSkill.damage,
+                currentSkill.attackArmor,
                 currentSkill.knockbackForce,
                 currentSkill.launchForce,
                 currentSkill.launchDir,

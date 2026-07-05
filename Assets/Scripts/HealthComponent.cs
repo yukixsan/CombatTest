@@ -8,6 +8,7 @@ public class HealthComponent : MonoBehaviour, IHealth
     public float currentHealth;
 
     [Header("Poise / Armor")]
+    public float superArmor = 0;
     public float maxArmor = 50;
     public float currentArmor;
     public float armorRecoveryRate = 5f;
@@ -73,6 +74,10 @@ public class HealthComponent : MonoBehaviour, IHealth
         {
             Die();
         }
+    }
+    public bool CanBeInterruptedBy(float attackerArmor)
+    {
+        return attackerArmor >= superArmor;
     }
 
     #endregion

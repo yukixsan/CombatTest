@@ -30,18 +30,21 @@ MonoBehaviour:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    parentToTransform: 0
     sfx: {fileID: 0}
     sfxVolume: 0
   activeVFX:
     prefab: {fileID: 231859285092543605, guid: 2af34f34822c0ad47a1a05167aca2ead, type: 3}
     localOffset: {x: 0.85, y: 0.55, z: 0}
     flipByRotation: 0
-    sfx: {fileID: 0}
-    sfxVolume: 0
+    parentToTransform: 0
+    sfx: {fileID: 8300000, guid: 7e55bb275d9ffff48b5698d0e5f160e6, type: 3}
+    sfxVolume: 1
   recoveryVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    parentToTransform: 0
     sfx: {fileID: 0}
     sfxVolume: 0
   nextCombo: {fileID: 0}

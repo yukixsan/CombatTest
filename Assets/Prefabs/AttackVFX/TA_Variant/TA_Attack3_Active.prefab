@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7909076810885890539}
   - component: {fileID: 2953543386353843169}
   - component: {fileID: 5481614192886277664}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: TA_Attack3_Active
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4928,7 +4928,7 @@ GameObject:
   - component: {fileID: 9185031471457019997}
   - component: {fileID: 6161224973824267974}
   - component: {fileID: 2013883721868192752}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Slash2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9840,7 +9840,7 @@ GameObject:
   - component: {fileID: 1377371262164395665}
   - component: {fileID: 1272046135277254227}
   - component: {fileID: 1711464486798179557}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14743,7 +14743,7 @@ GameObject:
   - component: {fileID: 8238565899100613833}
   - component: {fileID: 5472008491395025880}
   - component: {fileID: 8730499378186986149}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19646,7 +19646,7 @@ GameObject:
   - component: {fileID: 4780082537285372588}
   - component: {fileID: 2381009236183415303}
   - component: {fileID: 8185602544549534352}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Slash3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24558,7 +24558,7 @@ GameObject:
   - component: {fileID: 6845648958274842554}
   - component: {fileID: 8923210875464711927}
   - component: {fileID: 5595984719376288516}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -37,6 +37,7 @@ public class SkillObject : MonoBehaviour
             // Build payload for this skill
             payload = new HitboxPayload(
                 data.damage,
+                data.attackArmor,
                 data.knockbackForce,
                 data.launchForce,
                 data.launchDir,

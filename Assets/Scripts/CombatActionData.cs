@@ -30,6 +30,7 @@ public class CombatActionData : ScriptableObject
 
     [Header("Properties")]
     public float damage = 10f;
+    public float attackArmor = 0f;
     public float knockbackForce = 5f;
     public float launchForce;
     public int launchDir;
