@@ -44,6 +44,7 @@ public class EnemyDamagedState : EnemyBaseState
 
     public override void OnUpdate()
     {
+        Debug.Log("EnemyDamagedState: OnUpdate() called");
         timer -= Time.deltaTime;
         if (timer <= 0f)
         {

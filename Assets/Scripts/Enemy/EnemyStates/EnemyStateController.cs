@@ -18,9 +18,9 @@ public class EnemyStateController : MonoBehaviour
     public float detectRange = 15f;
     public float chaseRange = 10f;
 
-    public EnemyBaseState IdleState { get; private set; }
-    public EnemyBaseState ChaseState { get; private set; }
-    public EnemyBaseState DamagedState { get; private set; }
+    public EnemyIdleState IdleState { get; private set; }
+    public EnemyChaseState ChaseState { get; private set; }
+    public EnemyDamagedState DamagedState { get; private set; }
 
     private EnemyBaseState currentState;
     public bool IsDamaged => currentState == DamagedState;
@@ -30,10 +30,12 @@ public class EnemyStateController : MonoBehaviour
         IdleState = new EnemyIdleState(this);
         ChaseState = new EnemyChaseState(this);
         DamagedState = new EnemyDamagedState(this);
+        SwitchState(IdleState);
     }
 
     private void Start()
     {
+        Debug.Log("EnemyStateController: Start() called");
         FindTarget();
         SwitchState(IdleState);
 

@@ -3691,7 +3691,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5495748245614765680, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5495748245614765680, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
       propertyPath: damageDuration
@@ -3824,6 +3824,10 @@ PrefabInstance:
     - target: {fileID: 9153543722055249889, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -810.01886
+      objectReference: {fileID: 0}
+    - target: {fileID: 9161459673844458589, guid: 1fc50c8b5d0af08428581c1945ba7959, type: 3}
+      propertyPath: maxHealth
+      value: 10000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4423,7 +4427,6 @@ GameObject:
   - component: {fileID: 7151641019184708463}
   - component: {fileID: 6655436801232249813}
   - component: {fileID: 8337453075538506590}
-  - component: {fileID: 8015288463174279672}
   - component: {fileID: 5419086643918110928}
   - component: {fileID: 8337453075538506592}
   - component: {fileID: 8337453075538506591}
@@ -4455,31 +4458,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.8434687, y: 4.566792, z: 1}
   m_Center: {x: -0.17149782, y: 0.57676303, z: 0}
---- !u!114 &3040490162921293557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4154545992334129348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3edf5df5f0cb1443ae9013444bdffeb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shake: 1
-  duration: 0.3
-  magnitude: 1
-  blinkColor: {r: 1, g: 0, b: 0, a: 1}
-  blinkSpeed: 0.05
-  renderers:
-  - {fileID: 4154545992334129349}
-  OnActive:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDisable:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!23 &3444278239713856348
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5066,9 +5044,6 @@ PrefabInstance:
       addedObject: {fileID: 7483176307563864319}
     - targetCorrespondingSourceObject: {fileID: 100092, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3040490162921293557}
-    - targetCorrespondingSourceObject: {fileID: 100092, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 5546306853280187832}
     - targetCorrespondingSourceObject: {fileID: 100092, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
       insertIndex: -1
@@ -5082,11 +5057,6 @@ Animator:
 --- !u!1 &4154545992334129348 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100092, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
-  m_PrefabInstance: {fileID: 4154545992334129346}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &4154545992334129349 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 13700000, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
   m_PrefabInstance: {fileID: 4154545992334129346}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &4154545992334129350 stripped
@@ -5244,7 +5214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dde4a9d10dbf47479a69cbd2f332e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 200
+  maxHealth: 10000
   currentHealth: 0
   superArmor: 0
   maxArmor: 50
@@ -5359,50 +5329,6 @@ MonoBehaviour:
   _CharacterCenterCubeSize: 1
   UseSimpleAABBCutOffForCharacterShadow: 0
   CreateMaterialInstanceOnPlay: 0
---- !u!114 &8015288463174279672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2250936049658218309}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cb72dd8cdb1c6744be974e24ca5e604, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anim: {fileID: 4154545992334129347}
-  rb: {fileID: 7151641019184708463}
-  target: {fileID: 0}
-  targetTag: Player
-  detectRange: 15
-  chaseRange: 13
-  attackRange: 2.5
-  moveSpeed: 5
-  attacks:
-  - attackName: Skill0-1
-    damage: 10
-    attackArmor: 0
-    poiseDamage: 5
-    minRange: 2
-    maxRange: 5
-    delayBeforeHit: 2
-  - attackName: Skill0-2
-    damage: 10
-    attackArmor: 0
-    poiseDamage: 5
-    minRange: 2
-    maxRange: 5
-    delayBeforeHit: 2
-  attackCooldown: 2
-  groundCheckPoint: {fileID: 4294361663058970323}
-  groundCheckDistance: 0.2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  isTakingDamage: 0
-  damageDuration: 1
-  knockbackHorizontalForce: 2
 --- !u!114 &8337453075538506590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5417,31 +5343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnDamageEvent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3040490162921293557}
-        m_TargetAssemblyTypeName: HitFX, Assembly-CSharp
-        m_MethodName: PlayEffect
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Unity.Cinemachine.CinemachineImpulseSource, Unity.Cinemachine
-        m_MethodName: GenerateImpulse
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnHealEvent:
     m_PersistentCalls:
       m_Calls: []

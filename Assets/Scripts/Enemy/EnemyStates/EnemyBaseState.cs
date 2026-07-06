@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class EnemyBaseState : MonoBehaviour
+public abstract class EnemyBaseState
 {
     protected EnemyStateController controller;
     protected EnemyMovement movement;
