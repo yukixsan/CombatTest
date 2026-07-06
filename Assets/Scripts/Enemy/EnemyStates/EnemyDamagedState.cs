@@ -2,9 +2,7 @@ using UnityEngine;
 
 public class EnemyDamagedState : EnemyBaseState
 {
-    [Header("Tuning — set via inspector on EnemyStateController or hardcode here for now")]
-    private float damagedDuration = 0.3f;
-    private float timer;
+    private float damageTimer;
 
     private HitboxPayload pendingPayload;
     private bool hasPendingPayload;
@@ -19,7 +17,7 @@ public class EnemyDamagedState : EnemyBaseState
 
     public override void OnEnter()
     {
-        timer = damagedDuration;
+        damageTimer = controller.damagedDuration;
         movement.StopMovement();
 
         if (anim != null) anim.SetTrigger("damage");
@@ -34,10 +32,12 @@ public class EnemyDamagedState : EnemyBaseState
     private void ApplyKnockbackImpulse(HitboxPayload payload)
     {
         float facingX = Mathf.Sign(controller.transform.position.x - payload.attacker.position.x);
-        Vector3 knockback = new Vector3(payload.KnockbackForce * facingX, 0f, 0f);
+        Vector3 knockback = new Vector3(
+                payload.KnockbackForce * facingX,
+                payload.LaunchForce * payload.LaunchDir,
+                0f
+            );
 
-        // Rigidbody must not be kinematic for AddForce to have any effect (Unity docs:
-        // "Force can only be applied to an active Rigidbody... cannot be kinematic").
         rb.isKinematic = false;
         rb.AddForce(knockback, ForceMode.Impulse);
     }
@@ -45,12 +45,14 @@ public class EnemyDamagedState : EnemyBaseState
     public override void OnUpdate()
     {
         Debug.Log("EnemyDamagedState: OnUpdate() called");
-        timer -= Time.deltaTime;
-        if (timer <= 0f)
+        damageTimer -= Time.deltaTime;
+        if(!movement.IsGrounded)
         {
-            controller.SwitchState(
-                controller.target != null ? controller.ChaseState : controller.IdleState
-            );
+            return; // Wait until the enemy is grounded before switching states
+        }
+        if (damageTimer <= 0f)
+        {
+            controller.SwitchState(controller.IdleState);
         }
     }
 

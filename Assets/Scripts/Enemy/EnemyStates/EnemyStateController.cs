@@ -17,6 +17,11 @@ public class EnemyStateController : MonoBehaviour
     public string targetTag = "Player";
     public float detectRange = 15f;
     public float chaseRange = 10f;
+    public float stopDistance = 2f;
+
+    [Header("State Tuning")]
+    public float idleToChaseDelay = 2f;
+    public float damagedDuration = 0.8f;
 
     public EnemyIdleState IdleState { get; private set; }
     public EnemyChaseState ChaseState { get; private set; }

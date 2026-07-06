@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class EnemyHealth : MonoBehaviour
 {
     private HealthComponent health => GetComponent<HealthComponent>();
-    private EnemyStateAI enemyStateAI => GetComponent<EnemyStateAI>();
+    private EnemyStateController enemyStateAI => GetComponent<EnemyStateController>();
     private UIHealthBar healthBar => GetComponent<UIHealthBar>();
 
     [Header("EVENT")]
@@ -39,7 +39,6 @@ public class EnemyHealth : MonoBehaviour
     void OnTakeDamage(float dmg)
     {
         Debug.Log("Damage: " + dmg);
-        enemyStateAI.PlayDamage();
         OnDamageEvent?.Invoke();
     }
 
@@ -52,7 +51,7 @@ public class EnemyHealth : MonoBehaviour
     void OnDie()
     {
         Debug.Log("Die");
-        enemyStateAI.anim.SetBool("dead", true);
+        //enemyStateAI.anim.SetBool("dead", true);
         OnDieEvent?.Invoke();
     }
 

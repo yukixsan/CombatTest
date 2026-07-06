@@ -5397,6 +5397,9 @@ MonoBehaviour:
   targetTag: Player
   detectRange: 15
   chaseRange: 10
+  stopDistance: 2
+  idleToChaseDelay: 2
+  damagedDuration: 0.8
 --- !u!114 &8337453075538506592
 MonoBehaviour:
   m_ObjectHideFlags: 0
