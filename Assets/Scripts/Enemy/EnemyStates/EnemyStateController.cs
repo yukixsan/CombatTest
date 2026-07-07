@@ -26,15 +26,21 @@ public class EnemyStateController : MonoBehaviour
     public EnemyIdleState IdleState { get; private set; }
     public EnemyChaseState ChaseState { get; private set; }
     public EnemyDamagedState DamagedState { get; private set; }
+    public EnemyAirborneState AirborneState { get; private set; }
+    public EnemyAirborneDamagedState AirborneDamagedState { get; private set; }
 
     private EnemyBaseState currentState;
     public bool IsDamaged => currentState == DamagedState;
+    public bool IsAirborne => currentState == AirborneState;
+    public bool IsAirborneDamaged => currentState == AirborneDamagedState;
 
     private void Awake()
     {
         IdleState = new EnemyIdleState(this);
         ChaseState = new EnemyChaseState(this);
         DamagedState = new EnemyDamagedState(this);
+        AirborneState = new EnemyAirborneState(this);
+        AirborneDamagedState = new EnemyAirborneDamagedState(this);
         SwitchState(IdleState);
     }
 
@@ -61,6 +67,16 @@ public class EnemyStateController : MonoBehaviour
     private void Update()
     {
         _movement.UpdateGroundCheck();
+
+         // Centralized ground to airborne transition
+        if (!_movement.IsGrounded
+            && currentState != AirborneState
+            && currentState != AirborneDamagedState
+            )
+        {
+            SwitchState(AirborneState);
+        }
+
         currentState.OnUpdate();
     }
 
@@ -71,8 +87,12 @@ public class EnemyStateController : MonoBehaviour
 
     public void SwitchState(EnemyBaseState newState)
     {
-        if(IsDamaged && !_movement.IsGrounded && newState != DamagedState)return; 
-        if (currentState == newState && newState != DamagedState) return;
+        // if(IsDamaged && !_movement.IsGrounded && newState != DamagedState)return; 
+        // if (currentState == newState && newState != DamagedState) return;
+        if (IsAirborne && newState != AirborneDamagedState) return;
+        //if (IsDamaged && !_movement.IsGrounded && newState != DamagedState) return;
+        if (IsAirborneDamaged && newState != AirborneState) return;
+        if (currentState == newState && newState != DamagedState && newState != AirborneDamagedState) return;
 
         currentState?.OnExit();
         currentState = newState;
@@ -83,8 +103,21 @@ public class EnemyStateController : MonoBehaviour
     /// armor-interrupt check DID NOT break super armor (i.e. mini-stun, not full stun).
     public void TriggerDamaged(HitboxPayload payload)
     {
-        // Dead/future-Stunned guard placeholder — for now, Damaged always accepts.
-        (DamagedState as EnemyDamagedState)?.SetPendingKnockback(payload);
+         if (!_movement.IsGrounded || IsAirborne)
+        {
+            if (IsAirborneDamaged)
+            {
+                // Repeated hit mid-juggle: refresh timer + re-apply knockback in place.
+                AirborneDamagedState.Reset(payload);
+                return;
+            }
+
+            AirborneDamagedState.SetPendingKnockback(payload);
+            SwitchState(AirborneDamagedState);
+            return;
+        }
+
+        DamagedState.SetPendingKnockback(payload);
         SwitchState(DamagedState);
     }
 

@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class EnemyDamagedState : EnemyBaseState
+public class EnemyAirborneDamagedState : EnemyBaseState
 {
     private float damageTimer;
 
     private HitboxPayload pendingPayload;
     private bool hasPendingPayload;
 
-    public EnemyDamagedState(EnemyStateController controller) : base(controller) { }
+    public EnemyAirborneDamagedState(EnemyStateController controller) : base(controller) { }
 
     public void SetPendingKnockback(HitboxPayload payload)
     {
@@ -17,6 +17,7 @@ public class EnemyDamagedState : EnemyBaseState
 
     public override void OnEnter()
     {
+        Debug.Log("EnemyAirborneDamagedState: OnEnter() called");
         damageTimer = controller.damagedDuration;
         movement.StopMovement();
 
@@ -29,30 +30,29 @@ public class EnemyDamagedState : EnemyBaseState
         }
     }
 
+    // Re-entry path: called by EnemyStateController.TriggerDamaged when already
+    // in this state, so repeated air-juggle hits refresh the timer and re-apply
+    // knockback instead of being swallowed by the SwitchState no-op guard.
+    public void Reset(HitboxPayload payload)
+    {
+        damageTimer = controller.damagedDuration;
+        if (anim != null) anim.SetTrigger("damage");
+        ApplyKnockbackImpulse(payload);
+    }
+
     private void ApplyKnockbackImpulse(HitboxPayload payload)
     {
-
         rb.isKinematic = false;
         EnemyHitReaction.ApplyKnockback(payload, rb);
     }
 
     public override void OnUpdate()
     {
-        Debug.Log("EnemyDamagedState: OnUpdate() called");
         damageTimer -= Time.deltaTime;
-        if(!movement.IsGrounded)
+        if (damageTimer <= 0f)
         {
+            // Always hand off to AirborneState — it alone decides Idle vs staying airborne.
             controller.SwitchState(controller.AirborneState);
         }
-        if (damageTimer <= 0f )
-        {
-            controller.SwitchState(controller.IdleState);
-        }
-    }
-
-    public override void OnExit()
-    {
-        rb.linearVelocity = Vector3.zero;
-        rb.isKinematic = true;
     }
 }

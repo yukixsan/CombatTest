@@ -20,7 +20,7 @@ public class EnemyIdleState : EnemyBaseState
         if (chaseCDTimer > 0f) //check if the cooldown timer is still running
         {
             chaseCDTimer -= Time.deltaTime;
-            Debug.Log($"EnemyIdleState: chaseCDTimer = {chaseCDTimer}");
+            //Debug.Log($"EnemyIdleState: chaseCDTimer = {chaseCDTimer}");
             return;
         }
 
