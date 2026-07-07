@@ -71,14 +71,16 @@ public class EnemyStateController : MonoBehaviour
 
     public void SwitchState(EnemyBaseState newState)
     {
-        if (currentState == newState) return;
+        if(IsDamaged && !_movement.IsGrounded && newState != DamagedState)return; 
+        if (currentState == newState && newState != DamagedState) return;
+
         currentState?.OnExit();
         currentState = newState;
         currentState.OnEnter();
     }
+
     /// External entry point — called by EnemyHurtbox when a hit lands and the
     /// armor-interrupt check DID NOT break super armor (i.e. mini-stun, not full stun).
-    /// 
     public void TriggerDamaged(HitboxPayload payload)
     {
         // Dead/future-Stunned guard placeholder — for now, Damaged always accepts.
