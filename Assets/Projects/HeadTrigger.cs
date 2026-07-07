@@ -1,14 +1,15 @@
 using UnityEngine;
 
-public class PlayerHead : MonoBehaviour
-{[Header("Settings")]
+public class HeadTrigger : MonoBehaviour
+{
+    [Header("Settings")]
     [Tooltip("How fast the player is pushed off the side of the head")]
     public float pushSpeed = 5f;
 
     private void OnTriggerStay(Collider other)
     {
         // 1. Check if the object entering our head trigger is the Player
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Player"))
         {
             Rigidbody playerRb = other.attachedRigidbody;
             if (playerRb != null)

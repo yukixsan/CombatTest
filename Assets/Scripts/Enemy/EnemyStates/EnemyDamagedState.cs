@@ -31,15 +31,9 @@ public class EnemyDamagedState : EnemyBaseState
 
     private void ApplyKnockbackImpulse(HitboxPayload payload)
     {
-        float facingX = Mathf.Sign(controller.transform.position.x - payload.attacker.position.x);
-        Vector3 knockback = new Vector3(
-                payload.KnockbackForce * facingX,
-                payload.LaunchForce * payload.LaunchDir,
-                0f
-            );
 
         rb.isKinematic = false;
-        rb.AddForce(knockback, ForceMode.Impulse);
+        EnemyHitReaction.ApplyKnockback(payload, rb);
     }
 
     public override void OnUpdate()
