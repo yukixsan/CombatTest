@@ -25,9 +25,14 @@ public class EnemyIdleState : EnemyBaseState
         }
 
         float dist = UnityEngine.Vector3.Distance(controller.transform.position, controller.target.position);
+
         if (dist <= controller.chaseRange)
         {
             controller.SwitchState(controller.ChaseState);
+        }
+        if(dist <= controller.stopDistance)
+        {
+            controller.SwitchState(controller.AttackState);
         }
     }
 }

@@ -28,6 +28,7 @@ public class EnemyStateController : MonoBehaviour
     public EnemyDamagedState DamagedState { get; private set; }
     public EnemyAirborneState AirborneState { get; private set; }
     public EnemyAirborneDamagedState AirborneDamagedState { get; private set; }
+    public EnemyAttackState AttackState { get; private set; }
 
     private EnemyBaseState currentState;
     public bool IsDamaged => currentState == DamagedState;
@@ -41,6 +42,7 @@ public class EnemyStateController : MonoBehaviour
         DamagedState = new EnemyDamagedState(this);
         AirborneState = new EnemyAirborneState(this);
         AirborneDamagedState = new EnemyAirborneDamagedState(this);
+        AttackState = new EnemyAttackState(this);
         SwitchState(IdleState);
     }
 
