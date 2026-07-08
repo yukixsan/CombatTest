@@ -77,16 +77,6 @@ public class EnemyStateController : MonoBehaviour
     private void Update()
     {
         _movement.UpdateGroundCheck();
-
-         // Centralized ground to airborne transition
-        if (!_movement.IsGrounded
-            && currentState != AirborneState
-            && currentState != AirborneDamagedState
-            )
-        {
-            SwitchState(AirborneState);
-        }
-
         currentState.OnUpdate();
     }
 
@@ -97,13 +87,8 @@ public class EnemyStateController : MonoBehaviour
 
     public void SwitchState(EnemyBaseState newState)
     {
-        // if(IsDamaged && !_movement.IsGrounded && newState != DamagedState)return; 
-        // if (currentState == newState && newState != DamagedState) return;
-        if (IsAirborne && newState != AirborneDamagedState) return;
-        //if (IsDamaged && !_movement.IsGrounded && newState != DamagedState) return;
-        if (IsAirborneDamaged && newState != AirborneState) return;
-        if (currentState == newState && newState != DamagedState && newState != AirborneDamagedState) return;
-
+        
+        if(currentState == newState && newState != DamagedState) return;
         currentState?.OnExit();
         currentState = newState;
         currentState.OnEnter();
@@ -113,15 +98,13 @@ public class EnemyStateController : MonoBehaviour
     /// armor-interrupt check DID NOT break super armor (i.e. mini-stun, not full stun).
     public void TriggerDamaged(HitboxPayload payload)
     {
-        if (!_movement.IsGrounded || IsAirborne)
+        if (!_movement.IsGrounded || IsAirborne || IsAirborneDamaged)
         {
             if (IsAirborneDamaged)
             {
-                // Repeated hit mid-juggle: refresh timer + re-apply knockback in place.
                 AirborneDamagedState.Reset(payload);
                 return;
             }
-
             AirborneDamagedState.SetPendingKnockback(payload);
             SwitchState(AirborneDamagedState);
             return;
@@ -130,6 +113,8 @@ public class EnemyStateController : MonoBehaviour
         DamagedState.SetPendingKnockback(payload);
         SwitchState(DamagedState);
     }
+
+   
 
     private void FindTarget()
     {

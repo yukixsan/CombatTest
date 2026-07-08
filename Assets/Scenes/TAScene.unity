@@ -2890,7 +2890,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 192
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -4499,9 +4499,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.47482157
-  m_Height: 3.7053146
+  m_Height: 3.6309173
   m_Direction: 1
-  m_Center: {x: -0.029202938, y: 0.3865447, z: -0.00000011920929}
+  m_Center: {x: -0.029202938, y: 0.42374337, z: -0.00000011920929}
 --- !u!1 &2250936049658218309
 GameObject:
   m_ObjectHideFlags: 0
@@ -5165,7 +5165,7 @@ Transform:
   m_GameObject: {fileID: 6570258179587765969}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.306, z: 0}
+  m_LocalPosition: {x: 0.047, y: -1.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5374,7 +5374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 947fdab68cc61a245a53c80a94e5a8ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushSpeed: 50
+  pushSpeed: 20
 --- !u!114 &7483176307563864319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5479,6 +5479,7 @@ MonoBehaviour:
   _rb: {fileID: 7151641019184708463}
   _anim: {fileID: 8337453075538506593}
   _health: {fileID: 6655436801232249813}
+  _hitbox: {fileID: 0}
   target: {fileID: 0}
   targetTag: Player
   detectRange: 15
@@ -5486,7 +5487,10 @@ MonoBehaviour:
   stopDistance: 2
   idleToChaseDelay: 2
   damagedDuration: 0.5
-  finishedAttack: 0
+  attackDuration: 0.5
+  attackCooldown: 1.5
+  canAttack: 1
+  attackCooldownTimer: 0
 --- !u!114 &8337453075538506592
 MonoBehaviour:
   m_ObjectHideFlags: 0

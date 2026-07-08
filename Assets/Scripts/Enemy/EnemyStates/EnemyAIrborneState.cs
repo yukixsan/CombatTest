@@ -7,6 +7,8 @@ public class EnemyAirborneState : EnemyBaseState
     public override void OnEnter()
     {
         Debug.Log("EnemyAirborneState: OnEnter() called");
+        rb.isKinematic = false;
+        rb.useGravity = true;
         movement.StopMovement();
     }
 

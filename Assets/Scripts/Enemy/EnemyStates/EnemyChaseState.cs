@@ -7,6 +7,12 @@ public class EnemyChaseState : EnemyBaseState
     public override void OnFixedUpdate()
     {
         Debug.Log("EnemyChaseState: OnFixedUpdate() called");
+        if (!movement.IsGrounded)
+        {
+            controller.SwitchState(controller.AirborneState);
+            return;
+        }
+
         if (controller.target == null)
         {
             controller.SwitchState(controller.IdleState);

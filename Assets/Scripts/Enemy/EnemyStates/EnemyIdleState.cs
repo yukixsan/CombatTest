@@ -8,19 +8,27 @@ public class EnemyIdleState : EnemyBaseState
     public override void OnEnter()
     {
         Debug.Log("EnemyIdleState: OnEnter() called");  
+        rb.linearVelocity = Vector3.zero;
+        rb.isKinematic = true;
+        rb.useGravity = true;
         movement.StopMovement();
         chaseCDTimer = controller.idleToChaseDelay;
     }
 
     public override void OnUpdate()
     {
-        Debug.Log("EnemyIdleState: OnUpdate() called");
+        //Debug.Log("EnemyIdleState: OnUpdate() called");
+         if (!movement.IsGrounded)
+        {
+            controller.SwitchState(controller.AirborneState);
+            return;
+        }
+
         if (controller.target == null) return;
 
-        if (chaseCDTimer > 0f) //check if the cooldown timer is still running
+        if (chaseCDTimer > 0f)
         {
             chaseCDTimer -= Time.deltaTime;
-            //Debug.Log($"EnemyIdleState: chaseCDTimer = {chaseCDTimer}");
             return;
         }
 
@@ -30,9 +38,14 @@ public class EnemyIdleState : EnemyBaseState
         {
             controller.SwitchState(controller.ChaseState);
         }
-        if(dist <= controller.stopDistance)
+        if (dist <= controller.stopDistance)
         {
             controller.SwitchState(controller.AttackState);
         }
+    }
+
+    public override void OnExit()
+    {
+        Debug.Log("EnemyIdleState: OnExit() called");
     }
 }

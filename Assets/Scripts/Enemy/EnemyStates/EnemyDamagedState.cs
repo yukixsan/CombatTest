@@ -17,6 +17,7 @@ public class EnemyDamagedState : EnemyBaseState
 
     public override void OnEnter()
     {
+        Debug.Log("EnemyDamagedState: OnEnter() called");
         damageTimer = controller.damagedDuration;
         movement.StopMovement();
 
@@ -31,9 +32,10 @@ public class EnemyDamagedState : EnemyBaseState
 
     private void ApplyKnockbackImpulse(HitboxPayload payload)
     {
-
+        rb.useGravity = true;
         rb.isKinematic = false;
-        EnemyHitReaction.ApplyKnockback(payload, rb);
+        rb.excludeLayers = LayerMask.GetMask("Player");
+        EnemyHitReaction.ApplyKnockback(payload, rb, isJuggle : false);
     }
 
     public override void OnUpdate()
@@ -42,9 +44,10 @@ public class EnemyDamagedState : EnemyBaseState
         damageTimer -= Time.deltaTime;
         if(!movement.IsGrounded)
         {
-            controller.SwitchState(controller.AirborneState);
+            controller.SwitchState(controller.AirborneDamagedState);
+            return;
         }
-        if (damageTimer <= 0f )
+        if (damageTimer <= 0f /*&& movement.IsGrounded*/)
         {
             controller.SwitchState(controller.IdleState);
         }
@@ -52,7 +55,15 @@ public class EnemyDamagedState : EnemyBaseState
 
     public override void OnExit()
     {
-        rb.linearVelocity = Vector3.zero;
-        rb.isKinematic = true;
+        if (controller.IsAirborne || controller.IsAirborneDamaged) return;
+        rb.excludeLayers = 0; // restore normal collision layers
+
+        //rb.isKinematic = true;
+    }
+    public void Reset(HitboxPayload payload)
+    {
+        damageTimer = controller.damagedDuration;
+        if (anim != null) anim.SetTrigger("damage");
+        ApplyKnockbackImpulse(payload);
     }
 }
