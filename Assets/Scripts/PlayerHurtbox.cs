@@ -6,20 +6,31 @@ public class PlayerHurtbox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Layer : " + other.gameObject.layer);
         if (other.gameObject.layer == 9)
+    {
+        var enemyHitbox = other.transform.root.GetComponentInChildren<EnemyHitBox>();
+        if (enemyHitbox != null && enemyHitbox.HasPayload)
         {
-            print("collide : "+ other.transform.root.GetComponent<EnemyStateAI>().gameObject.name);
-            var hit = other.transform.root.GetComponent<EnemyStateAI>();
-            if (hit != null)
+            var payload = enemyHitbox.Payload;
+
+            if (!healthComponent.IsDie())
             {
-                Debug.Log("damage : "+ hit.GetDamage());
-                if (!healthComponent.IsDie())
+                Debug.Log("damage : " + payload.Damage);
+
+                bool interrupted = healthComponent.CanBeInterruptedBy(payload.AttackerArmor);
+                Debug.Log($"[PlayerHurtbox] interrupted={interrupted} (attackerArmor={payload.AttackerArmor}, superArmor={healthComponent.superArmor})");
+
+                healthComponent.TakeDamage(payload.Damage, payload.AttackerArmor);
+
+                // Only route to DamagedState if the enemy's attack broke player's super armor.
+                // If armor holds, damage still applies but state/inputs are undisturbed.
+                if (interrupted)
                 {
-                    Debug.Log("damage : "+ hit.GetDamage());
-                    healthComponent.TakeDamage(hit.GetDamage(), hit.GetPoiseDamage());
+                    var playerStateController = other.transform.root.GetComponent<PlayerStateController>();
+                    playerStateController?.TriggerDamaged();
                 }
             }
         }
+    }
     }
 }

@@ -55,10 +55,8 @@ public class GroundAttackState : BasePlayerState
     public override void OnEnter()
     {
         
-        // controller.SetMovePermission(false);
-        // controller.SetJumpPermission(false);
-        //animator.Play("GroundAttack");
-                    Debug.Log($"[State Enter] {GetType().Name}");
+        Debug.Log($"[State Enter] {GetType().Name}");
+        controller.Health.superArmor = 2;
 
     }
 
@@ -74,6 +72,8 @@ public class GroundAttackState : BasePlayerState
     }
       public override void OnExit()
     {
+        controller.Health.superArmor = 0;
+
         // controller.SetMovePermission(true);
         // controller.SetJumpPermission(true);
     }
@@ -130,6 +130,7 @@ public class AirAttackState : BasePlayerState
     {
         controller.Movement.SetFallMult(1f); // reset fall mult in case it was modified by a previous attack
         Debug.Log($"[State Enter] {GetType().Name}");
+        controller.Health.superArmor = 2;
 
     }
 
@@ -143,6 +144,7 @@ public class AirAttackState : BasePlayerState
     public override void OnExit()
     {
         controller.Movement.ResetFallMult(); // ensure fall mult reset when exiting air attack
+        controller.Health.superArmor = 0;
     }
       
 }

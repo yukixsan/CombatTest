@@ -17,12 +17,25 @@ public class EnemyAttackState : EnemyBaseState
     
     private void StartAttack()
     {
-        Debug.Log("EnemyAttackState: Attack started");
+         Debug.Log("EnemyAttackState: Attack started");
         isAttacking = true;
         attackTimer = controller.attackDuration;
         controller.canAttack = false;
 
         if (anim != null) anim.SetTrigger("Attack");
+
+        var payload = new HitboxPayload(
+            controller.attackDamage,
+            controller.attackArmor,
+            controller.attackKnockbackForce,
+            controller.attackLaunchForce,
+            controller.attackLaunchDir,
+            controller.attackHitstopDuration,
+            controller.transform,
+            controller.attackVFXIndex
+        );
+        controller.Hitbox?.SetPayload(payload);
+
         //controller.Hitbox?.Active();
     }
 
@@ -72,7 +85,7 @@ public class EnemyAttackState : EnemyBaseState
     {
         Debug.Log("EnemyAttackState: Attack finished");
         isAttacking = false;
-        //controller.Hitbox?.Deactive();
+        controller.Hitbox?.Deactive();
         controller.attackCooldownTimer = controller.attackCooldown;
     }
 

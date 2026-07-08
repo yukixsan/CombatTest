@@ -29,6 +29,14 @@ public class EnemyStateController : MonoBehaviour
     public float attackCooldown = 1.5f;
     public bool canAttack = true;
     public float attackCooldownTimer = 0f;
+    [Header("Attack Data (temporary, until EnemyAttackData exists)")]
+public float attackDamage = 10f;
+public float attackArmor = 0f;
+public float attackKnockbackForce = 5f;
+public float attackLaunchForce = 0f;
+public int attackLaunchDir = 1;
+public float attackHitstopDuration = 0.05f;
+public int attackVFXIndex = 0;
 
     public EnemyIdleState IdleState { get; private set; }
     public EnemyChaseState ChaseState { get; private set; }
