@@ -7,11 +7,14 @@ public class EnemyStateController : MonoBehaviour
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Animator _anim;
     [SerializeField] private HealthComponent _health;
+    [SerializeField] private EnemyHitBox _hitbox;
 
     public EnemyMovement Movement => _movement;
     public Rigidbody Rb => _rb;
     public Animator Anim => _anim;
     public HealthComponent Health => _health;
+    public EnemyHitBox Hitbox => _hitbox;
+
     [Header("Detection")]
     public Transform target;
     public string targetTag = "Player";
@@ -22,6 +25,10 @@ public class EnemyStateController : MonoBehaviour
     [Header("State Tuning")]
     public float idleToChaseDelay = 2f;
     public float damagedDuration = 0.8f;
+    public float attackDuration = 0.5f;
+    public float attackCooldown = 1.5f;
+    public bool canAttack = true;
+    public float attackCooldownTimer = 0f;
 
     public EnemyIdleState IdleState { get; private set; }
     public EnemyChaseState ChaseState { get; private set; }
@@ -34,6 +41,7 @@ public class EnemyStateController : MonoBehaviour
     public bool IsDamaged => currentState == DamagedState;
     public bool IsAirborne => currentState == AirborneState;
     public bool IsAirborneDamaged => currentState == AirborneDamagedState;
+    public bool IsAttacking => currentState == AttackState;
 
     private void Awake()
     {
@@ -105,7 +113,7 @@ public class EnemyStateController : MonoBehaviour
     /// armor-interrupt check DID NOT break super armor (i.e. mini-stun, not full stun).
     public void TriggerDamaged(HitboxPayload payload)
     {
-         if (!_movement.IsGrounded || IsAirborne)
+        if (!_movement.IsGrounded || IsAirborne)
         {
             if (IsAirborneDamaged)
             {
@@ -134,4 +142,6 @@ public class EnemyStateController : MonoBehaviour
         // Placeholder until DeadState is implemented in a later phase.
         _movement.StopMovement();
     }
+
+  
 }

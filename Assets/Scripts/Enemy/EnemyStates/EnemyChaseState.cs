@@ -25,7 +25,7 @@ public class EnemyChaseState : EnemyBaseState
         else
         {
             movement.StopMovement();
-            controller.SwitchState(controller.IdleState);
+            controller.SwitchState(controller.AttackState);
         }
 
         if (dist > controller.detectRange)
