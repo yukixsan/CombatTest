@@ -296,75 +296,207 @@ Properly unsubscribes on `OnDestroy` and on `SetTarget` replacement.
 ---
 
 ## 6. Enemy AI
+## claude.md — Section 6 replacement (Enemy AI)
 
-**Script:** `EnemyStateAI.cs`
+Replace section 6 (6.1–6.6) with the following updated version reflecting the
+new EnemyStateController-based architecture, which has superseded the legacy
+EnemyStateAI monolithic script for state/knockback handling.
 
-### 6.1 States
-Idle      — zero velocity; reset walk anim
+---
 
-Chase     — move toward target.x; Flip by dir; walk anim
+## 6. Enemy AI (EnemyStateController-based)
 
-Attack    — zero velocity; trigger DoAttack coroutine
+**Note:** `EnemyStateAI.cs` is a legacy/earlier implementation kept in the
+project but superseded by `EnemyStateController` + modular `EnemyBaseState`
+subclasses for all new work.
 
-Stunned   — zero velocity; stun anim (driven by HealthComponent.OnStun)
+### 6.1 State Hierarchy
 
-Knockback — passive; physics driven; exits when grounded + timer expired
+EnemyStateController
 
-Dead      — zero velocity; exclude Player layer collisions; dead anim
+├─ EnemyIdleState — waits chaseCD, checks distance to switch to Chase/Attack
 
-### 6.2 State Transitions (UpdateState, called every Update)
-Dead check     → always override to Dead
+├─ EnemyChaseState — moves toward target in OnFixedUpdate
 
-Airborne check → Knockback
+├─ EnemyAttackState — duration-based hitbox window (see 6.5)
 
-Stunned check  → Stunned (health.IsStunned())
+├─ EnemyDamagedState — grounded hitstun/knockback reaction
 
-KnockedBack    → decrement timer; exit when timer≤0 && isGrounded → restore kinematic
+├─ EnemyAirborneState — neutral "falling/rising, not reacting to damage" state
 
-Distance logic → Idle (>detectRange or >chaseRange) | Chase | Attack
+└─ EnemyAirborneDamagedState — airborne hitstun/knockback reaction (juggle)
 
-### 6.3 Movement
+**Ownership principle:** there is NO centralized reactive airborne check in
+`EnemyStateController.Update()`. Each state detects its own exit condition
+in its own `OnUpdate`/`OnFixedUpdate` and calls `SwitchState` itself:
+- `EnemyIdleState.OnUpdate` / `EnemyChaseState.OnFixedUpdate` → switch to
+  `AirborneState` if `!movement.IsGrounded`.
+- `EnemyDamagedState.OnUpdate` → switch to `AirborneDamagedState` if
+  `!movement.IsGrounded`.
+- `EnemyAirborneState.OnUpdate` → switch to `IdleState` if `movement.IsGrounded`.
+- `EnemyAirborneDamagedState.OnUpdate` → switch to `AirborneState` (never
+  directly to Idle) when `damageTimer` expires — `AirborneState` alone owns
+  the landing check, giving a natural "falling but not reacting" visual window.
 
-`ApplyMovement()` runs in `FixedUpdate`:
-- Guard: `isKnockedBack || isTakingDamage || isAirborne` → skip.
-- Uses `rb.MovePosition(transform.position + moveVelocity * fixedDeltaTime)`.
-- `moveVelocity` is set in `Chase()`; never conflicts with knockback impulses because
-  `ApplyMovement` is skipped during knockback.
+This mirrors the proven `PlayerStateController` pattern (`GroundState`/
+`AirborneState` each check their own transition condition) and was adopted
+after a centralized `Update()` guard was found to hijack transitions
+mid-flight, both blocking valid ones (state-guard swallowing) and forcing
+unwanted ones (interrupting an in-progress knockback impulse).
 
-### 6.4 Knockback System
+### 6.2 EnemyStateController.SwitchState
 
-`ApplyKnockback(force, duration)`:
+```csharp
+public void SwitchState(EnemyBaseState newState)
+{
+    if (currentState == newState && newState != DamagedState && newState != AirborneDamagedState) return;
+    currentState?.OnExit(newState);
+    currentState = newState;
+    currentState.OnEnter();
+}
+```
 
-isKnockedBack = true; knockbackTimer = duration
-rb.isKinematic = false; rb.useGravity = true
-rb.excludeLayers = "Player" (prevent player layer collision during ragdoll)
-rb.linearVelocity = zero (clean slate before impulse)
-moveVelocity = zero; StopAttack()
+`OnExit` takes the incoming state (`EnemyBaseState nextState`) so a state can
+decide whether to reset physics based on where it's handing off to — critical
+for `DamagedState`/`AirborneDamagedState` handoffs (see 6.3).
 
-6a. force.y > 5f → isAirborne=true; AddForce(up * force.y, Impulse); SetFallAnim(true)
+### 6.3 Rigidbody Ownership Model
 
-6b. else         → anim trigger "damage"; rb.AddForce(right * knockbackVelocityX, Impulse)
+| State | isKinematic | useGravity | excludeLayers |
+|---|---|---|---|
+| Idle / Chase / Attack | true | false | default |
+| Damaged / AirborneDamaged | false | true | Player (excluded) |
+| Airborne | false | true | default |
 
+- **Set explicitly at every physics-driven entry point** (`ApplyKnockbackImpulse`
+  in both Damaged and AirborneDamaged) — never assumed left over from a
+  previous state.
+- `rb.excludeLayers = LayerMask.GetMask("Player")` is set during knockback
+  states and restored (`= 0`) on exit to a grounded state. This prevents the
+  player's own Rigidbody/movement from physically shoving an airborne/damaged
+  enemy — a separate issue from intentional knockback, caused by solid
+  collision between Player/Enemy body layers.
+- `EnemyDamagedState.OnExit(nextState)` / equivalent skip the kinematic/gravity
+  reset entirely when `nextState` is `AirborneState` or `AirborneDamagedState`
+  — that reset only happens when landing in `IdleState`. Resetting on every
+  exit (including airborne handoffs) was the root cause of knockback impulses
+  being killed almost immediately after being applied.
 
-Landing recovery (in `UpdateGround`):
-isGrounded && isAirborne → isAirborne=false; velocity=zero; rb.isKinematic=true; gravity=false
+### 6.4 Knockback & Juggle Resolution
 
-Timer recovery (in `UpdateState`):
-knockbackTimer≤0 && isGrounded → isKnockedBack=false; velocity=zero; rb.isKinematic=true; restore excludeLayers
+**Script:** `EnemyHitReaction.ApplyKnockback` (static helper, called by both
+`EnemyDamagedState` and `EnemyAirborneDamagedState`).
 
-### 6.5 Attack System
+**Current model: direct `linearVelocity` assignment, not delta/`AddForce`.**
+An earlier delta-based approach (`desiredVelocity - targetRb.linearVelocity`
+via `ForceMode.VelocityChange`) was replaced after causing:
+- Direction-flip on chained hits (stale/reversed leftover X velocity produced
+  a negative delta, reversing knockback direction).
+- Juggle height collapsing to near-zero (delta against decayed Y velocity
+  canceled out intended height caps).
 
-- `DoAttack(AttackData)` coroutine: set anim integer `skill`; wait `delayBeforeHit`;
-  expose damage via `currentDamage/currentPoiseDamage` (polled by `PlayerHurtbox`).
-- `GetAttack(dist)` picks a random valid attack whose `minRange ≤ dist ≤ maxRange`.
-- `canAttack` locks to prevent overlap; reset in `ResetAttack()` after `attackCooldown`.
+```csharp
+public static void ApplyKnockback(HitboxPayload payload, Rigidbody targetRb)
+{
+    float facingX = Mathf.Sign(targetRb.transform.position.x - payload.attacker.position.x);
+    if (facingX == 0f) facingX = 1f;
 
-### 6.6 Damage Reaction
+    float launchY = payload.LaunchForce * payload.LaunchDir;
+    float currentVelY = targetRb.linearVelocity.y;
 
-`PlayDamage()` (called by `EnemyHealth.OnTakeDamage`):
-- Guarded: skips if `isAirborne`.
-- Coroutine: sets `isTakingDamage=true`; triggers "damage" anim; waits `damageDuration`; clears.
-- `isTakingDamage` blocks `Chase`, `Attack`, and `ApplyMovement`.
+    float finalY;
+    if (currentVelY > 0.1f)
+    {
+        // Already airborne/rising — cap toward a reduced fraction of a full
+        // launch instead of stacking or re-launching at full strength.
+        float reducedTarget = launchY * juggleHeightScale;
+        finalY = Mathf.Max(currentVelY, reducedTarget);
+    }
+    else
+    {
+        // Falling, grounded, or at rest — fresh full launch.
+        finalY = launchY;
+    }
+
+    // X always fully overwritten — no delta/reversal risk from stale velocity.
+    targetRb.linearVelocity = new Vector3(payload.KnockbackForce * facingX, finalY, 0f);
+}
+
+private const float juggleHeightScale = 0.5f; // tune 0.4–0.7 by feel
+```
+
+**Key invariants:**
+- **X (horizontal) is never delta'd** — always a hard overwrite each hit.
+  Prevents direction-flip artifacts entirely.
+- **Y juggle detection is velocity-based, not state-based** — `currentVelY > 0.1f`
+  is the sole signal for "treat as juggle," not a controller-tracked
+  "was mid-juggle" flag. This removes the need for an `isJuggle` parameter
+  threaded through `TriggerDamaged` → `SetPendingKnockback`/`Reset` →
+  `ApplyKnockbackImpulse` — that plumbing was tried and reverted as
+  overcomplicated for what the velocity check already captures naturally.
+- If juggle hits still feel weak/non-launching, check attack windup delay vs.
+  fall speed before assuming the formula direction is wrong — a long delay
+  between hits can let `currentVelY` decay far below `reducedTarget` before
+  the next hit lands, which `Mathf.Max` will correctly top up, but may still
+  read as weak if `juggleHeightScale` itself is tuned too low.
+
+### 6.5 EnemyAttackState
+
+Duration-based hitbox control (animation events proved unreliable for timing,
+same lesson as player-side): `attackDuration` timer on `EnemyStateController`.
+`EnemyHitBox.Active()`/`Deactive()` called directly from state enter/exit,
+not from animation event callbacks.
+
+### 6.6 EnemyDamagedState / EnemyAirborneDamagedState — Reset Pattern
+
+Both support in-place re-entry (repeated hits before the stun timer expires)
+via a `Reset(payload)` method, avoiding a full `OnExit`/`OnEnter` cycle:
+
+```csharp
+public void Reset(HitboxPayload payload)
+{
+    damageTimer = controller.damagedDuration;
+    if (anim != null) anim.SetTrigger("damage");
+    ApplyKnockbackImpulse(payload);
+}
+```
+
+`EnemyStateController.TriggerDamaged` routes to `Reset` when already in the
+relevant damaged state, or `SetPendingKnockback` + `SwitchState` otherwise:
+
+```csharp
+public void TriggerDamaged(HitboxPayload payload)
+{
+    if (!_movement.IsGrounded || IsAirborne || IsAirborneDamaged)
+    {
+        if (IsAirborneDamaged)
+        {
+            AirborneDamagedState.Reset(payload);
+            return;
+        }
+        AirborneDamagedState.SetPendingKnockback(payload);
+        SwitchState(AirborneDamagedState);
+        return;
+    }
+
+    DamagedState.SetPendingKnockback(payload);
+    SwitchState(DamagedState);
+}
+```
+
+### 6.7 Known Follow-ups / Not Yet Implemented
+
+- `EnemyChaseState`/`EnemyAttackState` do not currently reset kinematic/gravity
+  themselves — they rely on `IdleState`/landing paths having already restored
+  the grounded baseline. Confirmed sufficient for current transition graph,
+  but worth re-checking if a new state is added that can reach Chase/Attack
+  without passing through Idle first.
+- `Player ↔ Enemy` layer collision matrix disabling was attempted but did not
+  take effect as expected; `rb.excludeLayers = LayerMask.GetMask("Player")`
+  during knockback states was used instead as the working fix (see 6.3).
+- Migration of duplicate/legacy knockback logic in `EnemyStateAI` (old script)
+  into this centralized model is still pending — `EnemyStateAI` is left
+  as-is/unused for new enemies but not yet deleted.
 
 ---
 
