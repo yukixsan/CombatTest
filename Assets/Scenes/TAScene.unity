@@ -4521,6 +4521,7 @@ GameObject:
   - component: {fileID: 5419086643918110928}
   - component: {fileID: 8337453075538506592}
   - component: {fileID: 8337453075538506591}
+  - component: {fileID: 8337453075538506594}
   m_Layer: 6
   m_Name: Enemy_NewState
   m_TagString: Enemy
@@ -5479,7 +5480,7 @@ MonoBehaviour:
   _rb: {fileID: 7151641019184708463}
   _anim: {fileID: 8337453075538506593}
   _health: {fileID: 6655436801232249813}
-  _hitbox: {fileID: 0}
+  _hitbox: {fileID: 8337453075538506594}
   target: {fileID: 0}
   targetTag: Player
   detectRange: 15
@@ -5531,6 +5532,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8337453075538506594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2250936049658218309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f67ed3fc96d5dda4fa0cebd3f4454f0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitBoxObject: {fileID: 8631997479519093972}
 --- !u!65 &8342515876354377211
 BoxCollider:
   m_ObjectHideFlags: 0

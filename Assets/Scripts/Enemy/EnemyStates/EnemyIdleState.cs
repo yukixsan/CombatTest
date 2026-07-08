@@ -8,6 +8,8 @@ public class EnemyIdleState : EnemyBaseState
     public override void OnEnter()
     {
         Debug.Log("EnemyIdleState: OnEnter() called");  
+        anim.Play("Idle");
+        
         rb.linearVelocity = Vector3.zero;
         rb.isKinematic = true;
         rb.useGravity = true;

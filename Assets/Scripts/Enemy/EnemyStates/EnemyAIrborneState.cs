@@ -7,6 +7,8 @@ public class EnemyAirborneState : EnemyBaseState
     public override void OnEnter()
     {
         Debug.Log("EnemyAirborneState: OnEnter() called");
+        anim.SetBool("fall", true);
+        // anim.SetTrigger("fall");
         rb.isKinematic = false;
         rb.useGravity = true;
         movement.StopMovement();
@@ -18,5 +20,9 @@ public class EnemyAirborneState : EnemyBaseState
         {
             controller.SwitchState(controller.IdleState);
         }
+    }
+    public override void OnExit()
+    {
+        anim.SetBool("fall", false);
     }
 }

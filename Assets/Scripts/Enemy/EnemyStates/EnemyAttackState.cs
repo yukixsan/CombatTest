@@ -23,7 +23,7 @@ public class EnemyAttackState : EnemyBaseState
         controller.canAttack = false;
 
         if (anim != null) anim.SetTrigger("Attack");
-        controller.Hitbox?.Active();
+        //controller.Hitbox?.Active();
     }
 
     public override void OnUpdate()
@@ -72,7 +72,7 @@ public class EnemyAttackState : EnemyBaseState
     {
         Debug.Log("EnemyAttackState: Attack finished");
         isAttacking = false;
-        controller.Hitbox?.Deactive();
+        //controller.Hitbox?.Deactive();
         controller.attackCooldownTimer = controller.attackCooldown;
     }
 

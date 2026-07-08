@@ -24,7 +24,7 @@ public class EnemyAirborneDamagedState : EnemyBaseState
         damageTimer = controller.damagedDuration;
         rb.excludeLayers = LayerMask.GetMask("Player");
 
-        if (anim != null) anim.SetTrigger("damage");
+        if (anim != null) anim.SetTrigger("airDamaged");
 
         if (hasPendingPayload)
         {
@@ -39,7 +39,7 @@ public class EnemyAirborneDamagedState : EnemyBaseState
     public void Reset(HitboxPayload payload)
     {
         damageTimer = controller.damagedDuration;
-        if (anim != null) anim.SetTrigger("damage");
+        if (anim != null) anim.SetTrigger("airDamaged");
         ApplyKnockbackImpulse(payload);
     }
 

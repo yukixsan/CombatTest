@@ -2,8 +2,13 @@ using UnityEngine;
 
 public class EnemyChaseState : EnemyBaseState
 {
-        public EnemyChaseState(EnemyStateController controller) : base(controller) { }
+    public EnemyChaseState(EnemyStateController controller) : base(controller) { }
 
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        anim.SetBool("walk", true);
+    }
     public override void OnFixedUpdate()
     {
         Debug.Log("EnemyChaseState: OnFixedUpdate() called");
@@ -38,6 +43,10 @@ public class EnemyChaseState : EnemyBaseState
         {
             controller.SwitchState(controller.IdleState);
         }
+    }
+    public override void OnExit()
+    {
+        anim.SetBool("walk", false);
     }
 
 }
