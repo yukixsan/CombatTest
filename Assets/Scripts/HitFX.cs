@@ -18,6 +18,8 @@ public class HitFX : MonoBehaviour
 
     public Renderer[] renderers;
     private Color[] originalColors;
+    private string[] colorPropertyNames;
+
 
     [Header("EVENT")]
     public UnityEvent OnActive;
@@ -29,10 +31,15 @@ public class HitFX : MonoBehaviour
         originalRot = transform.localRotation;
 
         originalColors = new Color[renderers.Length];
+        colorPropertyNames = new string[renderers.Length];
+
         for (int i = 0; i < renderers.Length; i++)
         {
-            if (renderers[i].material.HasProperty("_Color"))
-                originalColors[i] = renderers[i].material.color;
+            string propName = GetColorPropertyName(renderers[i].material);
+            colorPropertyNames[i] = propName;
+
+            if (propName != null)
+                originalColors[i] = renderers[i].material.GetColor(propName);
         }
     }
 
@@ -88,13 +95,20 @@ public class HitFX : MonoBehaviour
         }
         SetOriginalColor();
     }
+    private string GetColorPropertyName(Material mat)
+    {
+        if (mat.HasProperty("_BaseColor")) return "_BaseColor"; // URP / custom lit shaders
+        if (mat.HasProperty("_Color")) return "_Color";           // Built-in RP
+        if (mat.HasProperty("_TintColor")) return "_TintColor";   // some custom shaders
+        return null;
+    }
 
     private void SetColor(Color color)
     {
-        foreach (var rend in renderers)
+         for (int i = 0; i < renderers.Length; i++)
         {
-            if (rend.material.HasProperty("_Color"))
-                rend.material.color = color;
+            if (colorPropertyNames[i] != null)
+                renderers[i].material.SetColor(colorPropertyNames[i], color);
         }
     }
 
@@ -102,8 +116,8 @@ public class HitFX : MonoBehaviour
     {
         for (int i = 0; i < renderers.Length; i++)
         {
-            if (renderers[i].material.HasProperty("_Color"))
-                renderers[i].material.color = originalColors[i];
+            if (colorPropertyNames[i] != null)
+                renderers[i].material.SetColor(colorPropertyNames[i], originalColors[i]);
         }
     }
 }
