@@ -8,6 +8,7 @@ public class EnemyChaseState : EnemyBaseState
     {
         base.OnEnter();
         anim.SetBool("walk", true);
+         rb.isKinematic = true;
     }
     public override void OnFixedUpdate()
     {

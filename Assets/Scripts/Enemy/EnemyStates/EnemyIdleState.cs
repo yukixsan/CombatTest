@@ -12,9 +12,16 @@ public class EnemyIdleState : EnemyBaseState
         
         rb.linearVelocity = Vector3.zero;
         rb.isKinematic = true;
+
         rb.useGravity = true;
         movement.StopMovement();
         chaseCDTimer = controller.idleToChaseDelay;
+
+        if (controller.target != null)
+        {
+            Vector3 dir = (controller.target.position - controller.transform.position).normalized;
+            movement.Flip(dir.x);
+        }
     }
 
     public override void OnUpdate()
@@ -27,6 +34,9 @@ public class EnemyIdleState : EnemyBaseState
         }
 
         if (controller.target == null) return;
+
+        Vector3 dir = (controller.target.position - controller.transform.position).normalized;
+        movement.Flip(dir.x);
 
         if (chaseCDTimer > 0f)
         {

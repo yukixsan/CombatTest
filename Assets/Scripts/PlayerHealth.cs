@@ -38,7 +38,7 @@ public class PlayerHealth : MonoBehaviour
     void OnTakeDamage(float dmg)
     {
         Debug.Log("Damage: " + dmg);
-        playerStateController.TriggerDamaged();
+        //playerStateController.TriggerDamaged();
         OnDamageEvent?.Invoke();
     }
 

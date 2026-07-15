@@ -18,11 +18,16 @@ public class PlayerStateController : MonoBehaviour
     public GroundState GroundedState { get; private set; }
     public AirborneState AirborneState { get; private set; }
     public DamagedState DamagedState { get; private set; }
+    public PlayerAirborneDamagedState AirborneDamagedState { get; private set; }
     public DeadState DeadState { get; private set; }
 
     [SerializeField]public bool CanMove { get; private set; } = true;
     public bool CanJump { get; private set; } = true;
     public bool IsAirborne => _movement != null && !_movement.IsGrounded;
+    public bool IsDead => currentState == DeadState;
+    public bool IsAlive => !IsDead;
+    public bool CombatInputLocked { get; private set; }
+    public bool CanAcceptCombatInput => IsAlive && !CombatInputLocked;
     public bool IsCrouching {get; private set; }
     public void SetCrouching(bool value) => IsCrouching = value;
 
@@ -35,6 +40,7 @@ public class PlayerStateController : MonoBehaviour
         GroundedState = new GroundState(this);
         AirborneState = new AirborneState(this);
         DamagedState = new DamagedState(this);
+        AirborneDamagedState = new PlayerAirborneDamagedState(this);
         DeadState = new DeadState(this);
         SwitchState(GroundedState);
 
@@ -52,23 +58,50 @@ public class PlayerStateController : MonoBehaviour
         currentState = newState;
         currentState.OnEnter();
     }
-    public void TriggerDamaged()
+    public void TriggerDamaged(HitboxPayload payload)
     {
          if (currentState == DeadState) return; // dead stays dead
- 
+    
+        if (!Movement.IsGrounded || currentState == AirborneState || currentState == AirborneDamagedState)
+        {
+            if (currentState == AirborneDamagedState)
+            {
+                AirborneDamagedState.Reset(payload);
+                return;
+            }
+            AirborneDamagedState.SetPendingKnockback(payload);
+            SwitchState(AirborneDamagedState);
+            return;
+        }
+
         if (currentState == DamagedState)
         {
-            // Already damaged — reset the stun timer and replay animation
-            DamagedState.Reset();
+            DamagedState.Reset(payload);
         }
         else
         {
+            DamagedState.SetPendingKnockback(payload);
             SwitchState(DamagedState);
         }
     }
     public void TriggerDeath()
     {
-        SwitchState(DeadState); 
+        if (IsDead) return;
+
+        LockCombatInput();
+        _combat?.ResetAttack();
+        _combat?.HandleDeath();
+        SwitchState(DeadState);
+    }
+
+    public void LockCombatInput()
+    {
+        CombatInputLocked = true;
+    }
+
+    public void ReleaseCombatInput()
+    {
+        CombatInputLocked = false;
     }
        public void SetMovePermission(bool canMove) => CanMove = canMove;
     public void SetJumpPermission(bool canJump) => CanJump = canJump;

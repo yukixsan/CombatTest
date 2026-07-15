@@ -8,6 +8,8 @@ public class HitFX : MonoBehaviour
     public bool shake;
     public float duration = 0.15f;
     public float magnitude = 0.1f;
+    public float shakeFrequency = 8f;
+    [SerializeField] private Transform targetTransform;
 
     [Header("BLINK")]
     public Color blinkColor = Color.white;
@@ -15,6 +17,7 @@ public class HitFX : MonoBehaviour
 
     private Vector3 originalPos;
     private Quaternion originalRot;
+    private Vector3 originalTargetPos;
 
     public Renderer[] renderers;
     private Color[] originalColors;
@@ -29,6 +32,8 @@ public class HitFX : MonoBehaviour
     {
         originalPos = transform.localPosition;
         originalRot = transform.localRotation;
+
+        originalTargetPos = targetTransform != null ? targetTransform.localPosition : originalPos;
 
         originalColors = new Color[renderers.Length];
         colorPropertyNames = new string[renderers.Length];
@@ -57,22 +62,15 @@ public class HitFX : MonoBehaviour
         {
             if (shake)
             {
+                // Deterministic back-and-forth on X axis only (sinusoidal).
                 float damper = 1f - (time / duration);
+                float x = Mathf.Sin(time * shakeFrequency) * magnitude * damper * 0.25f;
+                Vector3 posOffset = new Vector3(x, 0f, 0f);
 
-                Vector3 posOffset = new Vector3(
-                    Random.Range(-1f, 1f),
-                    Random.Range(-1f, 1f),
-                    Random.Range(-1f, 1f)
-                ) * magnitude * damper;
-
-                Vector3 rotOffset = new Vector3(
-                    Random.Range(-1f, 1f),
-                    Random.Range(-1f, 1f),
-                    Random.Range(-1f, 1f)
-                ) * magnitude * 10f * damper;
-
-                transform.localPosition = originalPos + posOffset;
-                transform.localRotation = originalRot * Quaternion.Euler(rotOffset);
+                if (targetTransform != null)
+                    targetTransform.localPosition = originalTargetPos + posOffset;
+                else
+                    transform.localPosition = originalPos + posOffset;
             }
             
             SetColor(blinkColor);
@@ -90,7 +88,11 @@ public class HitFX : MonoBehaviour
 
         if (shake)
         {
-            transform.localPosition = originalPos;
+            if (targetTransform != null)
+                targetTransform.localPosition = originalTargetPos;
+            else
+                transform.localPosition = originalPos;
+
             transform.localRotation = originalRot;
         }
         SetOriginalColor();

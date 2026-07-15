@@ -9,7 +9,7 @@ public class HeadTrigger : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         // 1. Check if the object entering our head trigger is the Player
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("Enemy"))
         {
             Rigidbody playerRb = other.attachedRigidbody;
             if (playerRb != null)

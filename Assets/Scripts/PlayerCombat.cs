@@ -52,11 +52,21 @@ public class PlayerCombat : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (_stateController != null && !_stateController.CanAcceptCombatInput)
+        {
+            if (commandBuffer != null)
+                commandBuffer.Clear();
+            return;
+        }
+
         bool allowBuffer = !isAttacking || cancelWindowOpen;
         commandBuffer.Process(interpreter, allowBuffer);
     }
     public void ExecuteAttack(Vector2 direction)
     {
+        if (!CanPerformCombatAction("attack"))
+            return;
+
         DirectionVariant variant = DirectionToVariant(direction);
 
         // decide next combo index *now* (so spamming won't change it unexpectedly)
@@ -299,6 +309,9 @@ public class PlayerCombat : MonoBehaviour
     }
     public void ExecuteSkill(int skillIndex)
     {
+        if (!CanPerformCombatAction("skill"))
+            return;
+
         var data = FindMatchingSkill(skillIndex);
         if (data == null)
         {
@@ -360,6 +373,9 @@ public class PlayerCombat : MonoBehaviour
     }
     public void ExecuteDash()
     {
+        if (!CanPerformCombatAction("dash"))
+            return;
+
         Debug.Log("[Combat] Dash executed");
         PlayerSkillData dashData = FindMatchingDash();
         if (dashData != null)     {
@@ -495,12 +511,38 @@ public class PlayerCombat : MonoBehaviour
         currentAttack = null;
         currentSkill = null;
         queuedAttack = null;
+        queuedSkill = null;
         currentComboIndex = 0;
         //AttackVFXManager.Instance.StopAll(); // stop all active VFX immediately on reset
         
         cancelWindowOpen = false;
         isAttacking = false;
-        _hitbox.ClearPayload();
+        if (_hitbox != null)
+            _hitbox.ClearPayload();
+    }
+
+    public void HandleDeath()
+    {
+        ResetAttack();
+        if (commandBuffer != null)
+            commandBuffer.Clear();
+    }
+
+    private bool CanPerformCombatAction(string actionName)
+    {
+        if (_stateController == null)
+        {
+            Debug.LogWarning($"[Combat] Cannot {actionName}: state controller is missing");
+            return false;
+        }
+
+        if (!_stateController.CanAcceptCombatInput)
+        {
+            Debug.Log($"[Combat] Ignored {actionName} while combat input is locked");
+            return false;
+        }
+
+        return true;
     }
     public void SetWeaponVisual(bool useHandWeapon)
     {

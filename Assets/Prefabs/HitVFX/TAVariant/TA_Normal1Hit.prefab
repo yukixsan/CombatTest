@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2129462043909331248}
   - component: {fileID: 1672814916576613120}
   - component: {fileID: 439242651927446130}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: NormalHitShake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,11 +238,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 730687015400721363, guid: 28565c5f0c5c04240baa57c826650a5d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.04
+      value: -4.38
       objectReference: {fileID: 0}
     - target: {fileID: 730687015400721363, guid: 28565c5f0c5c04240baa57c826650a5d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.63
+      value: -6.11
       objectReference: {fileID: 0}
     - target: {fileID: 730687015400721363, guid: 28565c5f0c5c04240baa57c826650a5d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -274,7 +274,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3191598466928114539, guid: 28565c5f0c5c04240baa57c826650a5d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.23
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 3191598466928114539, guid: 28565c5f0c5c04240baa57c826650a5d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -308,6 +308,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4125996763304737365, guid: 28565c5f0c5c04240baa57c826650a5d, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4775507256282734339, guid: 28565c5f0c5c04240baa57c826650a5d, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5030774815457009887, guid: 28565c5f0c5c04240baa57c826650a5d, type: 3}
       propertyPath: m_Color.b
       value: 0.654902
@@ -323,6 +331,14 @@ PrefabInstance:
     - target: {fileID: 7147668126004959192, guid: 28565c5f0c5c04240baa57c826650a5d, type: 3}
       propertyPath: m_Name
       value: TA_Normal1Hit
+      objectReference: {fileID: 0}
+    - target: {fileID: 7147668126004959192, guid: 28565c5f0c5c04240baa57c826650a5d, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8635175414549548402, guid: 28565c5f0c5c04240baa57c826650a5d, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

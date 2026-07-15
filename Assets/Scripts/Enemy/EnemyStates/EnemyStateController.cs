@@ -44,6 +44,7 @@ public int attackVFXIndex = 0;
     public EnemyAirborneState AirborneState { get; private set; }
     public EnemyAirborneDamagedState AirborneDamagedState { get; private set; }
     public EnemyAttackState AttackState { get; private set; }
+    public EnemyDieState DeadState { get; private set; }
 
     private EnemyBaseState currentState;
     public bool IsDamaged => currentState == DamagedState;
@@ -59,6 +60,7 @@ public int attackVFXIndex = 0;
         AirborneState = new EnemyAirborneState(this);
         AirborneDamagedState = new EnemyAirborneDamagedState(this);
         AttackState = new EnemyAttackState(this);
+        DeadState = new EnemyDieState(this);
         SwitchState(IdleState);
     }
 
@@ -95,7 +97,7 @@ public int attackVFXIndex = 0;
 
     public void SwitchState(EnemyBaseState newState)
     {
-        
+        if (currentState == DeadState) return; // dead is terminal
         if(currentState == newState && newState != DamagedState) return;
         currentState?.OnExit();
         currentState = newState;
@@ -132,9 +134,11 @@ public int attackVFXIndex = 0;
 
     private void HandleDeath()
     {
-        // Placeholder until DeadState is implemented in a later phase.
-        _movement.StopMovement();
+        SwitchState(DeadState);
     }
-
+    public void DestroySelf()
+    {
+        Destroy(gameObject);
+    }
   
 }

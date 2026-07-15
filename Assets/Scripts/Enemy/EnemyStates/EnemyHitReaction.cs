@@ -2,8 +2,8 @@ using UnityEngine;
 
 public static class EnemyHitReaction 
 {
-    private const float juggleLaunchScale = 0.2f;
-    private static float juggleMaxHeightScale = 1.5f;
+    private const float juggleLaunchScale = 0.1f;
+    // private static float juggleMaxHeightScale = 1.5f;
 
     public static Vector3 ResolveKnockbackVelocity(HitboxPayload payload, Vector3 targetPosition, Rigidbody targetRb, bool isJuggle)
 {

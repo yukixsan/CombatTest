@@ -1,4 +1,5 @@
 using UnityEngine;
+#region  Idle
 public class IdleState : BasePlayerState
 {
     public IdleState(PlayerStateController controller) : base(controller) { }
@@ -13,7 +14,8 @@ public class IdleState : BasePlayerState
 
     }
 }
-
+#endregion
+#region Moving
 public class MovingState : BasePlayerState
 {
     public MovingState(PlayerStateController controller) : base(controller) { }
@@ -25,7 +27,8 @@ public class MovingState : BasePlayerState
 
     }
 }
-
+#endregion
+#region Crouching
 public class CrouchingState : BasePlayerState
 {
     public CrouchingState(PlayerStateController controller) : base(controller) { }
@@ -47,7 +50,8 @@ public class CrouchingState : BasePlayerState
         animator.SetBool("isCrouching", false);
     }
 }
-
+#endregion
+#region  Ground Attack
 public class GroundAttackState : BasePlayerState
 {
     public GroundAttackState(PlayerStateController controller) : base(controller) { }
@@ -78,7 +82,8 @@ public class GroundAttackState : BasePlayerState
         // controller.SetJumpPermission(true);
     }
 }
-
+#endregion
+#region  Ground Recovery
 public class GroundRecoveryState : BasePlayerState
 {
     public GroundRecoveryState(PlayerStateController controller) : base(controller) { }
@@ -94,7 +99,8 @@ public class GroundRecoveryState : BasePlayerState
             controller.SwitchState(controller.GroundedState);
     }
 }
-
+#endregion
+#region  Air rising
 public class AirRisingState : BasePlayerState
 {
     public AirRisingState(PlayerStateController controller) : base(controller) { }
@@ -109,7 +115,8 @@ public class AirRisingState : BasePlayerState
         }
     }
 }
-
+#endregion
+#region Falling
 public class FallingState : BasePlayerState
 {
     public FallingState(PlayerStateController controller) : base(controller) { }
@@ -121,7 +128,8 @@ public class FallingState : BasePlayerState
         animator.Play("Fall");
     }
 }
-
+#endregion
+#region  Air Attack
 public class AirAttackState : BasePlayerState
 {
     public AirAttackState(PlayerStateController controller) : base(controller) { }
@@ -148,7 +156,8 @@ public class AirAttackState : BasePlayerState
     }
       
 }
-
+#endregion
+#region Air Recovery
 public class AirRecoveryState : BasePlayerState
 {
     public AirRecoveryState(PlayerStateController controller) : base(controller) { }
@@ -159,41 +168,62 @@ public class AirRecoveryState : BasePlayerState
         //animator.Play("Fall");
     }
 }
+#endregion
+#region Damaged
 public class DamagedState : BasePlayerState
-{
-    private float _timer;
- 
+{private float _timer;
+    private HitboxPayload pendingPayload;
+    private bool hasPendingPayload;
+
     public DamagedState(PlayerStateController controller) : base(controller) { }
- 
+
+    public void SetPendingKnockback(HitboxPayload payload)
+    {
+        pendingPayload = payload;
+        hasPendingPayload = true;
+    }
+
     public override void OnEnter()
     {
         Debug.Log($"[State Enter] {GetType().Name}");
-        Reset();
+        ResetInternal();
+
+        if (hasPendingPayload)
+        {
+            ApplyKnockbackImpulse(pendingPayload);
+            hasPendingPayload = false;
+        }
     }
- 
+
     // Called by PlayerStateController.TriggerDamaged() when already in this state
-    // so repeated hits restart the stun without a full state switch
-    public void Reset()
+    public void Reset(HitboxPayload payload)
+    {
+        ResetInternal();
+        ApplyKnockbackImpulse(payload);
+    }
+
+    private void ResetInternal()
     {
         _timer = controller.Health.stunDuration;
- 
-        // Clear any lingering attack hitboxes — prevents player's own
-        // hitbox staying active and dealing damage mid-stun
         combat.ResetAttack();
- 
         controller.SetMovePermission(false);
         controller.SetJumpPermission(false);
         controller.SetFlipPermission(false);
- 
-        // Force-interrupt whatever animation is playing, including mid-recovery
         animator.Play("hit", 0, 0f);
     }
- 
+
+    private void ApplyKnockbackImpulse(HitboxPayload payload)
+    {
+        Vector3 velocity = PlayerHitReaction.ResolveKnockbackVelocity(payload, controller.transform.position);
+        movement.SetKnockbackVelocity(velocity);
+    }
+
     public override void OnUpdate()
     {
         _timer -= Time.deltaTime;
         if (_timer <= 0f)
         {
+            movement.ClearKnockback();
             controller.SwitchState(
                 movement.IsGrounded
                     ? (BasePlayerState)controller.GroundedState
@@ -201,15 +231,86 @@ public class DamagedState : BasePlayerState
             );
         }
     }
- 
+
     public override void OnExit()
     {
+        movement.ClearKnockback();
         controller.SetMovePermission(true);
         controller.SetJumpPermission(true);
         controller.SetFlipPermission(true);
     }
 }
- 
+#endregion
+#region  Air Damaged
+public class PlayerAirborneDamagedState : BasePlayerState
+{
+    private float _timer;
+    private HitboxPayload pendingPayload;
+    private bool hasPendingPayload;
+
+    public PlayerAirborneDamagedState(PlayerStateController controller) : base(controller) { }
+
+    public void SetPendingKnockback(HitboxPayload payload)
+    {
+        pendingPayload = payload;
+        hasPendingPayload = true;
+    }
+
+    public override void OnEnter()
+    {
+        Debug.Log($"[State Enter] {GetType().Name}");
+        _timer = controller.Health.stunDuration;
+
+        combat.ResetAttack();
+
+        controller.SetMovePermission(false);
+        controller.SetJumpPermission(false);
+        controller.SetFlipPermission(false);
+
+        animator.Play("hitAir", 0, 0f);
+
+        if (hasPendingPayload)
+        {
+            ApplyKnockbackImpulse(pendingPayload);
+            hasPendingPayload = false;
+        }
+    }
+
+    // Re-entry path for repeated hits while already airborne-damaged —
+    // mirrors EnemyAirborneDamagedState.Reset(payload).
+    public void Reset(HitboxPayload payload)
+    {
+        _timer = controller.Health.stunDuration;
+        animator.Play("hitAir", 0, 0f);
+        ApplyKnockbackImpulse(payload);
+    }
+
+    private void ApplyKnockbackImpulse(HitboxPayload payload)
+    {
+        Vector3 velocity = PlayerHitReaction.ResolveKnockbackVelocity(payload, controller.transform.position);
+        movement.SetKnockbackVelocity(velocity);
+    }
+
+    public override void OnUpdate()
+    {
+        _timer -= Time.deltaTime;
+        if (_timer <= 0f)
+        {
+            movement.ClearKnockback();
+            controller.SwitchState(controller.AirborneState);
+        }
+    }
+
+    public override void OnExit()
+    {
+        movement.ClearKnockback();
+        controller.SetMovePermission(true);
+        controller.SetJumpPermission(true);
+        controller.SetFlipPermission(true);
+    }
+}
+#endregion
+#region  Dead
 public class DeadState : BasePlayerState
 {
     public DeadState(PlayerStateController controller) : base(controller) { }
@@ -233,3 +334,4 @@ public class DeadState : BasePlayerState
         controller.SetFlipPermission(true);
     }
 }
+#endregion

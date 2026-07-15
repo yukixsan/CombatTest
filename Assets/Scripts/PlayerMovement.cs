@@ -11,6 +11,12 @@ public class PlayerMovement : MonoBehaviour
     private float tempFallMult;
     [SerializeField] private Transform _model;
     private Vector3 externalVelocity;
+
+    [Header("Knockback")]
+    private bool isKnockedBack;
+    private Vector3 knockbackVelocity;
+    public bool IsKnockedBack => isKnockedBack;
+
     [Header("Dash Settings")]
     private bool isDashing;
     private float dashTimer;
@@ -81,12 +87,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Check correcct collision
-        //HandleOneWayCollisions();
-        // 1️⃣ GROUND CHECK
+        //Ground check
         _isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
-
         Vector3 velocity = rb.linearVelocity;
+        
+        // 1️⃣ KNOCKBACK CHECK
+        if(isKnockedBack)
+        {
+            rb.linearVelocity = knockbackVelocity;
+            return; // Knockback overrides everything for 1 frame
+        }
 
         // 2️⃣ LAUNCH (HIGHEST PRIORITY)
         if (hasPendingVelocity)
@@ -178,7 +188,19 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(finalDir.normalized * strength, ForceMode.VelocityChange);
     }
 
-    // ========= Animation Event Presets =========
+    public void SetKnockbackVelocity(Vector3 velocity)
+    {
+        isKnockedBack = true;
+        knockbackVelocity = velocity;
+    }
+
+    public void ClearKnockback()
+    {
+        isKnockedBack = false;
+        knockbackVelocity = Vector3.zero;
+    }
+
+    #region Animation Event Presets 
     public void LaunchUp(float strength) => LaunchVelocity(Vector3.up, strength);
     public void LaunchForward(float strength) => LaunchVelocity(Vector3.right, strength);
     public void LaunchBack(float strength) => LaunchVelocity(Vector3.left, strength);
@@ -188,6 +210,7 @@ public class PlayerMovement : MonoBehaviour
     public void ForceForward(float strength) => LaunchForce(Vector3.right, strength);
     public void ForceBack(float strength) => LaunchForce(Vector3.left, strength);
     public void ForceDown(float strength) => LaunchForce(Vector3.down, strength);
+    #endregion
 
 #region Dash Presets
     public void setDashSpeed(float speed) => _activeDashSpeed = speed;

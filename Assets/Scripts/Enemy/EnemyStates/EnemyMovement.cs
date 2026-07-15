@@ -14,12 +14,18 @@ public class EnemyMovement : MonoBehaviour
     public LayerMask groundLayer;
     public bool IsGrounded { get; private set; }
 
-    private Rigidbody rb;
+    [Header("Enemy-Enemy Blocking")]
+    [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private float blockCheckRadius = 0.4f;
+    [SerializeField] private float blockCheckDistance = 0.5f;
+    [SerializeField] private Transform bodyCenter; // chest-height point on the capsule, assign in inspector
 
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
+    [SerializeField] private Rigidbody rb;
+
+    // private void Awake()
+    // {
+    //     rb = GetComponent<Rigidbody>();
+    // }
 
     public void SetMoveVelocity(Vector3 velocity) => moveVelocity = velocity;
     public void StopMovement() => moveVelocity = Vector3.zero;
@@ -32,7 +38,28 @@ public class EnemyMovement : MonoBehaviour
 
     public void ApplyMovement()
     {
-        rb.MovePosition(transform.position + moveVelocity * Time.fixedDeltaTime);
+         Vector3 intendedMove = moveVelocity * Time.fixedDeltaTime;
+
+        if (intendedMove.x != 0f)
+        {
+            Vector3 dir = new Vector3(Mathf.Sign(intendedMove.x), 0f, 0f);
+            bool blocked = Physics.SphereCast(
+                bodyCenter.position,
+                blockCheckRadius,
+                dir,
+                out _,
+                blockCheckDistance,
+                enemyLayer,
+                QueryTriggerInteraction.Ignore
+            );
+
+            if (blocked)
+            {
+                intendedMove.x = 0f;
+            }
+        }
+
+        rb.MovePosition(transform.position + intendedMove);
     }
 
     public void Flip(float dirX)
@@ -41,4 +68,6 @@ public class EnemyMovement : MonoBehaviour
         scale.x = dirX > 0 ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
         transform.localScale = scale;
     }
+    public void SetExcludeLayers(LayerMask mask) => rb.excludeLayers = mask;
+
 }

@@ -18,6 +18,7 @@
   <Project Path="CFXREditor.csproj" />
   <Project Path="Lofelt.NiceVibrations.csproj" />
   <Project Path="GameCreator.Editor.Melee.csproj" />
+  <Project Path="Assembly-CSharp-firstpass.csproj" />
   <Project Path="ASP.Editor.csproj" />
   <Project Path="Lofelt.NiceVibrations.Demo.csproj" />
   <Project Path="SpringBoneEditor.csproj" />
