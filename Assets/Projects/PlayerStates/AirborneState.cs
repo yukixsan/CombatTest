@@ -16,6 +16,7 @@ public class AirborneState : BasePlayerState
     {
         if (movement.IsGrounded)
         {
+            controller.LocomotionFX.PlayLandDust();
             controller.SwitchState(controller.GroundedState);
             return;
         }

@@ -23,8 +23,13 @@ public class MovingState : BasePlayerState
     public override void OnEnter()
     {
         animator.Play("Move");
+        controller.LocomotionFX.StartRunDust();
         Debug.Log($"[State Enter] {GetType().Name}");
 
+    }
+    public override void OnExit()
+    {
+        controller.LocomotionFX.StopRunDust();  
     }
 }
 #endregion
@@ -107,6 +112,7 @@ public class AirRisingState : BasePlayerState
     public override void OnEnter()
     {
         Debug.Log($"[State Enter] {GetType().Name}");
+        controller.LocomotionFX.PlayJumpDust();
         if (!combat.isAttacking)
         {
             combat.SetWeaponVisual(true); // reset to default weapon visual when entering air state

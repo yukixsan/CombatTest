@@ -6,11 +6,13 @@ public class PlayerStateController : MonoBehaviour
     [SerializeField] private PlayerMovement _movement;
     [SerializeField] private PlayerCombat _combat;
     [SerializeField] private Animator _animator;
+    [SerializeField] private PlayerLocomotionFX _locomotionFX;
     [SerializeField] private HealthComponent _health;
 
     public PlayerMovement Movement => _movement;
     public PlayerCombat Combat => _combat;
     public Animator Animator => _animator;
+    public PlayerLocomotionFX LocomotionFX => _locomotionFX;
     public HealthComponent Health => _health;
 
     private BasePlayerState currentState;
