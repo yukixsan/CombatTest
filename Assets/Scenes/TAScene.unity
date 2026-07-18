@@ -536,7 +536,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5012228569570418275, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.482
+      value: -1.426
       objectReference: {fileID: 0}
     - target: {fileID: 5012228569570418275, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
       propertyPath: m_LocalPosition.z
@@ -584,6 +584,136 @@ Transform:
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
   m_PrefabInstance: {fileID: 270917890}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &304141284
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2034835497}
+    m_Modifications:
+    - target: {fileID: 1101286990751097801, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: m_Name
+      value: DashDust
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: ShapeModule.type
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: ShapeModule.angle
+      value: 39.998016
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: ShapeModule.arc.mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: ShapeModule.m_Scale.x
+      value: 1.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: ShapeModule.m_Scale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: ShapeModule.arc.spread
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: VelocityModule.x.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: VelocityModule.y.scalar
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: VelocityModule.z.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 0.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: VelocityModule.radial.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].repeatInterval
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835310938851482559, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5012228569570418275, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.026
+      objectReference: {fileID: 0}
+    - target: {fileID: 5012228569570418275, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.482
+      objectReference: {fileID: 0}
+    - target: {fileID: 5012228569570418275, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.021
+      objectReference: {fileID: 0}
+    - target: {fileID: 5012228569570418275, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5012228569570418275, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5012228569570418275, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5012228569570418275, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5012228569570418275, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5012228569570418275, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5012228569570418275, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+--- !u!4 &304141285 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5012228569570418275, guid: e0af0e779d6405949bc3c70510fc7020, type: 3}
+  m_PrefabInstance: {fileID: 304141284}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &310788088
 GameObject:
@@ -3925,9 +4055,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1082581392678664148, guid: b9dec8ecb1ea17645861dc85bb0d0dfb, type: 3}
+      propertyPath: fallMultiplier
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3999248397766274024, guid: b9dec8ecb1ea17645861dc85bb0d0dfb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.77
+      value: 21.2
       objectReference: {fileID: 0}
     - target: {fileID: 3999248397766274024, guid: b9dec8ecb1ea17645861dc85bb0d0dfb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3964,6 +4098,10 @@ PrefabInstance:
     - target: {fileID: 3999248397766274024, guid: b9dec8ecb1ea17645861dc85bb0d0dfb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6434033635994175487, guid: b9dec8ecb1ea17645861dc85bb0d0dfb, type: 3}
+      propertyPath: chaseRange
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7685302447074722916, guid: b9dec8ecb1ea17645861dc85bb0d0dfb, type: 3}
       propertyPath: m_Name
@@ -4748,6 +4886,7 @@ Transform:
   m_Children:
   - {fileID: 2282438385123471645}
   - {fileID: 1737007610}
+  - {fileID: 304141285}
   - {fileID: 270917891}
   m_Father: {fileID: 222908111}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6776,6 +6915,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
+  fallMultiplier: 2
+  fallInterruptDuration: 0.08
+  fallStartDelay: 0.12
   groundCheckPoint: {fileID: 4294361663058970323}
   groundCheckDistance: 0.2
   groundLayer:

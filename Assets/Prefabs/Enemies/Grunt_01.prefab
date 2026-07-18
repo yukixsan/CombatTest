@@ -352,7 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dde4a9d10dbf47479a69cbd2f332e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 500
   currentHealth: 0
   superArmor: 0
   maxArmor: 100
@@ -434,6 +434,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 4
+  fallMultiplier: 50
+  fallInterruptDuration: 0.1
+  fallStartDelay: 0.05
   groundCheckPoint: {fileID: 7570926742125070011}
   groundCheckDistance: 0.2
   groundLayer:

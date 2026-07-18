@@ -38,7 +38,10 @@ public static class EnemyHitReaction
 
 public static void ApplyKnockback(HitboxPayload payload, Rigidbody targetRb, bool isJuggle = false)
 {
-     float facingX = Mathf.Sign(targetRb.transform.position.x - payload.attacker.position.x);
+    var movement = targetRb.GetComponent<EnemyMovement>();
+    movement?.InterruptFall();
+
+    float facingX = Mathf.Sign(targetRb.transform.position.x - payload.attacker.position.x);
     if (facingX == 0f) facingX = 1f;
 
     float launchY = payload.LaunchForce * payload.LaunchDir;

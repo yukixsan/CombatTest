@@ -32,6 +32,7 @@ public class EnemyDamagedState : EnemyBaseState
 
     private void ApplyKnockbackImpulse(HitboxPayload payload)
     {
+        movement.InterruptFall();
         rb.useGravity = true;
         rb.isKinematic = false;
         rb.excludeLayers = LayerMask.GetMask("Player");

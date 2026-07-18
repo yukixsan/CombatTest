@@ -22,6 +22,7 @@ public class EnemyAirborneDamagedState : EnemyBaseState
     {
         Debug.Log("EnemyAirborneDamagedState: OnEnter() called");
         damageTimer = controller.damagedDuration;
+        movement.StopAirborneFall();
         rb.excludeLayers = LayerMask.GetMask("Player");
 
         if (anim != null) anim.SetTrigger("airDamaged");
@@ -45,6 +46,7 @@ public class EnemyAirborneDamagedState : EnemyBaseState
 
     private void ApplyKnockbackImpulse(HitboxPayload payload)
     {
+        movement.InterruptFall();
         rb.isKinematic = false;
         rb.useGravity = true;
         EnemyHitReaction.ApplyKnockback(payload, rb);

@@ -11,6 +11,7 @@ public class EnemyAirborneState : EnemyBaseState
         // anim.SetTrigger("fall");
         rb.isKinematic = false;
         rb.useGravity = true;
+        movement.BeginAirborneFall();
         movement.StopMovement();
     }
 
@@ -23,6 +24,7 @@ public class EnemyAirborneState : EnemyBaseState
     }
     public override void OnExit()
     {
+        movement.StopAirborneFall();
         anim.SetBool("fall", false);
     }
 }
