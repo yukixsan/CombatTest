@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerLocomotionFX : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class PlayerLocomotionFX : MonoBehaviour
     [SerializeField] private ParticleSystem dashDustPS;
     [SerializeField] private ParticleSystem runDustPS; // looping - controlled via Play()/Stop()
 
+    [Header("Run settings")]
+    private Coroutine _pendingStopRoutine;
+    private bool _runDustActive; // our own source of truth, not runDustPS.isPlaying
+    [SerializeField] private float runDustStopDelay = 0.15f; 
     public void PlayJumpDust()
     {
         if (jumpDustPS == null) return;
@@ -29,14 +34,32 @@ public class PlayerLocomotionFX : MonoBehaviour
     public void StartRunDust()
     {
         if (runDustPS == null) return;
-        if (!runDustPS.isPlaying)
+
+        if (_pendingStopRoutine != null)
+        {
+            StopCoroutine(_pendingStopRoutine);
+            _pendingStopRoutine = null;
+        }
+
+        if (!_runDustActive)
+        {
             runDustPS.Play();
+            _runDustActive = true;
+        }
     }
 
     public void StopRunDust()
     {
         if (runDustPS == null) return;
-        if (runDustPS.isPlaying)
-            runDustPS.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        if (_pendingStopRoutine != null) return; // already scheduled
+
+        _pendingStopRoutine = StartCoroutine(DelayedStopRunDust());
+    }
+    private IEnumerator DelayedStopRunDust()
+    {
+        yield return new WaitForSeconds(runDustStopDelay);
+        runDustPS.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        _runDustActive = false;
+        _pendingStopRoutine = null;
     }
 }

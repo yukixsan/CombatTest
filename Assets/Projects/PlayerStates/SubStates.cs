@@ -29,6 +29,7 @@ public class MovingState : BasePlayerState
     }
     public override void OnExit()
     {
+        Debug.Log($"[State Exit] {GetType().Name}");
         controller.LocomotionFX.StopRunDust();  
     }
 }

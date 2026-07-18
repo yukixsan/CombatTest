@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float _fallMult;
+    // [SerializeField] private float moveStopDebounce = 0.08f; // seconds of near-zero input before IsMoving reports false
+    // private float _lastMovingTime;
     private float tempFallMult;
     [SerializeField] private Transform _model;
     private Vector3 externalVelocity;
