@@ -2,25 +2,31 @@ using UnityEngine;
 
 public class EnemyDieState : EnemyBaseState
 {
+    private LayerMask _originalExcludeLayers;
+
     public EnemyDieState(EnemyStateController controller) : base(controller) { }
 
-     private Collider _bodyCollider;
     public override void OnEnter()
     {
         Debug.Log("EnemyDeadState: OnEnter() called");
 
-        // Stop all motion and physics reactions
+        // Stop horizontal motion, but allow the rigidbody to fall under gravity.
         movement.StopMovement();
-        rb.linearVelocity = Vector3.zero;
-        rb.isKinematic = true;
 
-        // Disable main body collision
-        if (_bodyCollider == null)
-            _bodyCollider = rb.GetComponent<Collider>();
-        if (_bodyCollider != null)
-            _bodyCollider.enabled = false;
+        Vector3 velocity = rb.linearVelocity;
+        velocity.x = 0f;
+        velocity.z = 0f;
+        rb.linearVelocity = velocity;
 
-        // Disable hitbox so no further attacks can be initiated/land
+        // Restore physics-driven behavior so the enemy can drop naturally.
+        rb.isKinematic = false;
+        rb.useGravity = true;
+
+        // Disable player collision while preserving ground collision.
+        _originalExcludeLayers = rb.excludeLayers;
+        rb.excludeLayers = LayerMask.GetMask("Player");
+
+        // Disable hitbox so no further attacks can be initiated/land.
         controller.Hitbox?.Deactive();
 
         if (anim != null) anim.SetTrigger("dead");
@@ -32,10 +38,6 @@ public class EnemyDieState : EnemyBaseState
 
     public override void OnExit()
     {
-        // Only relevant if a future respawn/pool system re-enters this enemy.
-        if (_bodyCollider != null)
-            _bodyCollider.enabled = true;
-        rb.isKinematic = false;
+        rb.excludeLayers = _originalExcludeLayers;
     }
-
 }

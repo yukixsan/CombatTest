@@ -204,11 +204,11 @@ Material:
     - _ReceiveASPShadow: 0
     - _ReceiveOffsetedDepthMap: 0
     - _ReceiveShadows: 1
-    - _RimLightAlign: 0.16
+    - _RimLightAlign: 0.15
     - _RimLightOn: 1
     - _RimLightOverShadow: 1
-    - _RimLightSmoothness: 0.2
-    - _RimLightStrength: 0.541
+    - _RimLightSmoothness: 0.348
+    - _RimLightStrength: 0.167
     - _SampleGI: 0
     - _ScaleAsScreenSpaceOutline: 0
     - _ShadowColorMode: 0
@@ -233,7 +233,7 @@ Material:
     m_Colors:
     - _AlphaClipUVCtrl: {r: 1, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CharacterCenterWS: {r: 21.2, g: -1.83, b: 0, a: 0}
+    - _CharacterCenterWS: {r: 7.57, g: -1.83, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DepthRimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

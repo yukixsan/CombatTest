@@ -13,9 +13,10 @@ public class PlayerLocomotionFX : MonoBehaviour
     private Coroutine _pendingStopRoutine;
     private bool _runDustActive; // our own source of truth, not runDustPS.isPlaying
     [SerializeField] private float runDustStopDelay = 0.15f; 
-    public void PlayJumpDust()
+    public void PlayJumpDust(Vector3 position)
     {
         if (jumpDustPS == null) return;
+        jumpDustPS.transform.position = position;
         jumpDustPS.Play();
     }
 

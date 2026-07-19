@@ -26,11 +26,11 @@ public class HeadTrigger : MonoBehaviour
 
                 // 4. Zero out downward velocity so they don't awkwardly "sink" into the head while sliding
                 Vector3 velocity = playerRb.linearVelocity; // Note: Use .velocity if on Unity 2022 or older
-                if (velocity.y < 0)
-                {
-                    velocity.y = 0;
-                    playerRb.linearVelocity = velocity;
-                }
+                // if (velocity.y < 0)
+                // {
+                //     velocity.y = 0;
+                //     playerRb.linearVelocity = velocity;
+                // }
             }
         }
     }

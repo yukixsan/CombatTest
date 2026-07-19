@@ -148,6 +148,8 @@ public class PlayerMovement : MonoBehaviour
             velocity = rb.linearVelocity;
             velocity.y = jumpForce;
             rb.linearVelocity = velocity;
+
+            _stateController.LocomotionFX.PlayJumpDust(groundCheck.position);
         }
         _jumpPressed = false;
 
