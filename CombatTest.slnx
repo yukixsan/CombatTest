@@ -5,10 +5,10 @@
   <Project Path="GameCreator.Editor.Stats.csproj" />
   <Project Path="MagicaClothV2.csproj" />
   <Project Path="MoreMountains.Tools.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="GameCreator.Runtime.Melee.csproj" />
   <Project Path="MagicaClothV2.Editor.csproj" />
   <Project Path="GameCreator.Runtime.Cinemachine.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="MoreMountains.Tools.Editor.csproj" />
   <Project Path="GameCreator.Tests.Core.csproj" />

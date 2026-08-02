@@ -50,6 +50,12 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private PlayerSkillData currentSkill = null;
     private PlayerSkillData queuedSkill = null;
 
+// Tutorial / external observers hook into this to know when an attack or skill
+// input was successfully accepted (started immediately, interrupted-and-started,
+// or queued). Fires BEFORE OnWindupStart/animation events — this is "input accepted",
+// not "move executing".
+public event System.Action<CombatActionData> OnActionAccepted;
+
     private void FixedUpdate()
     {
         if (_stateController != null && !_stateController.CanAcceptCombatInput)
@@ -90,6 +96,7 @@ public class PlayerCombat : MonoBehaviour
             StartAttack(data);
             currentComboIndex = nextCombo;
             lastAttackStartTime = Time.time;
+            OnActionAccepted?.Invoke(data); // notify observers that input was accepted
             return;
         }
 
@@ -106,6 +113,7 @@ public class PlayerCombat : MonoBehaviour
             StartAttack(data);
             currentComboIndex = nextCombo;
             lastAttackStartTime = Time.time;
+            OnActionAccepted?.Invoke(data); // notify observers that input was accepted
             return;
         }
         // Only allow one queued attack; ignore duplicates to avoid spam overwriting the queued slot.
@@ -125,6 +133,7 @@ public class PlayerCombat : MonoBehaviour
         }
 
         queuedAttack = data;
+        OnActionAccepted?.Invoke(data); // notify observers that input was accepted
         Debug.Log($"[Combat] Queued attack {data.Name} (combo {nextCombo}, dir {variant})");
     }
 
@@ -322,12 +331,14 @@ public class PlayerCombat : MonoBehaviour
         if (!isAttacking)
         {
             StartSkill(data);
+            OnActionAccepted?.Invoke(data); // notify observers that input was accepted
             return;
         }
 
         if (cancelWindowOpen)
         {
             StartSkill(data);
+            OnActionAccepted?.Invoke(data); // notify observers that input was accepted
             return;
         }
         
@@ -338,6 +349,7 @@ public class PlayerCombat : MonoBehaviour
         }
 
         queuedSkill = data;
+        OnActionAccepted?.Invoke(data); // notify observers that input was accepted
         Debug.Log($"[Combat] Queued skill {data.Name}");
     
     }
