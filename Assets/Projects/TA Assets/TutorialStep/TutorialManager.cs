@@ -10,6 +10,7 @@ public class TutorialManager : MonoBehaviour
     [Header("Runtime")]
     [SerializeField] private int currentStepIndex = 0;
     [SerializeField] private float sequenceTimeout = 1f;
+    [SerializeField] private float stepAdvanceDelay = 0.4f;
     private float sequenceTimer;
     [Header("SFXs")]
     [SerializeField] private AudioClip sequenceProgressSFX;
@@ -24,6 +25,7 @@ public class TutorialManager : MonoBehaviour
         (currentStepIndex >= 0 && currentStepIndex < steps.Count) ? steps[currentStepIndex] : null;
 
     public bool IsFinished => currentStepIndex >= steps.Count;
+    public int CurrentStepIndex => currentStepIndex;
 
      private void OnEnable()
     {
@@ -74,9 +76,7 @@ private void HandleActionAccepted(CombatActionData data)
 
             if (step.IsComplete)
             {
-                AdvanceStep();
-                OnStepCompleted?.Invoke(step);
-                PlaySFXSafe(stepCompletedSFX);
+                StartCoroutine(AdvanceStepDelayed(step));
             }
             else
             {
@@ -104,6 +104,13 @@ private void HandleActionAccepted(CombatActionData data)
         {
             OnTutorialFinished?.Invoke();
         }
+    }
+    private System.Collections.IEnumerator AdvanceStepDelayed(TutorialStep step)
+    {
+        yield return new WaitForSeconds(stepAdvanceDelay);
+        AdvanceStep();
+        PlaySFXSafe(stepCompletedSFX);
+        OnStepCompleted?.Invoke(step);
     }
 
     // Call this if you need to restart the tutorial (e.g. on scene re-entry)
