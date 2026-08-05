@@ -17,6 +17,7 @@ MonoBehaviour:
   VFXindex: 2
   useHandWeapon: 1
   damage: 10
+  attackArmor: 0
   knockbackForce: 0
   launchForce: 5.5
   launchDir: 1
@@ -25,7 +26,7 @@ MonoBehaviour:
   airLimit: 1
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
-  canBeCancelledRecovery: 0
+  canBeCancelledRecovery: 1
   windupVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}

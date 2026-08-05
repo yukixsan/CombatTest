@@ -5,6 +5,8 @@ public class HitStopManager : MonoBehaviour
 {
     public static HitStopManager Instance { get; private set; }
     bool _isHitstopActive;
+    public bool IsHitstopActive => _isHitstopActive;
+
 
     void Awake()
     {
@@ -28,7 +30,11 @@ public class HitStopManager : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(duration);
 
-        Time.timeScale = originalTimeScale;
         _isHitstopActive = false;
+
+        if (PauseMenu.Instance != null && PauseMenu.Instance.IsPaused)
+            yield break;
+
+        Time.timeScale = originalTimeScale;
     }
 }

@@ -5,55 +5,61 @@ using System.Runtime.InteropServices;
 
 public class PlayerInputReader : MonoBehaviour
 {
-    [SerializeField] private PlayerInputActions inputActions;
+    //[SerializeField] private PlayerInputActions inputActions;
     [SerializeField] private CommandBuffer commandBuffer;
     [SerializeField] private CommandInterpreter interpreter;
     
     private void Awake()
     {
-        inputActions = new PlayerInputActions();
+        //inputActions = new PlayerInputActions();
     }
 
     private void OnEnable()
     {
-        inputActions.Gameplay.Enable();
+              var hub = PlayerInputHub.Instance;
+                if (hub == null) Debug.LogError("[Reader] PlayerInputHub instance not found on enable!");
 
-        // Movement
-        inputActions.Gameplay.Direction.performed += OnDirectionPerformed;
-        inputActions.Gameplay.Direction.canceled += OnDirectionPerformed;
+        PlayerInputHub.Instance.Direction.performed += OnDirectionPerformed;
+        hub.Direction.canceled += OnDirectionPerformed;
 
-        //Attack direction
-        // Attack
-        inputActions.Gameplay.Attack.performed += OnAttackPerformed;
+        hub.Attack.performed += OnAttackPerformed;
 
-        // Skills
-        inputActions.Gameplay.Skill01.performed += ctx => commandBuffer.Enqueue(CommandType.Skill, 0);
-        inputActions.Gameplay.Skill02.performed += ctx => commandBuffer.Enqueue(CommandType.Skill, 1);
-        inputActions.Gameplay.Skill03.performed += ctx => commandBuffer.Enqueue(CommandType.Skill, 2);
-        inputActions.Gameplay.Skill04.performed += ctx => commandBuffer.Enqueue(CommandType.Skill, 3);
+        hub.Skill01.performed += OnSkill01Performed;
+        hub.Skill02.performed += OnSkill02Performed;
+        hub.Skill03.performed += OnSkill03Performed;
+        hub.Skill04.performed += OnSkill04Performed;
 
-
-        // Dash
-        inputActions.Gameplay.Dash.performed += ctx => commandBuffer.Enqueue(CommandType.Dash);
+        hub.Dash.performed += OnDashPerformed;
+        Debug.Log($"[Reader] Dash subscribed, action enabled: {hub.Dash.enabled}");
     }
 
    
     private void OnDisable()
     {
-        inputActions.Gameplay.Direction.performed -= OnDirectionPerformed;
-        inputActions.Gameplay.Direction.canceled -= OnDirectionPerformed;
-        inputActions.Gameplay.Attack.performed -= OnAttackPerformed;
+         var hub = PlayerInputHub.Instance;
+        if (hub == null) return;
 
-        inputActions.Gameplay.Disable();
+        hub.Direction.performed -= OnDirectionPerformed;
+        hub.Direction.canceled -= OnDirectionPerformed;
+        hub.Attack.performed -= OnAttackPerformed;
+
+        hub.Skill01.performed -= OnSkill01Performed;
+        hub.Skill02.performed -= OnSkill02Performed;
+        hub.Skill03.performed -= OnSkill03Performed;
+        hub.Skill04.performed -= OnSkill04Performed;
+
+        hub.Dash.performed -= OnDashPerformed;
     }
-
+    private void OnSkill01Performed(InputAction.CallbackContext ctx) => commandBuffer.Enqueue(CommandType.Skill, 0);
+    private void OnSkill02Performed(InputAction.CallbackContext ctx) => commandBuffer.Enqueue(CommandType.Skill, 1);
+    private void OnSkill03Performed(InputAction.CallbackContext ctx) => commandBuffer.Enqueue(CommandType.Skill, 2);
+    private void OnSkill04Performed(InputAction.CallbackContext ctx) => commandBuffer.Enqueue(CommandType.Skill, 3);
+    private void OnDashPerformed(InputAction.CallbackContext ctx) => commandBuffer.Enqueue(CommandType.Dash);    
     private void OnDirectionPerformed(InputAction.CallbackContext ctx)
     {
         Vector2 dir = ctx.ReadValue<Vector2>();
         interpreter.UpdateDirection(dir);
     }
-
-
     private void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
         commandBuffer.Enqueue(CommandType.Attack);

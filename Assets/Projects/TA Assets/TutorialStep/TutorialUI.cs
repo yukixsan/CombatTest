@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
-
+using GameCreator.Runtime.VisualScripting;
 public class TutorialUI : MonoBehaviour
 {
     [SerializeField] private TutorialManager tutorialManager;
@@ -10,7 +10,7 @@ public class TutorialUI : MonoBehaviour
     [SerializeField] private List<GameObject> tutorialObjects = new();
 
     [SerializeField] private TMP_Text completionText; // shows "completionCount / requiredCompletions"
-
+    [SerializeField] private Actions[] finishActions;
     private int _activeIndex = -1;
     private TutorialPanelView _activePanelView;
 
@@ -84,5 +84,19 @@ public class TutorialUI : MonoBehaviour
 
         if (completionText != null)
             completionText.text = "Tutorial Complete!";
+
+        RunFinishActions();
+    }
+
+    private void RunFinishActions()
+    {
+        if (finishActions == null || finishActions.Length == 0)
+            return;
+
+        foreach (var action in finishActions)
+        {
+            if (action != null)
+                action.Invoke(gameObject);
+        }
     }
 }

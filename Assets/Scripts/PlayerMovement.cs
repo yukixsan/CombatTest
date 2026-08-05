@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Components
     private Rigidbody rb;
-    private PlayerInputActions inputActions;
+    //private PlayerInputActions inputActions;
     private Vector2 moveInput;
     [SerializeField]private bool _isGrounded;
     public bool IsMoving { get; private set; }
@@ -63,28 +63,41 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         // Generated input class
-        inputActions = new PlayerInputActions();
+        // inputActions = new PlayerInputActions();
 
-        // Bind Move (A/D or Left/Right)
-        inputActions.Gameplay.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
-        inputActions.Gameplay.Move.canceled += ctx => moveInput = Vector2.zero;
+        // // Bind Move (A/D or Left/Right)
+        // inputActions.Gameplay.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        // inputActions.Gameplay.Move.canceled += ctx => moveInput = Vector2.zero;
 
-        // Bind Jump
-        inputActions.Gameplay.Jump.performed += OnJumpPerformed;
+        // // Bind Jump
+        // inputActions.Gameplay.Jump.performed += OnJumpPerformed;
 
-        //Bind Crouch
-        inputActions.Gameplay.Crouch.performed += ctx => _stateController.SetCrouching(true);
-        inputActions.Gameplay.Crouch.canceled += ctx => _stateController.SetCrouching(false);
+        // //Bind Crouch
+        // inputActions.Gameplay.Crouch.performed += ctx => _stateController.SetCrouching(true);
+        // inputActions.Gameplay.Crouch.canceled += ctx => _stateController.SetCrouching(false);
     }
 
     private void OnEnable()
     {
-        inputActions.Enable();
+         var hub = PlayerInputHub.Instance;
+
+        hub.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        hub.Move.canceled += ctx => moveInput = Vector2.zero;
+
+        hub.Jump.performed += OnJumpPerformed;
+
+        hub.Crouch.performed += ctx => _stateController.SetCrouching(true);
+        hub.Crouch.canceled += ctx => _stateController.SetCrouching(false);
     }
 
     private void OnDisable()
     {
-        inputActions.Disable();
+         var hub = PlayerInputHub.Instance;
+        if (hub == null) return; // hub may already be destroyed on teardown
+
+        hub.Jump.performed -= OnJumpPerformed;
+        hub.Crouch.performed -= ctx => _stateController.SetCrouching(true);
+        hub.Crouch.canceled -= ctx => _stateController.SetCrouching(false);
     }
 
     private void FixedUpdate()
