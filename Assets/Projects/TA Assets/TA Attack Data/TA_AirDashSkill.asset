@@ -17,6 +17,7 @@ MonoBehaviour:
   VFXindex: 0
   useHandWeapon: 0
   damage: 0
+  attackArmor: 0
   knockbackForce: 0
   launchForce: 0
   launchDir: 0
@@ -30,18 +31,21 @@ MonoBehaviour:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
-    sfx: {fileID: 0}
-    sfxVolume: 0
+    parentToTransform: 0
+    sfx: {fileID: 8300000, guid: d459d6e429aa67d43bdedf95468a6fca, type: 3}
+    sfxVolume: 0.8
   activeVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    parentToTransform: 0
     sfx: {fileID: 0}
     sfxVolume: 0
   recoveryVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    parentToTransform: 0
     sfx: {fileID: 0}
     sfxVolume: 0
   cooldown: 0

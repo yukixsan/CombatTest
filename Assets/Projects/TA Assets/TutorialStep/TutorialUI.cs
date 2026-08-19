@@ -8,7 +8,7 @@ public class TutorialUI : MonoBehaviour
     [SerializeField] private TutorialManager tutorialManager;
     [Tooltip("One entry per tutorial step, SAME ORDER as TutorialManager's steps list.")]
     [SerializeField] private List<GameObject> tutorialObjects = new();
-
+    [SerializeField] private TMP_Text TitleText; // shows the current step's title
     [SerializeField] private TMP_Text completionText; // shows "completionCount / requiredCompletions"
     [SerializeField] private Actions[] finishActions;
     private int _activeIndex = -1;
@@ -84,7 +84,7 @@ public class TutorialUI : MonoBehaviour
 
         if (completionText != null)
             completionText.text = "Tutorial Complete!";
-
+        TitleText.text = "";
         RunFinishActions();
     }
 
