@@ -24,7 +24,6 @@
   <Project Path="SpringBoneEditor.csproj" />
   <Project Path="Lofelt.NiceVibrations.Editor.csproj" />
   <Project Path="ASPDemo.csproj" />
-  <Project Path="MagicaCloth2Example.csproj" />
   <Project Path="Assembly-CSharp-Editor-firstpass.csproj" />
   <Project Path="CFXR.WelcomeScreen.csproj" />
   <Project Path="CFXRDemo.csproj" />
