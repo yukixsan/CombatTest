@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TA_Air_02
   m_EditorClassIdentifier: 
   Name: Air_02
-  animationClip: {fileID: 7400000, guid: 76e5c1db640637645945908c71032bbc, type: 2}
+  animationClip: {fileID: 7400000, guid: 0a35b162bf7b1144cb390764aa33d94d, type: 2}
   VFXindex: 2
   useHandWeapon: 1
   damage: 10
