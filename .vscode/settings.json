@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "CombatTest.slnx"
+    "dotnet.defaultSolution": "CombatTest.slnx",
+    "antigravity.enableTelemetry": false
 }
