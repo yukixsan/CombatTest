@@ -10,37 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84920fce873cd9d438592c66055a30fc, type: 3}
-  m_Name: TA_SkillE_Air
+  m_Name: SkillQ_ver2
   m_EditorClassIdentifier: 
-  Name: SkillE_Air
-  animationClip: {fileID: 7400000, guid: ddb0e4e30cbef844db4297626cc8d861, type: 2}
-  VFXindex: 6
+  Name: SkillQ_ver2
+  animationClip: {fileID: 7400000, guid: 7abb1151d8261c84592071bd2c1f6491, type: 2}
+  VFXindex: 0
   useHandWeapon: 1
-  damage: 15
+  damage: 10
   attackArmor: 0
-  knockbackForce: 0.5
-  launchForce: 5
+  knockbackForce: 2
+  launchForce: 2
   launchDir: 1
   hitstunDuration: 0.04
-  Airborne: 1
-  airLimit: 1
+  Airborne: 0
+  airLimit: 0
   canBeCancelledWindup: 0
   canBeCancelledActive: 0
   canBeCancelledRecovery: 1
   windupVFX:
-    prefab: {fileID: 0}
-    localOffset: {x: 0, y: 0, z: 0}
+    prefab: {fileID: 6810844234100877735, guid: 44ca28ddb60176542b303607d27c4f1b, type: 3}
+    localOffset: {x: 0, y: -1.5, z: 0}
     flipByRotation: 0
-    parentToTransform: 0
+    parentToTransform: 1
     sfx: {fileID: 0}
     sfxVolume: 0
   activeVFX:
-    prefab: {fileID: 231859285092543605, guid: 2af34f34822c0ad47a1a05167aca2ead, type: 3}
-    localOffset: {x: 0.5, y: 0.5, z: 0}
+    prefab: {fileID: 7251372708534609280, guid: 88c51055c7cb92b4980524836398f177, type: 3}
+    localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
     parentToTransform: 1
-    sfx: {fileID: 8300000, guid: 992ebdb8c63530c49ae2f5a99b70c7a5, type: 3}
-    sfxVolume: 1
+    sfx: {fileID: 0}
+    sfxVolume: 0
   recoveryVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
@@ -49,6 +49,6 @@ MonoBehaviour:
     sfx: {fileID: 0}
     sfxVolume: 0
   cooldown: 0
-  skillPrefab: {fileID: 0}
+  skillPrefab: {fileID: 2014691039587992245, guid: 6fc3d6a5ee88a6f4a8692bbab3f2952d, type: 3}
   spawnOffset: {x: 0, y: 0, z: 0}
-  attachToPlayer: 0
+  attachToPlayer: 1

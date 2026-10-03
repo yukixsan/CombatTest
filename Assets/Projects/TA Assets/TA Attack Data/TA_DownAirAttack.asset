@@ -9,19 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84920fce873cd9d438592c66055a30fc, type: 3}
-  m_Name: TA_SkillE_Air
+  m_Script: {fileID: 11500000, guid: 93e86760c954ca04a8da1402cfaae22b, type: 3}
+  m_Name: TA_DownAirAttack
   m_EditorClassIdentifier: 
-  Name: SkillE_Air
-  animationClip: {fileID: 7400000, guid: ddb0e4e30cbef844db4297626cc8d861, type: 2}
-  VFXindex: 6
+  Name: DownAir_Attack
+  animationClip: {fileID: 7400000, guid: 7f99128bc1caa6c45b4f2fe3295f92bb, type: 2}
+  VFXindex: 0
   useHandWeapon: 1
-  damage: 15
+  damage: 10
   attackArmor: 0
-  knockbackForce: 0.5
-  launchForce: 5
-  launchDir: 1
-  hitstunDuration: 0.04
+  knockbackForce: 0
+  launchForce: 7
+  launchDir: -1
+  hitstunDuration: 0.06
   Airborne: 1
   airLimit: 1
   canBeCancelledWindup: 0
@@ -33,13 +33,13 @@ MonoBehaviour:
     flipByRotation: 0
     parentToTransform: 0
     sfx: {fileID: 0}
-    sfxVolume: 0
+    sfxVolume: 1
   activeVFX:
-    prefab: {fileID: 231859285092543605, guid: 2af34f34822c0ad47a1a05167aca2ead, type: 3}
-    localOffset: {x: 0.5, y: 0.5, z: 0}
+    prefab: {fileID: 4964728876718248550, guid: b0ff7350fac9160418b657d895fa08da, type: 3}
+    localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
-    parentToTransform: 1
-    sfx: {fileID: 8300000, guid: 992ebdb8c63530c49ae2f5a99b70c7a5, type: 3}
+    parentToTransform: 0
+    sfx: {fileID: 8300000, guid: 30790ebe189ad5844a67198497343119, type: 3}
     sfxVolume: 1
   recoveryVFX:
     prefab: {fileID: 0}
@@ -48,7 +48,7 @@ MonoBehaviour:
     parentToTransform: 0
     sfx: {fileID: 0}
     sfxVolume: 0
-  cooldown: 0
-  skillPrefab: {fileID: 0}
-  spawnOffset: {x: 0, y: 0, z: 0}
-  attachToPlayer: 0
+  nextCombo: {fileID: 0}
+  comboIndex: 0
+  directionVariant: -1
+  absoluteRecovery: 0

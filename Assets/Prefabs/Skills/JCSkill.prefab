@@ -53,7 +53,7 @@ MonoBehaviour:
   scanBoxOffset: {x: 5, y: 4}
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
   maxScanLifetime: 0.2
   jcHitPrefab: {fileID: 551970444693601674, guid: 35c9d6d5694bce248aaece8c355f9e4a, type: 3}
 --- !u!114 &1816253100438417642

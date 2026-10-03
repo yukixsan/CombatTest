@@ -48,7 +48,7 @@ MonoBehaviour:
     parentToTransform: 0
     sfx: {fileID: 0}
     sfxVolume: 0
-  nextCombo: {fileID: 0}
+  nextCombo: {fileID: 11400000, guid: 906ecb5267a0a69478fdbc6280ab84e9, type: 2}
   comboIndex: 2
   directionVariant: 0
-  absoluteRecovery: 1
+  absoluteRecovery: 0
