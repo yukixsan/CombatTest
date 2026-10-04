@@ -73,6 +73,7 @@ private const float juggleHeightScale = 0.5f; // tune 0.4–0.7 by feel
 - X is always hard-overwritten, never delta'd.
 - Juggle detection is velocity-based (`currentVelY > 0.1f`), not state-based; no `isJuggle` parameter plumbing (tried and reverted).
 - If juggles feel weak, check attack windup delay vs. fall speed before blaming the formula; also check `juggleHeightScale`.
+- No-launch hits (`LaunchForce == 0`) in `AirborneDamagedState` get a forced fixed lift: `finalY = Max(currentVelY, controller.juggleLiftVelocity)` (passed as `noLaunchLift`). `DamagedState` (grounded) passes none, so no-launch attacks don't pop grounded enemies. Gravity is never disabled.
 
 ## 6.5 EnemyAttackState
 Duration-based hitbox control (animation events were unreliable): `attackDuration` timer on `EnemyStateController`. `EnemyHitBox.Active()`/`Deactive()` called from state enter/exit.

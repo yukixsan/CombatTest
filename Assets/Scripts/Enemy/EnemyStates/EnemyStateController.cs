@@ -25,6 +25,8 @@ public class EnemyStateController : MonoBehaviour
     [Header("State Tuning")]
     public float idleToChaseDelay = 2f;
     public float damagedDuration = 0.8f;
+    [Tooltip("Fixed upward velocity applied to airborne enemies hit by attacks with no launch force (keeps them juggled).")]
+    public float juggleLiftVelocity = 5f;
     public float attackDuration = 0.5f;
     public float attackCooldown = 1.5f;
     public bool canAttack = true;

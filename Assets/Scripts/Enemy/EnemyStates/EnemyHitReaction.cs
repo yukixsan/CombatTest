@@ -36,7 +36,7 @@ public static class EnemyHitReaction
     return desiredVelocity - targetRb.linearVelocity;
 }
 
-public static void ApplyKnockback(HitboxPayload payload, Rigidbody targetRb, bool isJuggle = false)
+public static void ApplyKnockback(HitboxPayload payload, Rigidbody targetRb, bool isJuggle = false, float noLaunchLift = 0f)
 {
     var movement = targetRb.GetComponent<EnemyMovement>();
     movement?.InterruptFall();
@@ -48,7 +48,12 @@ public static void ApplyKnockback(HitboxPayload payload, Rigidbody targetRb, boo
     float currentVelY = targetRb.linearVelocity.y;
 
     float finalY;
-    if (currentVelY > 0.1f)
+    if (noLaunchLift > 0f && Mathf.Approximately(payload.LaunchForce, 0f))
+    {
+        // No-launch hit on an airborne target: forced fixed lift, never pulls velocity down.
+        finalY = Mathf.Max(currentVelY, noLaunchLift);
+    }
+    else if (currentVelY > 0.1f)
     {
         // Already airborne/rising — REDUCE the effective launch instead of
         // granting a fresh full one, and never let it stack additively.

@@ -19,8 +19,8 @@ MonoBehaviour:
   damage: 10
   attackArmor: 0
   knockbackForce: 0
-  launchForce: 5.5
-  launchDir: 1
+  launchForce: 0
+  launchDir: 0
   hitstunDuration: 0.01
   Airborne: 1
   airLimit: 1
