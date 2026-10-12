@@ -86,11 +86,7 @@ public class PauseMenu : MonoBehaviour
     {
         Application.Quit();
     }
-        private void Update()
-    {
-                Debug.Log(PlayerInputHub.Instance.UICancel.enabled);
-
-    }
+   
 }
 
 

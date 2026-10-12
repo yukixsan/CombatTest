@@ -22,6 +22,11 @@ public class CommandInterpreter : MonoBehaviour
             case CommandType.Dash:
                 playerCombat.ExecuteDash();
                 break;
+
+            case CommandType.Burst:
+                Debug.Log($"[CommandInterpreter] Dispatching Burst with lastDirection: {lastDirection}");
+                playerCombat.ExecuteBurst(lastDirection);
+                break;
         }
     }
 
@@ -29,5 +34,6 @@ public class CommandInterpreter : MonoBehaviour
     public void UpdateDirection(Vector2 dir)
     {
         lastDirection = dir;
+        Debug.Log($"[CommandInterpreter] UpdateDirection: {lastDirection}");
     }
 }

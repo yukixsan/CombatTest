@@ -31,6 +31,7 @@ public class PlayerInputHub : MonoBehaviour
     public InputAction Skill03 { get; private set; }
     public InputAction Skill04 { get; private set; }
     public InputAction Crouch { get; private set; }
+    public InputAction Burst { get; private set; }
 
     public InputAction UICancel { get; private set; }
     // public InputAction Pause { get; private set; }
@@ -59,6 +60,7 @@ public class PlayerInputHub : MonoBehaviour
         Skill03 = asset.FindAction("Gameplay/Skill03");
         Skill04 = asset.FindAction("Gameplay/Skill04");
         Crouch = asset.FindAction("Gameplay/Crouch");
+        Burst = asset.FindAction("Gameplay/Burst");
 
         UICancel = asset.FindAction("UI/Cancel");
         // Pause = asset.FindAction("Gameplay/Pause");

@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     private float _activeDashSpeed;
     private float _activeDashDuration;
     private float dashFacing;
+    private Vector2 _dashDirection = Vector2.right;
 
 
     [Header("Ground Check Settings")]
@@ -127,14 +128,16 @@ public class PlayerMovement : MonoBehaviour
         if (isDashing)
         {
             dashTimer -= Time.fixedDeltaTime;
-            velocity.y = 0; 
-            externalVelocity = new Vector3(dashFacing * _activeDashSpeed, 0f, 0f);
+            rb.useGravity = false;
+            externalVelocity = new Vector3(_dashDirection.x * _activeDashSpeed, _dashDirection.y * _activeDashSpeed, 0f);
+            velocity = externalVelocity;
 
             if (dashTimer <= 0f)
             {
                 isDashing = false;
                 rb.useGravity = true;
                 externalVelocity = Vector3.zero;
+                velocity = Vector3.zero;
             }
         }
 
@@ -167,7 +170,7 @@ public class PlayerMovement : MonoBehaviour
         _jumpPressed = false;
 
         // 6️⃣ FALL MULTIPLIER
-        if (!_isGrounded && rb.linearVelocity.y < 0 )
+        if (!_isGrounded && rb.linearVelocity.y < 0 && !isDashing)
         {
             rb.AddForce(Vector3.down * _fallMult, ForceMode.Acceleration);
         }
@@ -235,11 +238,26 @@ public class PlayerMovement : MonoBehaviour
     
     public void ForceDashForward()
     {
+        float facing = Mathf.Sign(_model.localScale.x);
+        ForceDirectionalDash(new Vector2(facing, 0f));
+    }
+
+    public void ForceDirectionalDash(Vector2 direction)
+    {
+        ForceDirectionalDash(direction, _activeDashSpeed, _activeDashDuration);
+    }
+
+    public void ForceDirectionalDash(Vector2 direction, float speed, float duration)
+    {
         if (isDashing) return; // Prevent overlapping dashes
 
+        _activeDashSpeed = speed;
+        _activeDashDuration = duration;
         isDashing = true;
-        dashTimer = _activeDashDuration;
-        dashFacing = Mathf.Sign(_model.localScale.x);
+        dashTimer = duration;
+        _dashDirection = direction.sqrMagnitude > 0.001f
+            ? direction.normalized
+            : new Vector2(Mathf.Sign(_model.localScale.x), 0f);
         rb.useGravity = false;
     }
    #endregion

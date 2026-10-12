@@ -50,11 +50,22 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private PlayerSkillData currentSkill = null;
     private PlayerSkillData queuedSkill = null;
 
+    [Header("Burst")]
+    [SerializeField] private BurstGauge _burstGauge;
+    [SerializeField] private BurstDashData burstDashData;
+    private bool isBursting;
+
 // Tutorial / external observers hook into this to know when an attack or skill
 // input was successfully accepted (started immediately, interrupted-and-started,
 // or queued). Fires BEFORE OnWindupStart/animation events — this is "input accepted",
 // not "move executing".
 public event System.Action<CombatActionData> OnActionAccepted;
+
+    private void Awake()
+    {
+        if (_burstGauge == null)
+            _burstGauge = GetComponent<BurstGauge>();
+    }
 
     private void FixedUpdate()
     {
@@ -174,7 +185,8 @@ public event System.Action<CombatActionData> OnActionAccepted;
      public void OnWindupStart()
     {
         cancelWindowOpen = (currentAttack != null && currentAttack.canBeCancelledWindup) ||
-                            (currentSkill != null && currentSkill.canBeCancelledWindup);
+                            (currentSkill != null && currentSkill.canBeCancelledWindup) ||
+                            (isBursting && burstDashData != null && burstDashData.canBeCancelledWindup);
         Debug.Log($"[Combat] Phase: WINDUP - cancel={cancelWindowOpen}");
 
         PlayPhaseVFX(GetCurrentVFX()?.windupVFX);
@@ -186,10 +198,11 @@ public event System.Action<CombatActionData> OnActionAccepted;
 
     public void OnActiveStart()
     {
-        if (currentAttack == null && currentSkill == null) return;
+        if (currentAttack == null && currentSkill == null && !isBursting) return;
 
         cancelWindowOpen = (currentAttack != null && currentAttack.canBeCancelledActive) ||
-                                    (currentSkill != null && currentSkill.canBeCancelledActive);
+                           (currentSkill != null && currentSkill.canBeCancelledActive) ||
+                           (isBursting && burstDashData != null && burstDashData.canBeCancelledActive);
         Debug.Log($"[Combat] Phase: ACTIVE - cancel={cancelWindowOpen}");
                 PlayPhaseVFX(GetCurrentVFX()?.activeVFX);
                 PlayPhaseSFX(GetCurrentVFX()?.activeVFX);
@@ -230,14 +243,15 @@ public event System.Action<CombatActionData> OnActionAccepted;
     public void OnRecoveryStart()
     {
         isInRecovery = true;
-        if (currentAttack == null&& currentSkill == null) return;
+        if (currentAttack == null && currentSkill == null && !isBursting) return;
         _hitbox.DeactivateHitbox();
         
         PlayPhaseVFX(GetCurrentVFX()?.recoveryVFX);
         PlayPhaseSFX(GetCurrentVFX()?.recoveryVFX);
 
         cancelWindowOpen = (currentAttack != null && currentAttack.canBeCancelledRecovery) ||
-                            (currentSkill != null && currentSkill.canBeCancelledRecovery);
+                            (currentSkill != null && currentSkill.canBeCancelledRecovery) ||
+                            (isBursting && burstDashData != null && burstDashData.canBeCancelledRecovery);
         Debug.Log($"[Combat] Phase: RECOVERY - cancel={cancelWindowOpen}");
         _stateController.SetFlipPermission(true); // allow movement during recovery if player is trying to buffer next input
         //_stateController.SetMovePermission(true);
@@ -253,6 +267,7 @@ public event System.Action<CombatActionData> OnActionAccepted;
         cancelWindowOpen = false;
         currentAttack = null;
         currentSkill = null;
+        isBursting = false;
         _hitbox.DeactivateHitbox();
 
       _stateController.SetMovePermission(true);
@@ -403,6 +418,150 @@ public event System.Action<CombatActionData> OnActionAccepted;
         airAttackUsage.Clear();
         //Iframes here if needed, or handled by the skill prefab itself
     }
+
+    public void ExecuteBurst(Vector2 direction)
+    {
+        Debug.Log($"[Combat] ExecuteBurst called with raw direction: {direction}. isAttacking: {isAttacking}, cancelWindowOpen: {cancelWindowOpen}");
+
+        if (!CanPerformCombatAction("burst"))
+            return;
+
+        if (_burstGauge == null)
+            _burstGauge = GetComponent<BurstGauge>();
+
+        if (_burstGauge == null || _burstGauge.CurrentGauge <= 0)
+        {
+            Debug.Log("[Combat] Burst ignored: no burst gauge available");
+            return;
+        }
+
+        // Guard: cannot dash purely downward while grounded
+        if (_stateController != null && _stateController.Movement != null && _stateController.Movement.IsGrounded && Mathf.Abs(direction.x) < 0.1f && direction.y < -0.5f)
+        {
+            Debug.Log("[Combat] Burst ignored: cannot dash downward while grounded");
+            return;
+        }
+
+        if (!isAttacking)
+        {
+            if (!_burstGauge.TryConsume()) return;
+            StartBurstDash(direction);
+            return;
+        }
+
+        if (cancelWindowOpen)
+        {
+            _hitbox.DeactivateHitbox();
+            currentAttack = null;
+            currentSkill = null;
+            isBursting = false;
+            cancelWindowOpen = false;
+
+            if (!_burstGauge.TryConsume()) return;
+            StartBurstDash(direction);
+            return;
+        }
+
+        Debug.Log("[Combat] Burst ignored: cannot cancel during current phase");
+    }
+
+    private void StartBurstDash(Vector2 direction)
+    {
+        bool isNeutral = direction.sqrMagnitude < 0.1f;
+        bool isAirborne = IsAirborne();
+        Debug.Log($"[Combat] StartBurstDash - dir: {direction}, sqrMag: {direction.sqrMagnitude:F3}, isNeutral: {isNeutral}, isAirborne: {isAirborne}");
+
+        isBursting = true;
+        isAttacking = true;
+        cancelWindowOpen = false;
+        currentAttack = null;
+        currentSkill = null;
+        queuedAttack = null;
+        queuedSkill = null;
+        airAttackUsage.Clear();
+
+        // Model flip according to horizontal input (if any)
+        if (Mathf.Abs(direction.x) > 0.1f)
+        {
+            float newFacing = Mathf.Sign(direction.x);
+            Debug.Log($"[Combat] Burst model flip applied: {newFacing}");
+            _model.localScale = new Vector3(newFacing, 1f, 1f);
+        }
+
+        BurstDirection burstDir = burstDashData != null ? burstDashData.ResolveDirection(direction) : BurstDirection.Neutral;
+
+        // Spawn Burst Mark at origin position before player moves
+        Vector3 originPos = transform.position;
+        SpawnBurstMark(burstDir, originPos);
+
+        ApplyBurstMovement(direction);
+
+        if (burstDashData != null && animator != null)
+        {
+            AnimationClip clipToPlay = burstDashData.GetAnimationClip(burstDir, isAirborne);
+
+            Debug.Log($"[Combat] Burst animation chosen: {(clipToPlay != null ? clipToPlay.name : "NULL")} (dir: {burstDir}, isAirborne: {isAirborne})");
+
+            if (clipToPlay != null)
+            {
+                try { animator.Play(clipToPlay.name, 0, 0f); }
+                catch { Debug.LogWarning($"[Combat] Animation state {clipToPlay.name} not found"); }
+            }
+        }
+    }
+
+    private void SpawnBurstMark(BurstDirection burstDir, Vector3 originPos)
+    {
+        if (burstDashData == null || burstDashData.markPrefab == null)
+            return;
+
+        GameObject markObj;
+        if (SkillObjectPool.Instance != null)
+        {
+            markObj = SkillObjectPool.Instance.Spawn(burstDashData.markPrefab, originPos, Quaternion.identity);
+        }
+        else
+        {
+            markObj = Instantiate(burstDashData.markPrefab, originPos, Quaternion.identity);
+        }
+
+        var mark = markObj.GetComponent<BurstMark>();
+        if (mark != null)
+        {
+            HitboxPayload payload = burstDashData.CreateMarkPayload(burstDir, markObj.transform);
+            mark.Initialize(payload, burstDashData.markLifetime, burstDashData.markPrefab, burstDashData, markObj.transform);
+        }
+    }
+
+    private void ApplyBurstMovement(Vector2 direction)
+    {
+        bool isNeutral = direction.sqrMagnitude < 0.1f;
+        if (isNeutral)
+        {
+            Debug.Log("[Combat] ApplyBurstMovement skipped (neutral)");
+            return;
+        }
+
+        if (_stateController == null || _stateController.Movement == null || burstDashData == null)
+        {
+            Debug.LogWarning("[Combat] ApplyBurstMovement skipped: missing stateController, movement, or burstDashData");
+            return;
+        }
+
+        // Guard: if grounded and pressing purely down, do not dash into floor
+        if (_stateController.Movement.IsGrounded && Mathf.Abs(direction.x) < 0.1f && direction.y < -0.5f)
+        {
+            Debug.Log("[Combat] Downward burst dash on ground skipped");
+            return;
+        }
+
+        BurstDirection burstDir = burstDashData.ResolveDirection(direction);
+        var profile = burstDashData.GetProfile(burstDir);
+
+        Debug.Log($"[Combat] ApplyBurstMovement directional dash - dir: {burstDir} ({direction.normalized}), speed: {profile.speed}, duration: {profile.duration}");
+
+        _stateController.Movement.ForceDirectionalDash(direction, profile.speed, profile.duration);
+    }
     private AttackData FindMatchingAttack(int comboIndex, DirectionVariant variant)
     {
         bool isAirborne = IsAirborne();
@@ -522,6 +681,7 @@ public event System.Action<CombatActionData> OnActionAccepted;
 
         currentAttack = null;
         currentSkill = null;
+        isBursting = false;
         queuedAttack = null;
         queuedSkill = null;
         currentComboIndex = 0;

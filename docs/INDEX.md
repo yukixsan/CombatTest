@@ -21,6 +21,7 @@ Entries marked `(?)` are still unverified. **Maintenance:** add one line here wh
 | `Scripts/CombatActionData.cs` | ScriptableObject base for actions + `AttackPhaseVFX` | combat |
 | `Scripts/HitFX.cs` | On-hit visual feedback on a target: shake + blink (`shake`, `duration`, `magnitude`, `blinkSpeed`); `PlayEffect()` | vfx-audio |
 | `Scripts/OneWayEffector.cs` | One-way platform drop-through (`enableDelay`, `dropDuration`, `dropForce`) | player |
+| `Scripts/BurstGauge.cs` | Burst gauge resource (int 0–max); AddGauge / TryConsume | combat |
 | `Scripts/UICamera.cs` | UI camera helper (not read in detail) (?) | — |
 
 ## Scripts/Data
@@ -29,6 +30,7 @@ Entries marked `(?)` are still unverified. **Maintenance:** add one line here wh
 | `Scripts/Data/AttackData.cs` | Combo attack data (comboIndex, directionVariant) |
 | `Scripts/Data/PlayerSkillData.cs` | Skill data (cooldown, prefab, offset) |
 | `Scripts/Data/HitboxPayload.cs` | Hit payload struct |
+| `Scripts/Data/BurstDashData.cs` | Burst dash tuning, animations (ground/air neutral & dash), cancel flags |
 
 ## Scripts/Enemy (EnemyStateController architecture; doc: enemy)
 | File | Purpose |
@@ -56,6 +58,7 @@ Entries marked `(?)` are still unverified. **Maintenance:** add one line here wh
 |---|---|
 | `SkillObject.cs` | Base for spawned skill objects (`Initialize(PlayerSkillData, Transform)`); uses `PlayerHitbox.SetPayload` |
 | `SkillObjectPool.cs` / `SkillObjectReturn.cs` | Pool + auto-return |
+| `BurstMark.cs` | Burst Mark object: spawns at burst origin, lifetime timer, directional detonation hitbox, Phase 4 registry |
 | `BurstSkill.cs` | `SkillObject` subclass — burst skill |
 | `JCSkill.cs` | `SkillObject` subclass — spawns `JCHitObject`(s) |
 | `JCHitObject.cs` | Hit object: `Initialize(HitboxPayload, facing)` |
@@ -66,6 +69,7 @@ Entries marked `(?)` are still unverified. **Maintenance:** add one line here wh
 | `VFXHandling/AttackVFXManager.cs` | Per-phase attack VFX pool |
 | `VFXHandling/VfxReturnPool.cs` | `VFXPoolReturn` auto-return |
 | `VFXHandling/ComboCountManager.cs` | Combo HUD singleton; `RegisterHit()`; DOTween panel/fill/text pop animation |
+| `VFXHandling/UIBurstGauge.cs` | TMP_Text burst gauge display (`SetTarget` / inspector wire) | combat |
 | `VFXHandling/PlayerLocomotionFX.cs` | Dedicated dust particle systems: `PlayJumpDust(pos)`, `PlayLandDust`, `PlayDashDust`, `StartRunDust`/stop (delayed stop coroutine) |
 | `AudioHandling/SFXManager.cs` | Pooled AudioSource SFX |
 

@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb24fa126a0cd3e4dbcca0725007747d, type: 3}
+  m_Name: BurstDashData
+  m_EditorClassIdentifier: 
+  horizontalProfile:
+    speed: 30
+    duration: 0.2
+  verticalProfile:
+    speed: 50
+    duration: 0.1
+  diagonalProfile:
+    speed: 40
+    duration: 0.2
+  groundNeutralClip: {fileID: 7400000, guid: 5eb21f7efab44cc449989a9a9393353d, type: 2}
+  airNeutralClip: {fileID: 7400000, guid: cf7d7909d9ac1e04489f18bf1f9de83d, type: 2}
+  groundDashClip: {fileID: 7400000, guid: c35d6e6796387e64c99323d72a12cd28, type: 2}
+  airDashClip: {fileID: 7400000, guid: ea3a16e9f9465cd49b1c3869616adc7b, type: 2}
+  dashUpClip: {fileID: 7400000, guid: eaed2ed3ab12ea149900f55bf6353c6b, type: 2}
+  dashDownClip: {fileID: 7400000, guid: b39520eaf8f94ae47a61e97778d30613, type: 2}
+  dashSlantForwardClip: {fileID: 7400000, guid: e12cc7d46c3de944fba8874ac932aff1, type: 2}
+  dashSlantDownwardClip: {fileID: 7400000, guid: 330e59aa92ceb744691f38cf4e4f9a62, type: 2}
+  canBeCancelledWindup: 0
+  canBeCancelledActive: 0
+  canBeCancelledRecovery: 1
+  markPrefab: {fileID: 6357923818548007537, guid: 26cf9d7839a0b4a46a96a7b4bbf8733c, type: 3}
+  markLifetime: 1.5
+  markBaseDamage: 5
+  markHitstopDuration: 0.08
+  markHitVFXIndex: 0
+  detonationVFXPrefab: {fileID: 0}
+  detonationSFX: {fileID: 0}
+  detonationSFXVolume: 1
+  neutralPayload:
+    knockbackForce: 0
+    launchForce: 1
+    launchDir: 1
+    damageMultiplier: 1
+  horizontalPayload:
+    knockbackForce: 5
+    launchForce: 0
+    launchDir: 0
+    damageMultiplier: 1
+  upPayload:
+    knockbackForce: 0
+    launchForce: 7
+    launchDir: 1
+    damageMultiplier: 1
+  downPayload:
+    knockbackForce: 0
+    launchForce: 7
+    launchDir: -1
+    damageMultiplier: 1

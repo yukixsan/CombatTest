@@ -31,6 +31,7 @@ public class PlayerInputReader : MonoBehaviour
 
         hub.Dash.performed += OnDashPerformed;
         Debug.Log($"[Reader] Dash subscribed, action enabled: {hub.Dash.enabled}");
+        hub.Burst.performed += OnBurstPerformed;
     }
 
    
@@ -49,15 +50,18 @@ public class PlayerInputReader : MonoBehaviour
         hub.Skill04.performed -= OnSkill04Performed;
 
         hub.Dash.performed -= OnDashPerformed;
+        hub.Burst.performed -= OnBurstPerformed;
     }
     private void OnSkill01Performed(InputAction.CallbackContext ctx) => commandBuffer.Enqueue(CommandType.Skill, 0);
     private void OnSkill02Performed(InputAction.CallbackContext ctx) => commandBuffer.Enqueue(CommandType.Skill, 1);
     private void OnSkill03Performed(InputAction.CallbackContext ctx) => commandBuffer.Enqueue(CommandType.Skill, 2);
     private void OnSkill04Performed(InputAction.CallbackContext ctx) => commandBuffer.Enqueue(CommandType.Skill, 3);
     private void OnDashPerformed(InputAction.CallbackContext ctx) => commandBuffer.Enqueue(CommandType.Dash);    
+    private void OnBurstPerformed(InputAction.CallbackContext ctx) => commandBuffer.Enqueue(CommandType.Burst);    
     private void OnDirectionPerformed(InputAction.CallbackContext ctx)
     {
         Vector2 dir = ctx.ReadValue<Vector2>();
+        Debug.Log($"[InputReader] Direction input read: {dir}");
         interpreter.UpdateDirection(dir);
     }
     private void OnAttackPerformed(InputAction.CallbackContext ctx)

@@ -6,15 +6,18 @@
 ### FixedUpdate Priority Stack
 1. Ground check — `Physics.CheckSphere`
 2. PendingLaunch — overrides velocity for 1 frame, then returns
-3. Dash state — `externalVelocity.x = dashFacing * dashSpeed`; gravity off
+3. Dash state — `externalVelocity = _dashDirection * _activeDashSpeed`; gravity off; `velocity = externalVelocity`. On expiration (`dashTimer <= 0`), resets `isDashing`, restores gravity, and zeros `velocity` (hard-brake).
 4. Base movement — `moveInput.x * moveSpeed` if `CanMove && !isDashing`
-5. Velocity write — `rb.linearVelocity = (baseX + externalVelocity.x, currentY, 0)`
+5. Velocity write — `rb.linearVelocity = (baseX + externalVelocity.x, velocity.y, 0)`
 6. Jump — if `_jumpPressed && isGrounded && CanJump`: `velocity.y = jumpForce`
-7. Fall mult — `AddForce(Vector3.down * _fallMult)` when airborne and falling
+7. Fall mult — `AddForce(Vector3.down * _fallMult)` when airborne and falling (guarded by `!isDashing`)
 
 **Model flip** runs in `LateUpdate` via `HandleModelFlip`; guarded by `_stateController.CanFlip`. Uses `_model.localScale.x = ±1`. Facing sign = `Mathf.Sign(_model.localScale.x)`.
 
-**Dash activation:** `ForceDashForward()` called by animation event from dash skill. Sets `isDashing=true`, `dashTimer`, captures `dashFacing`, disables gravity.
+**Dash activation:**
+- `ForceDashForward()`: calls `ForceDirectionalDash(new Vector2(facing, 0))`.
+- `ForceDirectionalDash(Vector2 dir)`: calls `ForceDirectionalDash(dir, _activeDashSpeed, _activeDashDuration)`.
+- `ForceDirectionalDash(Vector2 dir, float speed, float duration)`: sets `isDashing=true`, `dashTimer = duration`, `_dashDirection = dir.normalized`, disables gravity. Supported for all 8 directions.
 
 **Launch presets** (animation event targets):
 - `LaunchUp/Forward/Back/Down(float)` — set `pendingLaunchVelocity`, respect facing.

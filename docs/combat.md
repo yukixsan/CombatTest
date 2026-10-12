@@ -107,3 +107,54 @@ Damage, KnockbackForce, LaunchForce, LaunchDir, HitstopDuration, attacker (Trans
 
 ### AttackPhaseVFX (struct, in CombatActionData)
 prefab (GameObject), localOffset (Vector3), flipByRotation (bool), sfx (AudioClip), sfxVolume (float)
+
+---
+
+# 8. Burst Mark Mechanic (Design — Not Yet Implemented)
+
+## 8.1 Burst Gauge (Resource) — Implemented (Phase 1)
+- Lives on the player GameObject as `BurstGauge` (`Scripts/BurstGauge.cs`).
+- Max value = **5** (`maxGauge`, configurable in inspector).
+- Event `OnGaugeChanged(int current, int max)` notifies listeners (UI, combat logic).
+- Subscribes to `ComboCountManager.Instance.OnComboMilestone` (fired every 10 hits by default via `milestoneInterval`). Each milestone gives `+1` gauge (capped at `maxGauge`).
+- Persistence: hit counter resets on combo drop, but burst gauge persists.
+- API: `AddGauge(int)`, `TryConsume()`, `ResetGauge()`.
+- UI: `UIBurstGauge` (`Scripts/VFXHandling/UIBurstGauge.cs`) displays current/max via `TMP_Text` ("Burst: X/5"). Supports inspector wire or `SetTarget(BurstGauge)`.
+
+## 8.2 Burst Dash (Usage) — Implemented (Phase 2)
+- **Input:** `Gameplay/Burst` action bound to `<Mouse>/middleButton`. Handled by `PlayerInputReader` -> `CommandBuffer.Enqueue(CommandType.Burst)`.
+- **Resource check:** Consumes 1 gauge from `BurstGauge` on successful execution; blocked if gauge is 0.
+- **Model flip:** If `|input.x| > 0.1f`, flips `_model.localScale.x = Mathf.Sign(input.x)` immediately so movement aligns with input.
+- **Movement execution:** Driven via `PlayerMovement.ForceDirectionalDash(direction.normalized, profile.speed, profile.duration)`:
+  - Applies directional `DashProfile` (`horizontalProfile`, `verticalProfile`, `diagonalProfile` via `BurstDashData.GetProfile`) specifying independent `(speed, duration)` per axis type.
+  - True 2D slant motion: simultaneous X and Y motion with no frame delays or launch priority conflicts.
+  - Dash exit hard-brake: zeros `velocity` upon dash completion so vertical velocity does not float after dash finishes.
+  - Ground check guard: skips downward dash if grounded to prevent floor clipping.
+  - Neutral (no WASD): no dash or launch.
+- **Mark spawn (Phase 3):** Spawns `markPrefab` at dash origin in `StartBurstDash` before movement begins.
+- **Direction resolution (`BurstDirection` enum):**
+  - Values: `Neutral`, `Horizontal`, `Up`, `Down`, `SlantUp`, `SlantDown`.
+  - Resolved via `burstDashData.ResolveDirection(direction)`.
+  - Unified across animation selection (`GetAnimationClip`), movement profile lookup (`GetProfile`), and mark payloads (`CreateMarkPayload`).
+
+## 8.3 Burst Mark (Object) — Implemented (Phase 3)
+- **Component:** `BurstMark` (`Scripts/SkillObjects/BurstMark.cs`).
+- **Spawning:** Instantiated/pooled via `SkillObjectPool.Instance.Spawn` at player origin upon starting a burst dash.
+- **Physics/Collision:** No solid Rigidbody. Sits inert with idle visuals until detonation. Does not block player or enemy movement.
+- **Lifetime & Detonation:**
+  - Configurable `markLifetime` (default 2.5s).
+  - Automatically detonates upon lifetime expiry, or can be force-detonated via `BurstMark.DetonateAll()`.
+  - On detonation: disables idle visual, spawns `detonationVFXPrefab`, plays `detonationSFX`, activates `PlayerHitbox` for 2 physics frames using its stored directional `HitboxPayload`, and returns to `SkillObjectPool`.
+- **Phase 4 Registry:** Maintains static `BurstMark.ActiveMarks` and `BurstMark.DetonateAll()` for skill-triggered detonations.
+
+## 8.4 Direction → Payload Mapping — Implemented (Phase 3)
+Built via `burstDashData.CreateMarkPayload(BurstDirection, attackerTransform)`:
+
+| Burst Direction | Knockback Force | Launch Force | Launch Dir | Description |
+|---|---|---|---|---|
+| **Neutral** | 0 | 0 | 0 | Pure damage |
+| **Horizontal** | `horizontalPayload.knockbackForce` | 0 | 0 | Horizontal push away |
+| **Up** / **SlantUp** | `upPayload.knockbackForce` | `upPayload.launchForce` | +1 | Pop-up launch |
+| **Down** / **SlantDown** | `downPayload.knockbackForce` | `downPayload.launchForce` | -1 | Spike / slam down |
+
+All values, base damage, hitstop duration, hit VFX index, detonation VFX, and SFX are configurable in `BurstDashData`.

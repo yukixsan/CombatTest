@@ -6,10 +6,18 @@ using DG.Tweening;
 public class ComboCountManager : MonoBehaviour
 {
     public static ComboCountManager Instance { get; private set; }
-     [Header("UI")]
+
+    /// <summary>Fires each time hitCount crosses a milestone (every N hits).
+    /// Arg: total hit count at the milestone.</summary>
+    public event System.Action<int> OnComboMilestone;
+
+    [Header("UI")]
     [SerializeField] private TMP_Text comboText;
     [SerializeField] private Image timerFillImage;
     [SerializeField] private RectTransform panelRoot;
+
+    [Header("Milestone")]
+    [SerializeField] private int burstMilestoneInterval = 10;
 
     [Header("Timing")]
     [SerializeField] private float comboTimeout = 1.5f;
@@ -25,6 +33,7 @@ public class ComboCountManager : MonoBehaviour
     [SerializeField] private float textPunchDuration = 0.2f;
 
     private int hitCount;
+    private int _lastMilestone;
     private Tween fillTween;
     private Tween panelTween;
     private Tween textTween;
@@ -45,6 +54,16 @@ public class ComboCountManager : MonoBehaviour
         bool wasZero = hitCount == 0;
         hitCount++;
         UpdateText();
+
+        if (burstMilestoneInterval > 0)
+        {
+            int currentMilestone = hitCount / burstMilestoneInterval;
+            if (currentMilestone > _lastMilestone)
+            {
+                _lastMilestone = currentMilestone;
+                OnComboMilestone?.Invoke(hitCount);
+            }
+        }
 
         if (wasZero)
         {
@@ -76,6 +95,7 @@ public class ComboCountManager : MonoBehaviour
     {
         HidePanel();
         hitCount = 0;
+        _lastMilestone = 0;
     }
 
     private void ShowPanel()
