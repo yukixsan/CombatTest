@@ -23,17 +23,45 @@ public class PlayerHitbox : MonoBehaviour
     {
         if (!HasPayload) return;
 
+        CheckOverlaps();
+    }
+
+    private void CheckOverlaps()
+    {
+        if (_collider == null) return;
+
+        Vector3 center;
+        Vector3 halfExtents;
+        Quaternion rotation;
+
+        if (_collider is BoxCollider box)
+        {
+            center = box.transform.TransformPoint(box.center);
+            Vector3 lossy = box.transform.lossyScale;
+            halfExtents = Vector3.Scale(box.size * 0.5f, new Vector3(Mathf.Abs(lossy.x), Mathf.Abs(lossy.y), Mathf.Abs(lossy.z)));
+            rotation = box.transform.rotation;
+        }
+        else
+        {
+            center = _collider.bounds.center;
+            halfExtents = _collider.bounds.extents;
+            rotation = _collider.transform.rotation;
+        }
+
         Collider[] overlaps = Physics.OverlapBox(
-            _collider.bounds.center,
-            _collider.bounds.extents,
-            _collider.transform.rotation,
+            center,
+            halfExtents,
+            rotation,
             _enemyLayer,
-            QueryTriggerInteraction.Collide  // must have this
+            QueryTriggerInteraction.Collide
         );
 
         foreach (var col in overlaps)
         {
-            var hurtbox = col.GetComponent<EnemyHurtbox>();
+            var hurtbox = col.GetComponent<EnemyHurtbox>()
+                       ?? col.GetComponentInParent<EnemyHurtbox>()
+                       ?? col.GetComponentInChildren<EnemyHurtbox>();
+
             if (hurtbox == null || _alreadyHit.Contains(hurtbox)) continue;
 
             _alreadyHit.Add(hurtbox);
@@ -56,24 +84,10 @@ public class PlayerHitbox : MonoBehaviour
 
     public void SetPayload(HitboxPayload payload)
     {
-        
         Payload = payload;
         HasPayload = true;
-         // ✅ Immediately check overlaps so hits don't get missed
-        Collider[] overlaps = Physics.OverlapBox(
-            _collider.bounds.center,
-            _collider.bounds.extents,
-            _collider.transform.rotation
-        );
-
-        foreach (var col in overlaps)
-        {
-            var hurtbox = col.GetComponent<EnemyHurtbox>();
-            if (hurtbox != null)
-            {
-                hurtbox.TryTakeHit(this);
-            }
-        }
+        // Immediately check overlaps so hits don't get missed
+        CheckOverlaps();
     }
 
     public void ClearPayload()

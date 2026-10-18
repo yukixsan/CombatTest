@@ -237,6 +237,13 @@ public event System.Action<CombatActionData> OnActionAccepted;
                 currentSkill.VFXindex
             );
             _hitbox.ActivateHitbox(payload);
+
+            // Phase 4: Sequential detonation of active burst marks
+            if (currentSkill.detonatesBurstMarks)
+            {
+                float interval = burstDashData != null ? burstDashData.sequentialDetonationInterval : 0.08f;
+                BurstMark.DetonateSequentially(this, interval);
+            }
         }
     }
 

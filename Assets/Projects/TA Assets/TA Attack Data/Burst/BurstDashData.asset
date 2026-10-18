@@ -33,13 +33,17 @@ MonoBehaviour:
   canBeCancelledActive: 0
   canBeCancelledRecovery: 1
   markPrefab: {fileID: 6357923818548007537, guid: 26cf9d7839a0b4a46a96a7b4bbf8733c, type: 3}
-  markLifetime: 1.5
+  markLifetime: 2
   markBaseDamage: 5
   markHitstopDuration: 0.08
   markHitVFXIndex: 0
-  detonationVFXPrefab: {fileID: 0}
-  detonationSFX: {fileID: 0}
-  detonationSFXVolume: 1
+  spawnVFXPrefab: {fileID: 7995224939438637503, guid: 7b36be9a4dba0654b8291967c48bf434, type: 3}
+  spawnSFX: {fileID: 8300000, guid: 4629ea4a7a9bbbe4f874238ca3f7cd5a, type: 3}
+  spawnSFXVolume: 0.9
+  detonationVFXPrefab: {fileID: 8114251193329691343, guid: ea5adabe8aeb36249b94ea3b44b8128c, type: 3}
+  detonationSFX: {fileID: 8300000, guid: a1a984ed7bd719d42a72a71d78476cd8, type: 3}
+  detonationSFXVolume: 0.9
+  sequentialDetonationInterval: 0.08
   neutralPayload:
     knockbackForce: 0
     launchForce: 1

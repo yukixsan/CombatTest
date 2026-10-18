@@ -72,11 +72,12 @@ Events fire in order: `OnWindupStart → OnActiveStart → OnRecoveryStart → O
 
 ## 1.5 Hitbox / Hurtbox
 **PlayerHitbox** (`Scripts/PlayerHitbox.cs`):
-- Polls in `FixedUpdate` with `Physics.OverlapBox` on `_enemyLayer`.
+- Polls in `FixedUpdate` (and immediately on `SetPayload`) with `Physics.OverlapBox` on `_enemyLayer` using true `BoxCollider` geometry (`TransformPoint` + `size * lossyScale`).
+- Resolves hurtbox via `col.GetComponent<EnemyHurtbox>() ?? col.GetComponentInParent<EnemyHurtbox>() ?? col.GetComponentInChildren<EnemyHurtbox>()` so hits register on any part of the enemy collider hierarchy.
 - `_alreadyHit: HashSet<EnemyHurtbox>` prevents multi-hit per activation.
 - `ActivateHitbox(payload)` — sets payload, clears hit set.
 - `DeactivateHitbox()` — clears payload and hit set.
-- `SetPayload(payload)` — legacy path; also immediate overlap check (used by `SkillObject`).
+- `SetPayload(payload)` — sets payload and immediately performs overlap check (used by spawned skill objects like `BurstMark`).
 
 **EnemyHurtbox.TryTakeHit(hitbox):**
 1. Guard: `hitbox.HasPayload`
@@ -144,6 +145,7 @@ prefab (GameObject), localOffset (Vector3), flipByRotation (bool), sfx (AudioCli
 - **Lifetime & Detonation:**
   - Configurable `markLifetime` (default 2.5s).
   - Automatically detonates upon lifetime expiry, or can be force-detonated via `BurstMark.DetonateAll()`.
+  - On spawn: plays `spawnVFXPrefab` and `spawnSFX`.
   - On detonation: disables idle visual, spawns `detonationVFXPrefab`, plays `detonationSFX`, activates `PlayerHitbox` for 2 physics frames using its stored directional `HitboxPayload`, and returns to `SkillObjectPool`.
 - **Phase 4 Registry:** Maintains static `BurstMark.ActiveMarks` and `BurstMark.DetonateAll()` for skill-triggered detonations.
 
@@ -157,4 +159,11 @@ Built via `burstDashData.CreateMarkPayload(BurstDirection, attackerTransform)`:
 | **Up** / **SlantUp** | `upPayload.knockbackForce` | `upPayload.launchForce` | +1 | Pop-up launch |
 | **Down** / **SlantDown** | `downPayload.knockbackForce` | `downPayload.launchForce` | -1 | Spike / slam down |
 
-All values, base damage, hitstop duration, hit VFX index, detonation VFX, and SFX are configurable in `BurstDashData`.
+All values, base damage, hitstop duration, hit VFX index, spawn VFX/SFX, detonation VFX, and SFX are configurable in `BurstDashData`.
+
+## 8.5 Sequential Skill Detonation — Implemented (Phase 4)
+- **Skill Flag:** `PlayerSkillData.detonatesBurstMarks` (`bool`) flags any skill to trigger detonation of active burst marks.
+- **Detonation Phase:** Fires at `PlayerCombat.OnActiveStart()` during the skill's active strike frame.
+- **Sequencing Order:** Detonates marks in FIFO order (from oldest spawned mark to newest).
+- **Sequencing Interval:** Controlled by `BurstDashData.sequentialDetonationInterval` (default `0.08s`), creating a chain-pop effect along the player's previous burst dash path.
+- **API:** `BurstMark.DetonateSequentially(MonoBehaviour runner, float interval)`. Fallback `BurstMark.DetonateAll()` available for instantaneous detonation.

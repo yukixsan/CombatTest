@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: SkillR
   m_EditorClassIdentifier: 
   Name: SkillR
-  animationClip: {fileID: 7400000, guid: 4b15c65951f1c924794bade92693b235, type: 2}
+  animationClip: {fileID: 7400000, guid: db4c930817ebc6743a0013653b19e1a7, type: 2}
   VFXindex: 5
-  useHandWeapon: 1
-  damage: 10
-  knockbackForce: 5
-  launchForce: 10
+  useHandWeapon: 0
+  damage: 1
+  attackArmor: 0
+  knockbackForce: 0
+  launchForce: 0
   launchDir: 1
   hitstunDuration: 0.1
   Airborne: 0
@@ -30,21 +31,25 @@ MonoBehaviour:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
-    sfx: {fileID: 0}
-    sfxVolume: 0
+    parentToTransform: 0
+    sfx: {fileID: 8300000, guid: 64437814ae24bc84fbcb5a140dc35785, type: 3}
+    sfxVolume: 1
   activeVFX:
-    prefab: {fileID: 5812017355659881579, guid: f5765c17f83233a46a377d5219fbd94f, type: 3}
+    prefab: {fileID: 0}
     localOffset: {x: 1.5, y: -1.5, z: 0}
     flipByRotation: 1
+    parentToTransform: 0
     sfx: {fileID: 0}
     sfxVolume: 0
   recoveryVFX:
     prefab: {fileID: 0}
     localOffset: {x: 0, y: 0, z: 0}
     flipByRotation: 0
+    parentToTransform: 0
     sfx: {fileID: 0}
     sfxVolume: 0
   cooldown: 0
   skillPrefab: {fileID: 0}
   spawnOffset: {x: 0, y: 0, z: 0}
   attachToPlayer: 0
+  detonatesBurstMarks: 1

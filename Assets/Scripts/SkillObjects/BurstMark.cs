@@ -34,6 +34,36 @@ public class BurstMark : MonoBehaviour
         }
     }
 
+    public static void DetonateSequentially(MonoBehaviour runner, float interval = 0.08f)
+    {
+        if (runner == null)
+        {
+            DetonateAll();
+            return;
+        }
+
+        runner.StartCoroutine(DetonateSequentiallyRoutine(interval));
+    }
+
+    private static IEnumerator DetonateSequentiallyRoutine(float interval)
+    {
+        // Snapshot current marks in chronological order (FIFO: index 0 is oldest spawned mark)
+        var marks = new List<BurstMark>(_activeMarks);
+        for (int i = 0; i < marks.Count; i++)
+        {
+            var mark = marks[i];
+            if (mark != null && !mark._isDetonated)
+            {
+                mark.Detonate();
+
+                if (i < marks.Count - 1 && interval > 0f)
+                {
+                    yield return new WaitForSeconds(interval);
+                }
+            }
+        }
+    }
+
     public void Initialize(HitboxPayload payload, float lifetime, GameObject prefabKey, BurstDashData data, Transform attacker)
     {
         _payload = payload;
@@ -47,6 +77,18 @@ public class BurstMark : MonoBehaviour
             _detonationVFXPrefab = data.detonationVFXPrefab;
             _detonationSFX = data.detonationSFX;
             _detonationSFXVolume = data.detonationSFXVolume;
+
+            // Spawn VFX
+            if (data.spawnVFXPrefab != null)
+            {
+                Instantiate(data.spawnVFXPrefab, transform.position, Quaternion.identity);
+            }
+
+            // Play spawn SFX
+            if (data.spawnSFX != null && SFXManager.Instance != null)
+            {
+                SFXManager.Instance.PlaySFX(data.spawnSFX, data.spawnSFXVolume);
+            }
         }
 
         if (_idleVisual != null)

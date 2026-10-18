@@ -11,5 +11,7 @@ public class PlayerSkillData : CombatActionData
     public GameObject skillPrefab;
     public Vector3 spawnOffset;
     public bool attachToPlayer;
-    
+
+    [Header("Burst Interaction")]
+    public bool detonatesBurstMarks;
 }

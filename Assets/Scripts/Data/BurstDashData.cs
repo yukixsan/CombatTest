@@ -60,9 +60,13 @@ public class BurstDashData : ScriptableObject
     public float markBaseDamage = 15f;
     public float markHitstopDuration = 0.08f;
     public int markHitVFXIndex = 0;
+    public GameObject spawnVFXPrefab;
+    public AudioClip spawnSFX;
+    public float spawnSFXVolume = 1f;
     public GameObject detonationVFXPrefab;
     public AudioClip detonationSFX;
     public float detonationSFXVolume = 1f;
+    public float sequentialDetonationInterval = 0.08f;
 
     [Header("Directional Mark Payloads")]
     public MarkPayloadConfig neutralPayload = new MarkPayloadConfig(0f, 0f, 0, 1f);

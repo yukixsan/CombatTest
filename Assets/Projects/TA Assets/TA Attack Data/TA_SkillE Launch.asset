@@ -52,3 +52,4 @@ MonoBehaviour:
   skillPrefab: {fileID: 0}
   spawnOffset: {x: 0, y: 0, z: 0}
   attachToPlayer: 0
+  detonatesBurstMarks: 0

@@ -52,7 +52,9 @@ public class JCSkill : SkillObject
 
         foreach (var col in hits)
         {
-            var hurtbox = col.GetComponent<EnemyHurtbox>();
+            var hurtbox = col.GetComponent<EnemyHurtbox>()
+                       ?? col.GetComponentInParent<EnemyHurtbox>()
+                       ?? col.GetComponentInChildren<EnemyHurtbox>();
             if (hurtbox == null) continue;
 
             float enemyY = col.transform.position.y;
