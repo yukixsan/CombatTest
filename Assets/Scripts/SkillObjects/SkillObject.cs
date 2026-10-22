@@ -5,7 +5,7 @@ public class SkillObject : MonoBehaviour
     protected HitboxPayload payload;
     protected float _facing = 1f;
     [SerializeField] protected Transform _model;
-    [SerializeField] private PlayerHitbox _hitbox;
+    [SerializeField] protected PlayerHitbox _hitbox;
 
     public virtual void Initialize(PlayerSkillData data, Transform player)
     {
