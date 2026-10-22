@@ -20,7 +20,17 @@ public class AttackVFXManager : MonoBehaviour
     {
         if (phaseVFX.prefab == null) return null;
 
-        var obj = GetFromPool(phaseVFX.prefab);
+        GameObject prefabToSpawn = phaseVFX.prefab;
+
+        if (AwakeningManager.Instance != null && AwakeningManager.Instance.IsAwakened && AwakeningManager.Instance.Data != null)
+        {
+            if (AwakeningManager.Instance.Data.TryGetVFXOverride(prefabToSpawn, out var awakenedPrefab))
+            {
+                prefabToSpawn = awakenedPrefab;
+            }
+        }
+
+        var obj = GetFromPool(prefabToSpawn);
         Vector3 offset = new Vector3(phaseVFX.localOffset.x * facing,
             phaseVFX.localOffset.y,
             phaseVFX.localOffset.z);
@@ -83,9 +93,9 @@ public class AttackVFXManager : MonoBehaviour
         }
 
         var poolReturn = obj.GetComponent<VFXPoolReturn>();
-        if (poolReturn != null) poolReturn.SetPrefabKey(phaseVFX.prefab);
+        if (poolReturn != null) poolReturn.SetPrefabKey(prefabToSpawn);
 
-        _active.Add((phaseVFX.prefab, obj));
+        _active.Add((prefabToSpawn, obj));
         return obj;
     }
 

@@ -27,6 +27,11 @@ public class CommandInterpreter : MonoBehaviour
                 Debug.Log($"[CommandInterpreter] Dispatching Burst with lastDirection: {lastDirection}");
                 playerCombat.ExecuteBurst(lastDirection);
                 break;
+
+            case CommandType.Awaken:
+                Debug.Log("[CommandInterpreter] Dispatching Awaken");
+                playerCombat.ExecuteAwakening();
+                break;
         }
     }
 

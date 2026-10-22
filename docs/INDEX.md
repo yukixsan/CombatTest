@@ -22,6 +22,7 @@ Entries marked `(?)` are still unverified. **Maintenance:** add one line here wh
 | `Scripts/HitFX.cs` | On-hit visual feedback on a target: shake + blink (`shake`, `duration`, `magnitude`, `blinkSpeed`); `PlayEffect()` | vfx-audio |
 | `Scripts/OneWayEffector.cs` | One-way platform drop-through (`enableDelay`, `dropDuration`, `dropForce`) | player |
 | `Scripts/BurstGauge.cs` | Burst gauge resource (int 0–max); AddGauge / TryConsume | combat |
+| `Scripts/AwakeningManager.cs` | Awakening state, timer, speed & damage multiplier coordination | combat |
 | `Scripts/UICamera.cs` | UI camera helper (not read in detail) (?) | — |
 
 ## Scripts/Data
@@ -31,6 +32,7 @@ Entries marked `(?)` are still unverified. **Maintenance:** add one line here wh
 | `Scripts/Data/PlayerSkillData.cs` | Skill data (cooldown, prefab, offset) |
 | `Scripts/Data/HitboxPayload.cs` | Hit payload struct |
 | `Scripts/Data/BurstDashData.cs` | Burst dash tuning, animations (ground/air neutral & dash), cancel flags |
+| `Scripts/Data/AwakeningData.cs` | Awakening tuning, animation clips (ground/air), cancel flags, buff parameters, skill overrides, VFX prefab overrides |
 
 ## Scripts/Enemy (EnemyStateController architecture; doc: enemy)
 | File | Purpose |
@@ -59,7 +61,7 @@ Entries marked `(?)` are still unverified. **Maintenance:** add one line here wh
 | `SkillObject.cs` | Base for spawned skill objects (`Initialize(PlayerSkillData, Transform)`); uses `PlayerHitbox.SetPayload` |
 | `SkillObjectPool.cs` / `SkillObjectReturn.cs` | Pool + auto-return |
 | `BurstMark.cs` | Burst Mark object: spawns at burst origin, lifetime timer, directional detonation hitbox, Phase 4 registry |
-| `BurstSkill.cs` | `SkillObject` subclass — burst skill |
+| `BurstSkill.cs` | `SkillObject` subclass — slash projectile with trajectory velocity drag & release |
 | `JCSkill.cs` | `SkillObject` subclass — spawns `JCHitObject`(s) |
 | `JCHitObject.cs` | Hit object: `Initialize(HitboxPayload, facing)` |
 

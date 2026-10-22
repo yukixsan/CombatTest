@@ -6,6 +6,7 @@ public enum CommandType
     Skill,
     Dash,
     Burst,
+    Awaken,
 }
 public interface IPlayerCommand
 {

@@ -44,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]private bool _isGrounded;
     public bool IsMoving { get; private set; }
     public float HorizontalInput => moveInput.x;
+    public float MoveSpeedMultiplier { get; private set; } = 1f;
+    public void SetMoveSpeedMultiplier(float mult) => MoveSpeedMultiplier = Mathf.Max(0f, mult);
     // Accumulator fields
     private Vector3 pendingLaunchVelocity = Vector3.zero;
     private bool hasPendingVelocity = false;
@@ -149,7 +151,7 @@ public class PlayerMovement : MonoBehaviour
         // Disable input movement if - movement not allowed - OR currently dashing
         if (allowBaseMovement && !isDashing)
         {
-            baseX = moveInput.x * moveSpeed;
+            baseX = moveInput.x * moveSpeed * MoveSpeedMultiplier;
         }
 
         velocity.x = baseX + externalVelocity.x;

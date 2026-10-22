@@ -5,6 +5,7 @@
 - `Play(AttackPhaseVFX, attachTo, facing)`: parents to `attachTo`; applies `localOffset.x * facing`; flip via Y=180 rotation (`flipByRotation=true`) or negated `localScale.x`; stops and replays `ParticleSystem`.
 - `StopAll()` — called at start of every new attack/skill; returns all active to pool.
 - `ReturnToPool(prefab, instance)` — called by `VFXPoolReturn` when particle expires.
+- **Awakening VFX Override:** When `AwakeningManager.Instance.IsAwakened`, queries `AwakeningData.TryGetVFXOverride(prefab)` to swap base attack VFX with their awakened variants. Each variant operates in its own separate object pool.
 
 **VFXPoolReturn** (`VfxReturnPool.cs`): `RequireComponent(ParticleSystem)`; checks `!ps.IsAlive(true)` each `Update`; auto-returns.
 

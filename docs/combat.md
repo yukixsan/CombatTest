@@ -9,6 +9,8 @@ PlayerInputReader
    ├─ Attack.performed       → CommandBuffer.Enqueue(CommandType.Attack)
    ├─ Skill01–04.performed   → CommandBuffer.Enqueue(CommandType.Skill, 0–3)
    ├─ Dash.performed         → CommandBuffer.Enqueue(CommandType.Dash)
+   ├─ Burst.performed        → CommandBuffer.Enqueue(CommandType.Burst)
+   ├─ Awaken.performed       → CommandBuffer.Enqueue(CommandType.Awaken)
    └─ Direction.performed/canceled → CommandInterpreter.UpdateDirection(dir)
 ```
 - `CommandBuffer` holds a `Queue<BufferedCommand>` (max size = `maxBufferSize`, default 1).
@@ -24,6 +26,8 @@ PlayerInputReader
 | `Attack` | `PlayerCombat.ExecuteAttack(lastDirection)` |
 | `Skill` | `PlayerCombat.ExecuteSkill(cmd.skillIndex)` |
 | `Dash` | `PlayerCombat.ExecuteDash()` |
+| `Burst` | `PlayerCombat.ExecuteBurst(lastDirection)` |
+| `Awaken` | `PlayerCombat.ExecuteAwakening()` |
 
 `lastDirection` is a `Vector2` updated continuously by `Direction` input, not buffered.
 
@@ -167,3 +171,24 @@ All values, base damage, hitstop duration, hit VFX index, spawn VFX/SFX, detonat
 - **Sequencing Order:** Detonates marks in FIFO order (from oldest spawned mark to newest).
 - **Sequencing Interval:** Controlled by `BurstDashData.sequentialDetonationInterval` (default `0.08s`), creating a chain-pop effect along the player's previous burst dash path.
 - **API:** `BurstMark.DetonateSequentially(MonoBehaviour runner, float interval)`. Fallback `BurstMark.DetonateAll()` available for instantaneous detonation.
+
+---
+
+# 9. Awakening System
+
+## 9.1 Input & Activation
+- **Input:** `Gameplay/Awaken` action bound via `PlayerInputHub` -> `PlayerInputReader` -> `CommandBuffer.Enqueue(CommandType.Awaken)`.
+- **Command Dispatch:** `CommandInterpreter.Receive` -> `PlayerCombat.ExecuteAwakening()`.
+- **Cancel Windows:** Can activate from neutral or cancel out of attacks/skills when `cancelWindowOpen == true`.
+- **Activation Flow:** `PlayerCombat.StartAwakeningActivation()` plays ground or airborne activation clip from `AwakeningData`. At `OnActiveStart()`, `AwakeningManager.TriggerAwakening()` begins the awakening session.
+
+## 9.2 Stats & Animation Speed Tuning
+- **Damage Multiplier:** `AwakeningManager.DamageMultiplier` multiplies attack and skill damage in `PlayerCombat.OnActiveStart()`.
+- **Movement Speed:** `PlayerMovement.MoveSpeedMultiplier` multiplies base horizontal input velocity.
+- **Animation Speed:** `AwakeningData.animSpeedMultiplier` scales `animator.speed` during awakening and restores `1.0f` on deactivation.
+
+## 9.3 Awakened Skill Swapping
+- **Data Configuration:** `AwakeningData.awakenedGroundSkills` and `awakenedAirSkills` lists (0..3) mirror `PlayerCombat`'s skill lists.
+- **Slot Override Flow:** When `PlayerCombat.FindMatchingSkill(index)` is queried during awakening, it checks the corresponding slot index in `awakenedGroundSkills` (or `awakenedAirSkills`).
+- **Graceful Fallback:** If a slot in the awakened list is left empty/null, it automatically falls back to executing the standard equipped skill for that slot. Base lists are never mutated in memory.
+

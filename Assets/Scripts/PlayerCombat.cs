@@ -55,6 +55,10 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private BurstDashData burstDashData;
     private bool isBursting;
 
+    [Header("Awakening")]
+    [SerializeField] private AwakeningManager _awakeningManager;
+    private bool isActivatingAwakening;
+
 // Tutorial / external observers hook into this to know when an attack or skill
 // input was successfully accepted (started immediately, interrupted-and-started,
 // or queued). Fires BEFORE OnWindupStart/animation events — this is "input accepted",
@@ -65,6 +69,9 @@ public event System.Action<CombatActionData> OnActionAccepted;
     {
         if (_burstGauge == null)
             _burstGauge = GetComponent<BurstGauge>();
+
+        if (_awakeningManager == null)
+            _awakeningManager = GetComponent<AwakeningManager>();
     }
 
     private void FixedUpdate()
@@ -186,7 +193,8 @@ public event System.Action<CombatActionData> OnActionAccepted;
     {
         cancelWindowOpen = (currentAttack != null && currentAttack.canBeCancelledWindup) ||
                             (currentSkill != null && currentSkill.canBeCancelledWindup) ||
-                            (isBursting && burstDashData != null && burstDashData.canBeCancelledWindup);
+                            (isBursting && burstDashData != null && burstDashData.canBeCancelledWindup) ||
+                            (isActivatingAwakening && _awakeningManager != null && _awakeningManager.Data != null && _awakeningManager.Data.canBeCancelledWindup);
         Debug.Log($"[Combat] Phase: WINDUP - cancel={cancelWindowOpen}");
 
         PlayPhaseVFX(GetCurrentVFX()?.windupVFX);
@@ -198,19 +206,31 @@ public event System.Action<CombatActionData> OnActionAccepted;
 
     public void OnActiveStart()
     {
-        if (currentAttack == null && currentSkill == null && !isBursting) return;
+        if (currentAttack == null && currentSkill == null && !isBursting && !isActivatingAwakening) return;
 
         cancelWindowOpen = (currentAttack != null && currentAttack.canBeCancelledActive) ||
                            (currentSkill != null && currentSkill.canBeCancelledActive) ||
-                           (isBursting && burstDashData != null && burstDashData.canBeCancelledActive);
+                           (isBursting && burstDashData != null && burstDashData.canBeCancelledActive) ||
+                           (isActivatingAwakening && _awakeningManager != null && _awakeningManager.Data != null && _awakeningManager.Data.canBeCancelledActive);
         Debug.Log($"[Combat] Phase: ACTIVE - cancel={cancelWindowOpen}");
-                PlayPhaseVFX(GetCurrentVFX()?.activeVFX);
-                PlayPhaseSFX(GetCurrentVFX()?.activeVFX);
-            // handle attack hitbox
+
+        if (isActivatingAwakening && _awakeningManager != null)
+        {
+            _awakeningManager.TriggerAwakening();
+            PlayPhaseVFX(_awakeningManager.Data?.activationVFX);
+            PlayPhaseSFX(_awakeningManager.Data?.activationVFX);
+        }
+
+        PlayPhaseVFX(GetCurrentVFX()?.activeVFX);
+        PlayPhaseSFX(GetCurrentVFX()?.activeVFX);
+
+        float damageMult = _awakeningManager != null ? _awakeningManager.DamageMultiplier : 1f;
+
+        // handle attack hitbox
         if (currentAttack != null)
         {
             var payload = new HitboxPayload(
-                currentAttack.damage,
+                currentAttack.damage * damageMult,
                 currentAttack.attackArmor,
                 currentAttack.knockbackForce,
                 currentAttack.launchForce,
@@ -227,7 +247,7 @@ public event System.Action<CombatActionData> OnActionAccepted;
         {
             SpawnSkillObject(currentSkill);
             var payload = new HitboxPayload(
-                currentSkill.damage,
+                currentSkill.damage * damageMult,
                 currentSkill.attackArmor,
                 currentSkill.knockbackForce,
                 currentSkill.launchForce,
@@ -250,7 +270,7 @@ public event System.Action<CombatActionData> OnActionAccepted;
     public void OnRecoveryStart()
     {
         isInRecovery = true;
-        if (currentAttack == null && currentSkill == null && !isBursting) return;
+        if (currentAttack == null && currentSkill == null && !isBursting && !isActivatingAwakening) return;
         _hitbox.DeactivateHitbox();
         
         PlayPhaseVFX(GetCurrentVFX()?.recoveryVFX);
@@ -258,7 +278,8 @@ public event System.Action<CombatActionData> OnActionAccepted;
 
         cancelWindowOpen = (currentAttack != null && currentAttack.canBeCancelledRecovery) ||
                             (currentSkill != null && currentSkill.canBeCancelledRecovery) ||
-                            (isBursting && burstDashData != null && burstDashData.canBeCancelledRecovery);
+                            (isBursting && burstDashData != null && burstDashData.canBeCancelledRecovery) ||
+                            (isActivatingAwakening && _awakeningManager != null && _awakeningManager.Data != null && _awakeningManager.Data.canBeCancelledRecovery);
         Debug.Log($"[Combat] Phase: RECOVERY - cancel={cancelWindowOpen}");
         _stateController.SetFlipPermission(true); // allow movement during recovery if player is trying to buffer next input
         //_stateController.SetMovePermission(true);
@@ -275,6 +296,7 @@ public event System.Action<CombatActionData> OnActionAccepted;
         currentAttack = null;
         currentSkill = null;
         isBursting = false;
+        isActivatingAwakening = false;
         _hitbox.DeactivateHitbox();
 
       _stateController.SetMovePermission(true);
@@ -472,6 +494,78 @@ public event System.Action<CombatActionData> OnActionAccepted;
         Debug.Log("[Combat] Burst ignored: cannot cancel during current phase");
     }
 
+    public void ExecuteAwakening()
+    {
+        Debug.Log($"[Combat] ExecuteAwakening called. isAttacking: {isAttacking}, cancelWindowOpen: {cancelWindowOpen}");
+
+        if (!CanPerformCombatAction("awakening"))
+            return;
+
+        if (_awakeningManager == null)
+            _awakeningManager = GetComponent<AwakeningManager>();
+
+        if (_awakeningManager == null || _awakeningManager.Data == null)
+        {
+            Debug.LogWarning("[Combat] Awakening ignored: AwakeningManager or AwakeningData is missing");
+            return;
+        }
+
+        if (!isAttacking)
+        {
+            StartAwakeningActivation();
+            return;
+        }
+
+        if (cancelWindowOpen)
+        {
+            _hitbox.DeactivateHitbox();
+            currentAttack = null;
+            currentSkill = null;
+            isBursting = false;
+            cancelWindowOpen = false;
+
+            StartAwakeningActivation();
+            return;
+        }
+
+        Debug.Log("[Combat] Awakening ignored: cannot cancel during current phase");
+    }
+
+    private void StartAwakeningActivation()
+    {
+        bool isAirborne = IsAirborne();
+        Debug.Log($"[Combat] StartAwakeningActivation - isAirborne: {isAirborne}");
+
+        isActivatingAwakening = true;
+        isBursting = false;
+        isAttacking = true;
+        cancelWindowOpen = false;
+        currentAttack = null;
+        currentSkill = null;
+        queuedAttack = null;
+        queuedSkill = null;
+        airAttackUsage.Clear();
+
+        ApplyChainFlip();
+
+        if (_awakeningManager != null && _awakeningManager.Data != null && animator != null)
+        {
+            AnimationClip clip = _awakeningManager.Data.GetActivationClip(isAirborne);
+            if (clip != null)
+            {
+                try { animator.Play(clip.name, 0, 0f); }
+                catch { Debug.LogWarning($"[Combat] Animation state {clip.name} not found"); }
+            }
+            else
+            {
+                Debug.Log("[Combat] No awakening animation clip assigned; triggering awakening immediately as fallback");
+                _awakeningManager.TriggerAwakening();
+                isActivatingAwakening = false;
+                isAttacking = false;
+            }
+        }
+    }
+
     private void StartBurstDash(Vector2 direction)
     {
         bool isNeutral = direction.sqrMagnitude < 0.1f;
@@ -609,6 +703,21 @@ public event System.Action<CombatActionData> OnActionAccepted;
     private PlayerSkillData FindMatchingSkill(int index)
     {
         bool isAirborne = IsAirborne();
+
+        // 1. If Awakened, check for an override at this slot index first
+        if (_awakeningManager != null && _awakeningManager.IsAwakened && _awakeningManager.Data != null)
+        {
+            var awakenedList = isAirborne ? _awakeningManager.Data.awakenedAirSkills : _awakeningManager.Data.awakenedGroundSkills;
+            if (awakenedList != null && index >= 0 && index < awakenedList.Count && awakenedList[index] != null)
+            {
+                var awakenedSkill = awakenedList[index];
+                if (isAirborne && !awakenedSkill.Airborne) return null;
+                if (!isAirborne && awakenedSkill.Airborne) return null;
+                return awakenedSkill;
+            }
+        }
+
+        // 2. Normal skill fallback
         var list = isAirborne ? airSkills : groundSkills;
 
         if (index < 0 || index >= list.Count)
@@ -689,6 +798,7 @@ public event System.Action<CombatActionData> OnActionAccepted;
         currentAttack = null;
         currentSkill = null;
         isBursting = false;
+        isActivatingAwakening = false;
         queuedAttack = null;
         queuedSkill = null;
         currentComboIndex = 0;

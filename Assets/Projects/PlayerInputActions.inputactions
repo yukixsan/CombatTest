@@ -88,7 +88,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Skill04",
+                    "name": "Awaken",
                     "type": "Button",
                     "id": "36663951-e3a2-4746-82d1-56215cfe3e26",
                     "expectedControlType": "",
@@ -557,7 +557,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Skill04",
+                    "action": "Awaken",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
