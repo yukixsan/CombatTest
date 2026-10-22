@@ -12,9 +12,11 @@
 **AttackPhaseVFX** (struct in `CombatActionData`): prefab, localOffset, flipByRotation, sfx, sfxVolume.
 
 ## 4.2 HitVFXManager (`Projects/HitVFXManager.cs`)
-- Array-indexed pool: `vfxPrefabs[]` + `List<Queue<GameObject>> _pools`.
+- Array-indexed pools: `vfxPrefabs[]` (`_pools`) and `awakenedVfxPrefabs[]` (`_awakenedPools`). Decoupled on `GameManager`.
 - `SpawnVFX(index, position, rotation)` — world-space, no parent.
-- `DespawnVFX(index, obj)` — manual return (caller handles timing).
+  - When `AwakeningManager.Instance.IsAwakened` is true and `awakenedVfxPrefabs[index]` is assigned, pulls from `_awakenedPools[index]`.
+  - Otherwise gracefully falls back to `vfxPrefabs[index]`.
+- `DespawnVFX(index, obj)` — returns object to its corresponding pool.
 
 ## 4.3 SFXManager (`Scripts/AudioHandling/SFXManager.cs`)
 - Pool: `Queue<AudioSource>`. `PlaySFX(clip, volume)` gets pooled source, plays, auto-returns.

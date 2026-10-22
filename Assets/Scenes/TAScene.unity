@@ -11500,6 +11500,15 @@ MonoBehaviour:
   - {fileID: 2904421558675148627, guid: e1ce23d0d91f6dd44a3610016d70f71e, type: 3}
   - {fileID: 4658790316243339367, guid: e093e4f1d343c2f49be4fb2bda8f3e5b, type: 3}
   - {fileID: 8468123502005864889, guid: c47883e06a5b8ce48a66f1437eadb59e, type: 3}
+  awakenedVfxPrefabs:
+  - {fileID: 8505506385044929374, guid: bde05ab084e91244690f30dabead1f03, type: 3}
+  - {fileID: 5752262308992390119, guid: d654231d50a547d4d9e876a8f81955e1, type: 3}
+  - {fileID: 2721577806431176942, guid: e33dc81f694aad44ba3074c94a75b6f5, type: 3}
+  - {fileID: 2721577806431176942, guid: e33dc81f694aad44ba3074c94a75b6f5, type: 3}
+  - {fileID: 2721577806431176942, guid: e33dc81f694aad44ba3074c94a75b6f5, type: 3}
+  - {fileID: 2721577806431176942, guid: e33dc81f694aad44ba3074c94a75b6f5, type: 3}
+  - {fileID: 2721577806431176942, guid: e33dc81f694aad44ba3074c94a75b6f5, type: 3}
+  - {fileID: 2721577806431176942, guid: e33dc81f694aad44ba3074c94a75b6f5, type: 3}
 --- !u!114 &1699893833
 MonoBehaviour:
   m_ObjectHideFlags: 0
