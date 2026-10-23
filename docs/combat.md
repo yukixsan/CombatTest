@@ -180,14 +180,23 @@ All values, base damage, hitstop duration, hit VFX index, spawn VFX/SFX, detonat
 - **Input:** `Gameplay/Awaken` action bound via `PlayerInputHub` -> `PlayerInputReader` -> `CommandBuffer.Enqueue(CommandType.Awaken)`.
 - **Command Dispatch:** `CommandInterpreter.Receive` -> `PlayerCombat.ExecuteAwakening()`.
 - **Cancel Windows:** Can activate from neutral or cancel out of attacks/skills when `cancelWindowOpen == true`.
+- **Toggle / Cancel:** If already awakened, pressing the Awaken button immediately deactivates Awakening, freezes remaining duration on the gauge, and starts the activation cooldown. Current attack animations finish normally without abrupt interruption (Option A).
+- **Activation Guard:** Checked via `AwakeningManager.CanActivate(out string reason)`. Requires `RemainingCooldown <= 0f` and `CurrentResourceTime >= minSecondsToActivate`.
 - **Activation Flow:** `PlayerCombat.StartAwakeningActivation()` plays ground or airborne activation clip from `AwakeningData`. At `OnActiveStart()`, `AwakeningManager.TriggerAwakening()` begins the awakening session.
 
-## 9.2 Stats & Animation Speed Tuning
+## 9.2 Resource & Awakening Gauge
+- **Model:** Under the hood, tracked as continuous seconds (`CurrentResourceTime`, 0..10.0s). Visualized as discrete gauge chunks (`CurrentGaugeCount`, 1..5) where 1 chunk = 2.0s (`secondsPerGauge`).
+- **Resource Gain:** Performing a successful Burst Dash awards +1 Awakening Gauge (+2.0s), capped at `maxGauge * secondsPerGauge` (default 10.0s).
+- **Depletion:** While awakened, drains smoothly each frame (`-Time.deltaTime`). Clamps to 0 and auto-deactivates when empty.
+- **Freeze on Cancel:** Cancelling awakening preserves remaining duration. Gaining more gauge while stopped adds to the existing value up to the cap.
+- **Anti-Spam Cooldown:** Deactivating or exhausting awakening triggers `activationCooldown` (default 3.0s) before it can be re-entered.
+
+## 9.3 Stats & Animation Speed Tuning
 - **Damage Multiplier:** `AwakeningManager.DamageMultiplier` multiplies attack and skill damage in `PlayerCombat.OnActiveStart()`.
 - **Movement Speed:** `PlayerMovement.MoveSpeedMultiplier` multiplies base horizontal input velocity.
 - **Animation Speed:** `AwakeningData.animSpeedMultiplier` scales `animator.speed` during awakening and restores `1.0f` on deactivation.
 
-## 9.3 Awakened Skill Swapping
+## 9.4 Awakened Skill Swapping
 - **Data Configuration:** `AwakeningData.awakenedGroundSkills` and `awakenedAirSkills` lists (0..3) mirror `PlayerCombat`'s skill lists.
 - **Slot Override Flow:** When `PlayerCombat.FindMatchingSkill(index)` is queried during awakening, it checks the corresponding slot index in `awakenedGroundSkills` (or `awakenedAirSkills`).
 - **Graceful Fallback:** If a slot in the awakened list is left empty/null, it automatically falls back to executing the standard equipped skill for that slot. Base lists are never mutated in memory.

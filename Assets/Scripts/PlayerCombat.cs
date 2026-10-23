@@ -498,15 +498,30 @@ public event System.Action<CombatActionData> OnActionAccepted;
     {
         Debug.Log($"[Combat] ExecuteAwakening called. isAttacking: {isAttacking}, cancelWindowOpen: {cancelWindowOpen}");
 
-        if (!CanPerformCombatAction("awakening"))
-            return;
-
         if (_awakeningManager == null)
             _awakeningManager = GetComponent<AwakeningManager>();
 
         if (_awakeningManager == null || _awakeningManager.Data == null)
         {
             Debug.LogWarning("[Combat] Awakening ignored: AwakeningManager or AwakeningData is missing");
+            return;
+        }
+
+        // Toggle: If currently awakened, cancel it immediately (Option A: buff reverts, current animation finishes)
+        if (_awakeningManager.IsAwakened)
+        {
+            Debug.Log("[Combat] Awakening cancel requested: deactivating awakening");
+            _awakeningManager.DeactivateAwakening();
+            return;
+        }
+
+        if (!CanPerformCombatAction("awakening"))
+            return;
+
+        // Check activation availability (cooldown expired & sufficient gauge)
+        if (!_awakeningManager.CanActivate(out string reason))
+        {
+            Debug.Log($"[Combat] Awakening cannot activate: {reason}");
             return;
         }
 
@@ -590,6 +605,14 @@ public event System.Action<CombatActionData> OnActionAccepted;
         }
 
         BurstDirection burstDir = burstDashData != null ? burstDashData.ResolveDirection(direction) : BurstDirection.Neutral;
+
+        // Award 1 Awakening Gauge on successful burst dash usage
+        if (_awakeningManager == null)
+            _awakeningManager = GetComponent<AwakeningManager>();
+        if (_awakeningManager != null)
+        {
+            _awakeningManager.AddGauge(1);
+        }
 
         // Spawn Burst Mark at origin position before player moves
         Vector3 originPos = transform.position;

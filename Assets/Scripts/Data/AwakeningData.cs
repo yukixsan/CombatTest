@@ -15,6 +15,12 @@ public class AwakeningData : ScriptableObject
     [Header("VFX & SFX")]
     public AttackPhaseVFX activationVFX;
 
+    [Header("Resource & Gauge Tuning")]
+    public int maxGauge = 5;
+    public float secondsPerGauge = 2.0f;
+    public float minSecondsToActivate = 2.0f;
+    public float activationCooldown = 3.0f;
+
     [Header("Buff Parameters")]
     public float duration = 15f;
     public float damageMultiplier = 1.3f;
