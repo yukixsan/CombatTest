@@ -62,7 +62,7 @@ Entries marked `(?)` are still unverified. **Maintenance:** add one line here wh
 | `SkillObjectPool.cs` / `SkillObjectReturn.cs` | Pool + auto-return |
 | `BurstMark.cs` | Burst Mark object: spawns at burst origin, lifetime timer, directional detonation hitbox, Phase 4 registry |
 | `BurstSkill.cs` | `SkillObject` subclass — slash projectile with trajectory velocity drag & release |
-| `JCSkill.cs` | `SkillObject` subclass — spawns `JCHitObject`(s) |
+| `JCSkill.cs` | `SkillObject` subclass — multi-target hitscan spawning `JCHitObject`(s) |
 | `JCHitObject.cs` | Hit object: `Initialize(HitboxPayload, facing)` |
 
 ## Scripts/VFXHandling & AudioHandling (doc: vfx-audio)

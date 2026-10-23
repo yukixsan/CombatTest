@@ -28,7 +28,8 @@ MonoBehaviour:
   damageMultiplier: 1.2
   moveSpeedMultiplier: 2
   animSpeedMultiplier: 1.2
-  awakenedGroundSkills: []
+  awakenedGroundSkills:
+  - {fileID: 11400000, guid: 84a799be7c82eac46b2f26bef50b4bb1, type: 2}
   awakenedAirSkills:
   - {fileID: 11400000, guid: 6bcb61d10b1a3204ba8815da5c754803, type: 2}
   vfxOverrides:
