@@ -820,8 +820,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _model: {fileID: 1378833096483056180}
   _hitbox: {fileID: 2219588040453617290}
-  speed: 50
-  lifetime: 0.2
+  speed: 30
+  lifetime: 0.4
   rb3d: {fileID: 0}
   rb2d: {fileID: 1532217873919053033}
   dragRadius: 2

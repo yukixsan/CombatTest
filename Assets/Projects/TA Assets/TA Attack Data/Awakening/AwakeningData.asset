@@ -24,10 +24,14 @@ MonoBehaviour:
     parentToTransform: 0
     sfx: {fileID: 8300000, guid: 032d42139944631449103fa1c85ee4ee, type: 3}
     sfxVolume: 1
+  maxGauge: 5
+  secondsPerGauge: 2
+  minSecondsToActivate: 2
+  activationCooldown: 1
   duration: 15
   damageMultiplier: 1.2
-  moveSpeedMultiplier: 2
-  animSpeedMultiplier: 1.2
+  moveSpeedMultiplier: 1.75
+  animSpeedMultiplier: 1.15
   awakenedGroundSkills:
   - {fileID: 11400000, guid: 84a799be7c82eac46b2f26bef50b4bb1, type: 2}
   awakenedAirSkills:
@@ -35,5 +39,23 @@ MonoBehaviour:
   vfxOverrides:
   - baseVFXPrefab: {fileID: 9140015233240267074, guid: 24f5bad78a436c44aa0198336fb0fe18, type: 3}
     awakenedVFXPrefab: {fileID: 5341851991704847319, guid: c86db3fd5af9fd2438ff1296f5a06496, type: 3}
+  - baseVFXPrefab: {fileID: 5023200931209090201, guid: 237f570ebc57f1b4d9cc4f1c18690980, type: 3}
+    awakenedVFXPrefab: {fileID: 1347398471330059223, guid: 18f1d37952633c847a74a01b482f69a9, type: 3}
   - baseVFXPrefab: {fileID: 231859285092543605, guid: 2af34f34822c0ad47a1a05167aca2ead, type: 3}
-    awakenedVFXPrefab: {fileID: 5052610313510023713, guid: 005e8337ec3400f42a96e81a522c21e4, type: 3}
+    awakenedVFXPrefab: {fileID: 2227609021295142479, guid: 13fff46ac109cfc4fbb4741dffe1745d, type: 3}
+  - baseVFXPrefab: {fileID: 1741997788231644311, guid: 9f952120454d44f4289aca7cc51887a1, type: 3}
+    awakenedVFXPrefab: {fileID: 5030311239041065221, guid: a8136e6a8f186f444b7f6495ca66b63b, type: 3}
+  - baseVFXPrefab: {fileID: 3451031229276035925, guid: 2a669c49ba821574db4d8efa91f55558, type: 3}
+    awakenedVFXPrefab: {fileID: 4590794307062858776, guid: 79d54a993265c784d978cf33d5c4297e, type: 3}
+  - baseVFXPrefab: {fileID: 8745125948455325322, guid: 210bf6106c2285443a0afa6af972c1d4, type: 3}
+    awakenedVFXPrefab: {fileID: 5396413414595199360, guid: 0b1500cb54e594e46be9a4395e11fe9e, type: 3}
+  - baseVFXPrefab: {fileID: 4964728876718248550, guid: b0ff7350fac9160418b657d895fa08da, type: 3}
+    awakenedVFXPrefab: {fileID: 7310253881270922320, guid: 38933266208bb014e976a07284f541a6, type: 3}
+  - baseVFXPrefab: {fileID: 94176900098861024, guid: 98b836098abcffd4b84119c1a7145907, type: 3}
+    awakenedVFXPrefab: {fileID: 8442024872474373914, guid: 80c466dea40113a478c959c684003163, type: 3}
+  - baseVFXPrefab: {fileID: 3919775695780867023, guid: cd1eb32efc0a3d346b74b94158fa5b63, type: 3}
+    awakenedVFXPrefab: {fileID: 2918128180575800054, guid: 8903e4c7f095978428fe562991577d28, type: 3}
+  - baseVFXPrefab: {fileID: 3919775695780867023, guid: cd1eb32efc0a3d346b74b94158fa5b63, type: 3}
+    awakenedVFXPrefab: {fileID: 2918128180575800054, guid: 8903e4c7f095978428fe562991577d28, type: 3}
+  - baseVFXPrefab: {fileID: 3889517905211257801, guid: d25c434dbac2e694594babd756b87723, type: 3}
+    awakenedVFXPrefab: {fileID: 8207195519689564242, guid: 560a388ff09894e4a8e7dfe2559afd59, type: 3}
