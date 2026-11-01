@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8539619244166271073}
   - component: {fileID: 881118499594979402}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ GameObject:
   - component: {fileID: 7587988636584456126}
   - component: {fileID: 5511806713587553252}
   - component: {fileID: 4028167559381084390}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: BurstMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 1930982112554536781}
   - component: {fileID: 5654084569050996877}
   - component: {fileID: 552334435800217249}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5050,7 +5050,7 @@ GameObject:
   - component: {fileID: 8171472547247899615}
   - component: {fileID: 7342563377378860860}
   - component: {fileID: 9215156385898161264}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Magic circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9965,15 +9965,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1761614549529672, guid: 7ee7aea814e67034c991de25882a040b, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1884799427902446, guid: 7ee7aea814e67034c991de25882a040b, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1931877507051338, guid: 7ee7aea814e67034c991de25882a040b, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1931877507051338, guid: 7ee7aea814e67034c991de25882a040b, type: 3}
       propertyPath: m_IsActive

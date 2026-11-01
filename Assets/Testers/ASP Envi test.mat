@@ -8,10 +8,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ASP Envi test
-  m_Shader: {fileID: 4800000, guid: d335bd7e40eb4e38b3f713f921d731cf, type: 3}
+  m_Shader: {fileID: 4800000, guid: 55a54603fab88d940a3374f8ae9f78e8, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _RAMP_OCCLUSION_MAP
+  - _SPECULAR_LIGHTING_ON
+  - _STYLE_CELSHADING
   m_InvalidKeywords:
   - _EYESTYLE_FLATLIGHTING
   - _HIGHLIGHTALPHACLIP
@@ -31,7 +34,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 06b85e3514273784099b6c83273b5441, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -103,11 +106,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RampMap:
-        m_Texture: {fileID: 2800000, guid: 71a8be6308c0b584fa30e19db4254adf, type: 3}
+        m_Texture: {fileID: 2800000, guid: e1222fe608b76fb4c9c0285878d24aae, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RampOcclusionMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 8a317cf8ac53049b096f4e67e055d00b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RimLightMaskMap:
@@ -181,7 +184,7 @@ Material:
     - _FOVShiftX: 0
     - _FaceShadowMapPow: 0.2
     - _FaceShadowSmoothness: 0
-    - _FakeLightIntensity: 1
+    - _FakeLightIntensity: 0
     - _FlattenAdditionalLighting: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -205,15 +208,15 @@ Material:
     - _HighlightDarken: 1
     - _IsUsingMatcapReflectMap: 0
     - _IsUsingOSMTexture: 0
-    - _IsUsingRampOcclusionTexture: 0
+    - _IsUsingRampOcclusionTexture: 1
     - _LambertShadowColorMode: 0
     - _MatCapReflectionStrength: 1
     - _MatCapRollStabilize: 1
-    - _MaterialID: 0
+    - _MaterialID: 1
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _OffsetShadowDistance: 15
-    - _OutlineWidth: 0.1
+    - _OutlineWidth: 0
     - _OverrideLightColorIntensityToggle: 0
     - _OverrideLightDirToggle: 0
     - _OverrideZTest: 0
@@ -252,7 +255,7 @@ Material:
     - _Surface: 0
     - _SurfaceType: 0
     - _UsePupilMask: 1
-    - _UseSimpleAABBCutOffForCharacterShadow: 1
+    - _UseSimpleAABBCutOffForCharacterShadow: 0
     - _WorkflowMode: 1
     - _WorkflowSpace: 1
     - _ZTest: 4
@@ -263,21 +266,21 @@ Material:
     m_Colors:
     - _AlphaClipUVCtrl: {r: 1, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CharacterCenterWS: {r: 0, g: 0, b: 1, a: 1}
+    - _CharacterCenterWS: {r: -128, g: -1.79, b: 2, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DepthRimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EyeHighlightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FaceFrontDirection: {r: 1, g: 0, b: 0, a: 1}
-    - _FaceRightDirection: {r: 0, g: 0, b: 1, a: 1}
+    - _FaceFrontDirection: {r: 0.0000052452083, g: 0, b: -1, a: 0}
+    - _FaceRightDirection: {r: -1, g: 0, b: -0.0000052452083, a: 0}
     - _FaceUVCtrl: {r: 0, g: 1, b: 0, a: 0}
-    - _FakeLightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FakeLightEuler: {r: 0, g: 0, b: 0, a: 1}
+    - _FakeLightColor: {r: 0, g: 0, b: 0, a: 0}
+    - _FakeLightEuler: {r: 180, g: 0, b: 0, a: 0}
     - _HairLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _HairUVCtrl: {r: 0, g: 0, b: 1, a: 0}
     - _LambertReceivedShadowColor: {r: 0, g: 0, b: 0, a: 1}
-    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
-    - _OutlineDistancFade: {r: -25, g: 50, b: 0, a: 0}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
+    - _OutlineDistancFade: {r: 50, g: 50, b: 0, a: 0}
     - _OverrideGIColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReceivedShadowColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _RimColor: {r: 0, g: 0.5960784, b: 1, a: 0}

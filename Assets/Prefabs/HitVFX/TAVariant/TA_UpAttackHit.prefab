@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: e930ec2a4e40ce548aecd7f9b350d81c, type: 3}
     - target: {fileID: 3161153604273580471, guid: 090af01a56a26c749945ede06701487a, type: 3}
       propertyPath: m_Name
-      value: TA_Normal1Hit Variant
+      value: TA_UpAttackHit
       objectReference: {fileID: 0}
     - target: {fileID: 4813461546769790396, guid: 090af01a56a26c749945ede06701487a, type: 3}
       propertyPath: m_LocalPosition.x
