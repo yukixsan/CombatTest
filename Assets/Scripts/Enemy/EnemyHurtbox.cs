@@ -18,25 +18,8 @@ public class EnemyHurtbox : MonoBehaviour
         var stateController = GetComponentInParent<EnemyStateController>();
 
         // Interrupt enemy attack if the payload's armor value is sufficient
-        if (stateController != null && healthComponent.CanBeInterruptedBy(payload.AttackerArmor))
-        {
-           stateController.TriggerDamaged(payload);
-        }
-        // Knockback — direction relative to attacker position
-        float facingX = Mathf.Sign(transform.position.x - payload.attacker.position.x);
-        Vector3 knockback = new Vector3(
-            payload.KnockbackForce * facingX,
-            payload.LaunchForce * payload.LaunchDir,
-            0f
-        );
-        //rb.AddForce(knockback, ForceMode.Impulse);
-        // if (enemyAI != null)
-        // {
-        //     //enemyAI.ApplyKnocback(moveLockDuration);
-        //     enemyAI.ApplyKnockback(knockback, moveLockDuration);
-        // }
-
-        if (stateController != null)
+        bool interrupted = healthComponent != null && healthComponent.CanBeInterruptedBy(payload.AttackerArmor);
+        if (stateController != null && interrupted)
         {
             stateController.TriggerDamaged(payload);
         }

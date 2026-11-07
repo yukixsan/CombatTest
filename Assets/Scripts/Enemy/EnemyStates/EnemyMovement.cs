@@ -15,6 +15,10 @@ public class EnemyMovement : MonoBehaviour
     private Vector3 moveVelocity;
     public bool IsMoving => Mathf.Abs(moveVelocity.x) > 0.01f;
 
+    [Header("Knockback Deceleration")]
+    [SerializeField] private float groundKnockbackDecel = 38f;
+    [SerializeField] private float airKnockbackDecel = 22f;
+
     [Header("Ground")]
     public Transform groundCheckPoint;
     public float groundCheckDistance = 0.2f;
@@ -66,6 +70,21 @@ public class EnemyMovement : MonoBehaviour
     public void ResetFallMult()
     {
         fallMultiplier = tempFallMult;
+    }
+
+    public float FallMultiplier => fallMultiplier;
+
+    public void ApplyKnockbackDeceleration()
+    {
+        if (rb == null) return;
+
+        float decel = IsGrounded ? groundKnockbackDecel : airKnockbackDecel;
+        Vector3 vel = rb.linearVelocity;
+        if (Mathf.Abs(vel.x) > 0.01f)
+        {
+            vel.x = Mathf.MoveTowards(vel.x, 0f, decel * Time.fixedDeltaTime);
+            rb.linearVelocity = vel;
+        }
     }
 
     public void UpdateGroundCheck()

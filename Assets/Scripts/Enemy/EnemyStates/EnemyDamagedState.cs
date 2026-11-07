@@ -36,7 +36,19 @@ public class EnemyDamagedState : EnemyBaseState
         rb.useGravity = true;
         rb.isKinematic = false;
         rb.excludeLayers = LayerMask.GetMask("Player");
-        EnemyHitReaction.ApplyKnockback(payload, rb, isJuggle : false);
+        EnemyHitReaction.ApplyKnockback(
+            payload, 
+            rb, 
+            isGrounded: true, 
+            controller.maxJuggleHeight, 
+            controller.juggleLiftVelocity, 
+            movement.groundLayer
+        );
+    }
+
+    public override void OnFixedUpdate()
+    {
+        movement.ApplyKnockbackDeceleration();
     }
 
     public override void OnUpdate()

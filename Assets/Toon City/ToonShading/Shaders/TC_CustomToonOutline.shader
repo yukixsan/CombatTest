@@ -220,7 +220,6 @@ Shader "Toon/TC_CustomToonOutline"
 			float4 _OutlineColor;
 			float4 _TextureSample_ST;
 			float _OutlineWidth;
-			float _ReceiveShadows;
 			#ifdef _TRANSMISSION_ASE
 				float _TransmissionShadow;
 			#endif
@@ -500,7 +499,6 @@ Shader "Toon/TC_CustomToonOutline"
 			float4 _OutlineColor;
 			float4 _TextureSample_ST;
 			float _OutlineWidth;
-			float _ReceiveShadows;
 			#ifdef _TRANSMISSION_ASE
 				float _TransmissionShadow;
 			#endif
@@ -732,47 +730,193 @@ Shader "Toon/TC_CustomToonOutline"
 					float3 WorldBiTangent = IN.tSpace2.xyz;
 				#endif
 				float3 WorldPosition = float3(IN.tSpace0.w,IN.tSpace1.w,IN.tSpace2.w);
+				float3 WorldViewDirection = _WorldSpaceCameraPos.xyz  - WorldPosition;
 				float4 ShadowCoords = float4( 0, 0, 0, 0 );
+				#if defined(ASE_NEEDS_FRAG_SCREEN_POSITION)
+				float4 ScreenPos = IN.screenPos;
+				#endif
+
 				#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
 					ShadowCoords = IN.shadowCoord;
 				#elif defined(MAIN_LIGHT_CALCULATE_SHADOWS)
-					float3 biasedWorldPos = ApplyShadowBias( WorldPosition, WorldNormal, _MainLightPosition.xyz );
-					ShadowCoords = TransformWorldToShadowCoord( biasedWorldPos );
+					ShadowCoords = TransformWorldToShadowCoord( WorldPosition );
 				#endif
+	
+				WorldViewDirection = SafeNormalize( WorldViewDirection );
 
+				float3 WorldPosition8_g2 = WorldPosition;
+				float3 localAdditionalLightsFlat8_g2 = AdditionalLightsFlat( WorldPosition8_g2 );
+				float3 temp_output_96_0 = localAdditionalLightsFlat8_g2;
 				float2 uv_TextureSample = IN.ase_texcoord7.xy * _TextureSample_ST.xy + _TextureSample_ST.zw;
-				float4 baseColor = tex2D( _TextureSample, uv_TextureSample );
+				float4 tex2DNode59 = tex2D( _TextureSample, uv_TextureSample );
+				float3 bakedGI60 = ASEIndirectDiffuse( IN.lightmapUVOrVertexSH.xy, WorldNormal);
+				float ase_lightAtten = 0;
+				Light ase_lightAtten_mainLight = GetMainLight( ShadowCoords );
+				ase_lightAtten = ase_lightAtten_mainLight.distanceAttenuation * ase_lightAtten_mainLight.shadowAttenuation;
+				float3 temp_output_48_0 = ( ase_lightAtten * _MainLightColor.rgb );
+				float3 temp_cast_2 = (1.0).xxx;
+				#ifdef UNITY_PASS_FORWARDBASE
+				float3 staticSwitch56 = temp_cast_2;
+				#else
+				float3 staticSwitch56 = temp_output_48_0;
+				#endif
+				float dotResult53 = dot( WorldNormal , _MainLightPosition.xyz );
+				float temp_output_57_0 = (dotResult53*0.495 + 0.5);
+				float2 temp_cast_4 = (temp_output_57_0).xx;
+				float3 break50 = temp_output_48_0;
+				float3 break97 = temp_output_96_0;
+				
+				float3 temp_cast_6 = (0.0).xxx;
+				
+				float3 Albedo = ( ( float4( temp_output_96_0 , 0.0 ) * tex2DNode59 ) + ( float4( bakedGI60 , 0.0 ) * tex2DNode59 ) + ( ( tex2DNode59 * float4( staticSwitch56 , 0.0 ) ) * ( tex2D( _TextureRamp, temp_cast_4 ) * ( ( temp_output_57_0 * max( max( break50.x , break50.y ) , break50.z ) ) + max( max( break97.x , break97.y ) , break97.z ) ) ) ) ).rgb;
+				float3 Normal = float3(0, 0, 1);
+				float3 Emission = 0;
+				float3 Specular = temp_cast_6;
+				float Metallic = 0;
+				float Smoothness = 0.5;
+				float Occlusion = 1;
+				float Alpha = 1;
+				float AlphaClipThreshold = 0.5;
+				float AlphaClipThresholdShadow = 0.5;
+				float3 BakedGI = 0;
+				float3 RefractionColor = 1;
+				float RefractionIndex = 1;
+				float3 Transmission = 1;
+				float3 Translucency = 1;
+				#ifdef ASE_DEPTH_WRITE_ON
+				float DepthValue = 0;
+				#endif
 
 				#ifdef _ALPHATEST_ON
-					clip( baseColor.a - 0.5 );
+					clip(Alpha - AlphaClipThreshold);
 				#endif
 
-				Light mainLight = GetMainLight( ShadowCoords );
-				#if defined(_RECEIVE_SHADOWS_OFF)
-					float shadowAtten = 1.0;
+				InputData inputData;
+				inputData.positionWS = WorldPosition;
+				inputData.viewDirectionWS = WorldViewDirection;
+				inputData.shadowCoord = ShadowCoords;
+
+				#ifdef _NORMALMAP
+					#if _NORMAL_DROPOFF_TS
+					inputData.normalWS = TransformTangentToWorld(Normal, half3x3( WorldTangent, WorldBiTangent, WorldNormal ));
+					#elif _NORMAL_DROPOFF_OS
+					inputData.normalWS = TransformObjectToWorldNormal(Normal);
+					#elif _NORMAL_DROPOFF_WS
+					inputData.normalWS = Normal;
+					#endif
+					inputData.normalWS = NormalizeNormalPerPixel(inputData.normalWS);
 				#else
-					float shadowAtten = mainLight.shadowAttenuation;
+					inputData.normalWS = WorldNormal;
 				#endif
 
-				// Half-Lambert factor
-				float halfLambert = dot( WorldNormal, _MainLightPosition.xyz ) * 0.495 + 0.5;
+				#ifdef ASE_FOG
+					inputData.fogCoord = IN.fogFactorAndVertexLight.x;
+				#endif
 
-				// Shadow attenuation directly steps the toon ramp down into shadow
-				float rampCoord = saturate( halfLambert * shadowAtten );
-				float3 rampColor = tex2D( _TextureRamp, float2( rampCoord, 0.5 ) ).rgb;
+				inputData.vertexLighting = IN.fogFactorAndVertexLight.yzw;
+				#if defined(ENABLE_TERRAIN_PERPIXEL_NORMAL)
+					float3 SH = SampleSH(inputData.normalWS.xyz);
+				#else
+					float3 SH = IN.lightmapUVOrVertexSH.xyz;
+				#endif
 
-				float3 directLight = mainLight.color * rampColor * mainLight.distanceAttenuation;
-				float3 bakedGI = ASEIndirectDiffuse( IN.lightmapUVOrVertexSH.xy, WorldNormal );
-				float3 additionalLights = AdditionalLightsFlat( WorldPosition );
+				inputData.bakedGI = SAMPLE_GI( IN.lightmapUVOrVertexSH.xy, SH, inputData.normalWS );
+				#ifdef _ASE_BAKEDGI
+					inputData.bakedGI = BakedGI;
+				#endif
+				half4 color = UniversalFragmentPBR(
+					inputData, 
+					Albedo, 
+					Metallic, 
+					Specular, 
+					Smoothness, 
+					Occlusion, 
+					Emission, 
+					Alpha);
 
-				half4 color = float4( baseColor.rgb * ( directLight + bakedGI + additionalLights ), baseColor.a );
+				#ifdef _TRANSMISSION_ASE
+				{
+					float shadow = _TransmissionShadow;
+
+					Light mainLight = GetMainLight( inputData.shadowCoord );
+					float3 mainAtten = mainLight.color * mainLight.distanceAttenuation;
+					mainAtten = lerp( mainAtten, mainAtten * mainLight.shadowAttenuation, shadow );
+					half3 mainTransmission = max(0 , -dot(inputData.normalWS, mainLight.direction)) * mainAtten * Transmission;
+					color.rgb += Albedo * mainTransmission;
+
+					#ifdef _ADDITIONAL_LIGHTS
+						int transPixelLightCount = GetAdditionalLightsCount();
+						for (int i = 0; i < transPixelLightCount; ++i)
+						{
+							Light light = GetAdditionalLight(i, inputData.positionWS);
+							float3 atten = light.color * light.distanceAttenuation;
+							atten = lerp( atten, atten * light.shadowAttenuation, shadow );
+
+							half3 transmission = max(0 , -dot(inputData.normalWS, light.direction)) * atten * Transmission;
+							color.rgb += Albedo * transmission;
+						}
+					#endif
+				}
+				#endif
+
+				#ifdef _TRANSLUCENCY_ASE
+				{
+					float shadow = _TransShadow;
+					float normal = _TransNormal;
+					float scattering = _TransScattering;
+					float direct = _TransDirect;
+					float ambient = _TransAmbient;
+					float strength = _TransStrength;
+
+					Light mainLight = GetMainLight( inputData.shadowCoord );
+					float3 mainAtten = mainLight.color * mainLight.distanceAttenuation;
+					mainAtten = lerp( mainAtten, mainAtten * mainLight.shadowAttenuation, shadow );
+
+					half3 mainLightDir = mainLight.direction + inputData.normalWS * normal;
+					half mainVdotL = pow( saturate( dot( inputData.viewDirectionWS, -mainLightDir ) ), scattering );
+					half3 mainTranslucency = mainAtten * ( mainVdotL * direct + inputData.bakedGI * ambient ) * Translucency;
+					color.rgb += Albedo * mainTranslucency * strength;
+
+					#ifdef _ADDITIONAL_LIGHTS
+						int transPixelLightCount = GetAdditionalLightsCount();
+						for (int i = 0; i < transPixelLightCount; ++i)
+						{
+							Light light = GetAdditionalLight(i, inputData.positionWS);
+							float3 atten = light.color * light.distanceAttenuation;
+							atten = lerp( atten, atten * light.shadowAttenuation, shadow );
+
+							half3 lightDir = light.direction + inputData.normalWS * normal;
+							half VdotL = pow( saturate( dot( inputData.viewDirectionWS, -lightDir ) ), scattering );
+							half3 translucency = atten * ( VdotL * direct + inputData.bakedGI * ambient ) * Translucency;
+							color.rgb += Albedo * translucency * strength;
+						}
+					#endif
+				}
+				#endif
+
+				#ifdef _REFRACTION_ASE
+					float4 projScreenPos = ScreenPos / ScreenPos.w;
+					float3 refractionOffset = ( RefractionIndex - 1.0 ) * mul( UNITY_MATRIX_V, WorldNormal ).xyz * ( 1.0 - dot( WorldNormal, WorldViewDirection ) );
+					projScreenPos.xy += refractionOffset.xy;
+					float3 refraction = SHADERGRAPH_SAMPLE_SCENE_COLOR( projScreenPos ) * RefractionColor;
+					color.rgb = lerp( refraction, color.rgb, color.a );
+					color.a = 1;
+				#endif
+
+				#ifdef ASE_FINAL_COLOR_ALPHA_MULTIPLY
+					color.rgb *= color.a;
+				#endif
 
 				#ifdef ASE_FOG
 					#ifdef TERRAIN_SPLAT_ADDPASS
-						color.rgb = MixFogColor( color.rgb, half3( 0, 0, 0 ), IN.fogFactorAndVertexLight.x );
+						color.rgb = MixFogColor(color.rgb, half3( 0, 0, 0 ), IN.fogFactorAndVertexLight.x );
 					#else
-						color.rgb = MixFog( color.rgb, IN.fogFactorAndVertexLight.x );
+						color.rgb = MixFog(color.rgb, IN.fogFactorAndVertexLight.x);
 					#endif
+				#endif
+				
+				#ifdef ASE_DEPTH_WRITE_ON
+					outputDepth = DepthValue;
 				#endif
 
 				return color;
@@ -845,7 +989,6 @@ Shader "Toon/TC_CustomToonOutline"
 			float4 _OutlineColor;
 			float4 _TextureSample_ST;
 			float _OutlineWidth;
-			float _ReceiveShadows;
 			#ifdef _TRANSMISSION_ASE
 				float _TransmissionShadow;
 			#endif
@@ -1115,7 +1258,6 @@ Shader "Toon/TC_CustomToonOutline"
 			float4 _OutlineColor;
 			float4 _TextureSample_ST;
 			float _OutlineWidth;
-			float _ReceiveShadows;
 			#ifdef _TRANSMISSION_ASE
 				float _TransmissionShadow;
 			#endif
@@ -1382,7 +1524,6 @@ Shader "Toon/TC_CustomToonOutline"
 			float4 _OutlineColor;
 			float4 _TextureSample_ST;
 			float _OutlineWidth;
-			float _ReceiveShadows;
 			#ifdef _TRANSMISSION_ASE
 				float _TransmissionShadow;
 			#endif
@@ -1705,7 +1846,6 @@ Shader "Toon/TC_CustomToonOutline"
 			float4 _OutlineColor;
 			float4 _TextureSample_ST;
 			float _OutlineWidth;
-			float _ReceiveShadows;
 			#ifdef _TRANSMISSION_ASE
 				float _TransmissionShadow;
 			#endif

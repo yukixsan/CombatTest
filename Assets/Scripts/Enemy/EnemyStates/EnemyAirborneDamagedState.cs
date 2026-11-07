@@ -49,7 +49,19 @@ public class EnemyAirborneDamagedState : EnemyBaseState
         movement.InterruptFall();
         rb.isKinematic = false;
         rb.useGravity = true;
-        EnemyHitReaction.ApplyKnockback(payload, rb, false, controller.juggleLiftVelocity);
+        EnemyHitReaction.ApplyKnockback(
+            payload, 
+            rb, 
+            isGrounded: false, 
+            controller.maxJuggleHeight, 
+            controller.juggleLiftVelocity, 
+            movement.groundLayer
+        );
+    }
+
+    public override void OnFixedUpdate()
+    {
+        movement.ApplyKnockbackDeceleration();
     }
 
     public override void OnUpdate()

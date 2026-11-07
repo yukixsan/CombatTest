@@ -2,72 +2,71 @@ using UnityEngine;
 
 public static class EnemyHitReaction 
 {
-    private const float juggleLaunchScale = 0.1f;
-    // private static float juggleMaxHeightScale = 1.5f;
-
-    public static Vector3 ResolveKnockbackVelocity(HitboxPayload payload, Vector3 targetPosition, Rigidbody targetRb, bool isJuggle)
-{
-   float facingX = Mathf.Sign(targetPosition.x - payload.attacker.position.x);
-    if (facingX == 0f) facingX = 1f;
-
-    float launchY = payload.LaunchForce * payload.LaunchDir;
-    float currentVelY = targetRb.linearVelocity.y;
-
-    float desiredY;
-    if (isJuggle)
+    public static void ApplyKnockback(
+        HitboxPayload payload, 
+        Rigidbody targetRb, 
+        bool isGrounded, 
+        float maxJuggleHeight, 
+        float juggleLiftVelocity, 
+        LayerMask groundLayer)
     {
-        float juggleTargetY = launchY * juggleLaunchScale;
-        // Never pull velocity DOWN to reach the juggle target — only top up
-        // if the enemy has already decayed below it. Prevents the downward
-        // "yank" when a second hit lands while still rising from the first.
-        desiredY = Mathf.Max(currentVelY, juggleTargetY);
+        var movement = targetRb.GetComponent<EnemyMovement>();
+        movement?.InterruptFall();
+
+        float facingX = Mathf.Sign(targetRb.transform.position.x - payload.attacker.position.x);
+        if (facingX == 0f) facingX = 1f;
+
+        float launchY = payload.LaunchForce * payload.LaunchDir;
+        float currentVelY = targetRb.linearVelocity.y;
+
+        float finalY;
+
+        // Downward attack (spike / slam)
+        if (payload.LaunchDir < 0 && payload.LaunchForce > 0f)
+        {
+            finalY = -payload.LaunchForce;
+        }
+        // Grounded hit
+        else if (isGrounded)
+        {
+            finalY = launchY; // Full launch from ground, or 0 for horizontal-only hit
+        }
+        // Airborne hit (even if enemy is falling, hit cleanly catches and applies vertical force)
+        else
+        {
+            // Upward launch attack while in the air
+            if (payload.LaunchForce > 0f && payload.LaunchDir > 0)
+            {
+                // Measure current height above ground
+                float currentHeight = 0f;
+                Vector3 origin = movement != null && movement.groundCheckPoint != null 
+                    ? movement.groundCheckPoint.position 
+                    : targetRb.position;
+
+                if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 40f, groundLayer))
+                {
+                    currentHeight = hit.distance;
+                }
+
+                if (currentHeight >= maxJuggleHeight)
+                {
+                    // At or above max juggle ceiling: sustain the air combo at ceiling instead of rocketing to space
+                    finalY = juggleLiftVelocity;
+                }
+                else
+                {
+                    // Below ceiling: full upward launch applies, cleanly overriding any falling velocity
+                    finalY = launchY;
+                }
+            }
+            // Non-launch attack in the air (light combo strike, neutral hit)
+            else
+            {
+                // Catch falling enemy and suspend them in the air during combo
+                finalY = juggleLiftVelocity;
+            }
+        }
+
+        targetRb.linearVelocity = new Vector3(payload.KnockbackForce * facingX, finalY, 0f);
     }
-    else
-    {
-        desiredY = launchY;
-    }
-
-    Vector3 desiredVelocity = new Vector3(
-        payload.KnockbackForce * facingX,
-        desiredY,
-        0f
-    );
-
-    return desiredVelocity - targetRb.linearVelocity;
-}
-
-public static void ApplyKnockback(HitboxPayload payload, Rigidbody targetRb, bool isJuggle = false, float noLaunchLift = 0f)
-{
-    var movement = targetRb.GetComponent<EnemyMovement>();
-    movement?.InterruptFall();
-
-    float facingX = Mathf.Sign(targetRb.transform.position.x - payload.attacker.position.x);
-    if (facingX == 0f) facingX = 1f;
-
-    float launchY = payload.LaunchForce * payload.LaunchDir;
-    float currentVelY = targetRb.linearVelocity.y;
-
-    float finalY;
-    if (noLaunchLift > 0f && Mathf.Approximately(payload.LaunchForce, 0f))
-    {
-        // No-launch hit on an airborne target: forced fixed lift, never pulls velocity down.
-        finalY = Mathf.Max(currentVelY, noLaunchLift);
-    }
-    else if (currentVelY > 0.1f)
-    {
-        // Already airborne/rising — REDUCE the effective launch instead of
-        // granting a fresh full one, and never let it stack additively.
-        // Hold at the higher of (current velocity) or (reduced target) —
-        // this caps height, it doesn't add to it.
-        float reducedTarget = launchY * juggleLaunchScale;
-        finalY = Mathf.Max(currentVelY, reducedTarget);
-    }
-    else
-    {
-        // Falling, grounded, or at rest — fresh full launch.
-        finalY = launchY;
-    }
-
-    targetRb.linearVelocity = new Vector3(payload.KnockbackForce * facingX, finalY, 0f);
-}
 }

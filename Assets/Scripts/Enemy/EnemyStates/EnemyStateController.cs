@@ -25,7 +25,9 @@ public class EnemyStateController : MonoBehaviour
     [Header("State Tuning")]
     public float idleToChaseDelay = 2f;
     public float damagedDuration = 0.8f;
-    [Tooltip("Fixed upward velocity applied to airborne enemies hit by attacks with no launch force (keeps them juggled).")]
+    [Tooltip("Maximum height above ground an enemy can reach when juggled.")]
+    public float maxJuggleHeight = 8f;
+    [Tooltip("Fixed upward velocity applied to airborne enemies hit by attacks with no launch force (suspends them in hitstun).")]
     public float juggleLiftVelocity = 5f;
     public float attackDuration = 0.5f;
     public float attackCooldown = 1.5f;
@@ -120,6 +122,12 @@ public class EnemyStateController : MonoBehaviour
             }
             AirborneDamagedState.SetPendingKnockback(payload);
             SwitchState(AirborneDamagedState);
+            return;
+        }
+
+        if (IsDamaged)
+        {
+            DamagedState.Reset(payload);
             return;
         }
 

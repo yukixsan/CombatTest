@@ -47,33 +47,24 @@ public void SwitchState(EnemyBaseState newState)
 - `EnemyDamagedState.OnExit(nextState)` skips kinematic/gravity reset when `nextState` is `AirborneState` or `AirborneDamagedState`; reset only happens when landing in `IdleState`. Resetting on every exit killed knockback impulses.
 
 ## 6.4 Knockback & Juggle (`EnemyHitReaction.ApplyKnockback`, static)
-Direct `linearVelocity` assignment (delta/`AddForce` approach was removed: caused direction flips on chained hits and collapsed juggle height).
+Direct `linearVelocity` assignment with bounded juggle ceiling and active arcade deceleration.
 ```csharp
-public static void ApplyKnockback(HitboxPayload payload, Rigidbody targetRb)
-{
-    float facingX = Mathf.Sign(targetRb.transform.position.x - payload.attacker.position.x);
-    if (facingX == 0f) facingX = 1f;
-
-    float launchY = payload.LaunchForce * payload.LaunchDir;
-    float currentVelY = targetRb.linearVelocity.y;
-
-    float finalY;
-    if (currentVelY > 0.1f)
-    {
-        float reducedTarget = launchY * juggleHeightScale;
-        finalY = Mathf.Max(currentVelY, reducedTarget);
-    }
-    else finalY = launchY;
-
-    targetRb.linearVelocity = new Vector3(payload.KnockbackForce * facingX, finalY, 0f);
-}
-private const float juggleHeightScale = 0.5f; // tune 0.4–0.7 by feel
+public static void ApplyKnockback(
+    HitboxPayload payload, 
+    Rigidbody targetRb, 
+    bool isGrounded, 
+    float maxJuggleHeight, 
+    float juggleLiftVelocity, 
+    LayerMask groundLayer)
 ```
-**Invariants:**
-- X is always hard-overwritten, never delta'd.
-- Juggle detection is velocity-based (`currentVelY > 0.1f`), not state-based; no `isJuggle` parameter plumbing (tried and reverted).
-- If juggles feel weak, check attack windup delay vs. fall speed before blaming the formula; also check `juggleHeightScale`.
-- No-launch hits (`LaunchForce == 0`) in `AirborneDamagedState` get a forced fixed lift: `finalY = Max(currentVelY, controller.juggleLiftVelocity)` (passed as `noLaunchLift`). `DamagedState` (grounded) passes none, so no-launch attacks don't pop grounded enemies. Gravity is never disabled.
+
+**Mechanics:**
+- **Horizontal Impulse + Active Braking:** Target receives `KnockbackForce * facingX`. In `FixedUpdate`, `EnemyMovement.ApplyKnockbackDeceleration()` linearly brakes horizontal velocity to zero (`groundKnockbackDecel = 38f`, `airKnockbackDecel = 22f`). This produces an explosive initial pop with a tight, bounded travel distance ($S = \frac{V_0^2}{2a} \approx 2.0\text{–}2.5\text{m}$) rather than runaway sliding.
+- **Air Juggle Catch & Launch:** When an airborne enemy is hit (even if falling fast):
+  - **Launch attacks (`LaunchForce > 0, LaunchDir > 0`):** Overrides falling momentum and applies `launchY` upward. If the enemy reaches the ceiling (`maxJuggleHeight = 8f`), velocity is held at `juggleLiftVelocity = 5f` to maintain the combo without rocketing into space.
+  - **Air combo strikes (`LaunchForce == 0`):** Catches falling enemies out of the air and applies `juggleLiftVelocity = 5f`, keeping them floating and suspended in the combo.
+- **Downward Spike:** Attacks with `LaunchDir < 0` slam the enemy down at `-LaunchForce`.
+- **Airborne Stun Float:** Fall multiplier is paused during `EnemyAirborneDamagedState` to allow airborne combos to connect smoothly without dragging enemies down. Fall acceleration activates when transitioning to `EnemyAirborneState`.
 
 ## 6.5 EnemyAttackState
 Duration-based hitbox control (animation events were unreliable): `attackDuration` timer on `EnemyStateController`. `EnemyHitBox.Active()`/`Deactive()` called from state enter/exit.
@@ -98,6 +89,13 @@ public void TriggerDamaged(HitboxPayload payload)
         SwitchState(AirborneDamagedState);
         return;
     }
+
+    if (IsDamaged)
+    {
+        DamagedState.Reset(payload);
+        return;
+    }
+
     DamagedState.SetPendingKnockback(payload);
     SwitchState(DamagedState);
 }

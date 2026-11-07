@@ -18,7 +18,7 @@ MonoBehaviour:
   useHandWeapon: 1
   damage: 10
   attackArmor: 0
-  knockbackForce: 4
+  knockbackForce: 10
   launchForce: 0
   launchDir: 0
   hitstunDuration: 0.07
