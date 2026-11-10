@@ -43,24 +43,24 @@ MonoBehaviour:
   detonationVFXPrefab: {fileID: 8114251193329691343, guid: ea5adabe8aeb36249b94ea3b44b8128c, type: 3}
   detonationSFX: {fileID: 8300000, guid: a1a984ed7bd719d42a72a71d78476cd8, type: 3}
   detonationSFXVolume: 0.9
-  sequentialDetonationInterval: 0.08
+  sequentialDetonationInterval: 0.3
   neutralPayload:
     knockbackForce: 0
     launchForce: 1
     launchDir: 1
     damageMultiplier: 1
   horizontalPayload:
-    knockbackForce: 5
+    knockbackForce: 15
     launchForce: 0
     launchDir: 0
     damageMultiplier: 1
   upPayload:
     knockbackForce: 0
-    launchForce: 7
+    launchForce: 10
     launchDir: 1
     damageMultiplier: 1
   downPayload:
     knockbackForce: 0
-    launchForce: 7
+    launchForce: 12
     launchDir: -1
     damageMultiplier: 1

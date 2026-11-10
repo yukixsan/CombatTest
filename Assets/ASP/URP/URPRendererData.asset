@@ -88,6 +88,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   injectionPoint: 600
+--- !u!114 &-5557879276581649474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f62c9c65cf3354c93be831c8bc075510, type: 3}
+  m_Name: ScreenSpaceAmbientOcclusion
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  m_Settings:
+    AOMethod: 0
+    Downsample: 0
+    AfterOpaque: 0
+    Source: 1
+    NormalSamples: 1
+    Intensity: 3
+    DirectLightingStrength: 0.25
+    Radius: 0.035
+    Samples: 1
+    BlurQuality: 0
+    Falloff: 100
+    SampleCount: -1
 --- !u!114 &-1899658520697321284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,7 +193,8 @@ MonoBehaviour:
   - {fileID: -805629644481558483}
   - {fileID: 5026116597292994786}
   - {fileID: -7173561925061970490}
-  m_RendererFeatureMap: 9aa77b9d4d8368716c25aa4a75ee4645a04eb49a30794c62bcc84ae7a30ea3e5e82c8586b1190feb2d0827541bd4d1f4e210586d6a5ac045c6f569b26f63729c
+  - {fileID: -5557879276581649474}
+  m_RendererFeatureMap: 9aa77b9d4d8368716c25aa4a75ee4645a04eb49a30794c62bcc84ae7a30ea3e5e82c8586b1190feb2d0827541bd4d1f4e210586d6a5ac045c6f569b26f63729cbe83d8ae3e72deb2
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}

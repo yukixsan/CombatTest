@@ -25,7 +25,7 @@ MonoBehaviour:
   Airborne: 1
   airLimit: 1
   canBeCancelledWindup: 0
-  canBeCancelledActive: 0
+  canBeCancelledActive: 1
   canBeCancelledRecovery: 1
   windupVFX:
     prefab: {fileID: 0}
