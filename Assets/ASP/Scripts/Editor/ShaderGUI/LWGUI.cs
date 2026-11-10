@@ -201,7 +201,7 @@ namespace LWGUI
 
 			Helper.BeginProperty(rect, prop, this);
 			Helper.DoPropertyContextMenus(rect, prop, this);
-			RevertableHelper.FixGUIWidthMismatch(prop.type, materialEditor);
+			RevertableHelper.FixGUIWidthMismatch(prop.propertyType, materialEditor);
 			if (propStaticData.isAdvancedHeaderProperty)
 				propStaticData.isExpanding = EditorGUI.Foldout(rect, propStaticData.isExpanding, string.Empty);
 			RevertableHelper.DrawRevertableProperty(revertButtonRect, prop, this, propStaticData.isMain || propStaticData.isAdvancedHeaderProperty);

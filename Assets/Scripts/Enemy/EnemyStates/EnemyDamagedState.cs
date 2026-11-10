@@ -53,7 +53,7 @@ public class EnemyDamagedState : EnemyBaseState
 
     public override void OnUpdate()
     {
-        Debug.Log("EnemyDamagedState: OnUpdate() called");
+        // Per-frame log removed (ran every frame during hitstun -> GC spikes in combat).
         damageTimer -= Time.deltaTime;
         if(!movement.IsGrounded)
         {

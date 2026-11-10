@@ -8,11 +8,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Road_2A_D
-  m_Shader: {fileID: 4800000, guid: 325e972045994ba4ab87c5aab9e80a43, type: 3}
+  m_Shader: {fileID: 4800000, guid: 8902df7aee9a4da458a844e64443513f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_ValidKeywords:
+  - _RAMPMAP_ON
+  m_InvalidKeywords:
+  - _USEGLOBALATMOSPHERE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -23,6 +25,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: d750df71925ed4cc6832caf52a9594e6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -63,6 +69,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: c94d91f9cc7324608994f9bc6a8c0b17, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RampMap:
+        m_Texture: {fileID: 2800000, guid: 23c0577900fcd4d92931334d69ef4519, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _TextureRamp:
         m_Texture: {fileID: 2800000, guid: 23c0577900fcd4d92931334d69ef4519, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -81,30 +91,60 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AdditionalLightSoftness: 0.15
+    - _AlphaClip: 0
     - _AlphaCutoff: 0.5
+    - _AmbientStrength: 0.6
     - _BumpScale: 1
+    - _Cull: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _FlashAmount: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _HazeEnd: 180
+    - _HazeHeightBase: 0
+    - _HazeHeightFalloff: 0.02
+    - _HazeStart: 45
+    - _HazeStrength: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Outline: 0.001
+    - _OutlineAlbedoMix: 0
     - _OutlineWidth: 0.0065
     - _OutlineWidth2: 0.0065
     - _Parallax: 0.02
+    - _ReceiveShadows: 1
+    - _ReceivedShadowStrength: 1
+    - _RimBacklitBoost: 1.5
+    - _RimLightInfluence: 1
+    - _RimSoftness: 0.08
+    - _RimWidth: 0.25
+    - _ShadowSoftness: 0.03
+    - _ShadowThreshold: 0.62
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _SpecularSize: 0
+    - _SpecularSoftness: 0.01
     - _SrcBlend: 1
     - _UVSec: 0
+    - _UseEmission: 0
+    - _UseGlobalAtmosphere: 1
+    - _UseRamp: 1
     - _ZWrite: 1
     - __dirty: 1
     m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.89705884, g: 0.89705884, b: 0.89705884, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _OutlineColor: {r: 0.17647058, g: 0.17647058, b: 0.17647058, a: 1}
+    - _FlashColor: {r: 1, g: 1, b: 1, a: 1}
+    - _HazeColor: {r: 0.78, g: 0.8399999, b: 1, a: 1}
+    - _OutlineColor: {r: 0.17647055, g: 0.17647055, b: 0.17647055, a: 1}
+    - _RimColor: {r: 1, g: 0.95, b: 0.85, a: 0.15}
+    - _ShadowColor: {r: 0.58, g: 0.56, b: 0.72, a: 1}
+    - _SpecularColor: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

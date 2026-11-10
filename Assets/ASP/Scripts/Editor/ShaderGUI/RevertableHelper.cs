@@ -55,12 +55,12 @@ namespace LWGUI
 			EditorGUIUtility.labelWidth = RevertableHelper.labelWidth;
 		}
 
-		public static void FixGUIWidthMismatch(MaterialProperty.PropType propType, MaterialEditor materialEditor)
+		public static void FixGUIWidthMismatch(UnityEngine.Rendering.ShaderPropertyType propType, MaterialEditor materialEditor)
 		{
 			switch (propType)
 			{
-				case MaterialProperty.PropType.Texture:
-				case MaterialProperty.PropType.Range:
+				case UnityEngine.Rendering.ShaderPropertyType.Texture:
+				case UnityEngine.Rendering.ShaderPropertyType.Range:
 					materialEditor.SetDefaultGUIWidths();
 					break;
 				default:
@@ -88,24 +88,24 @@ namespace LWGUI
 		public static string GetPropertyDefaultValueText(MaterialProperty defaultProp)
 		{
 			string defaultText = String.Empty;
-			switch (defaultProp.type)
+			switch (defaultProp.propertyType)
 			{
-				case MaterialProperty.PropType.Color:
+				case UnityEngine.Rendering.ShaderPropertyType.Color:
 					defaultText += defaultProp.colorValue;
 					break;
-				case MaterialProperty.PropType.Float:
-				case MaterialProperty.PropType.Range:
+				case UnityEngine.Rendering.ShaderPropertyType.Float:
+				case UnityEngine.Rendering.ShaderPropertyType.Range:
 					defaultText += defaultProp.floatValue;
 					break;
 #if UNITY_2021_1_OR_NEWER
-				case MaterialProperty.PropType.Int:
+				case UnityEngine.Rendering.ShaderPropertyType.Int:
 					defaultText += defaultProp.intValue;
 					break;
 #endif
-				case MaterialProperty.PropType.Texture:
+				case UnityEngine.Rendering.ShaderPropertyType.Texture:
 					defaultText += defaultProp.textureValue != null ? defaultProp.textureValue.name : "None";
 					break;
-				case MaterialProperty.PropType.Vector:
+				case UnityEngine.Rendering.ShaderPropertyType.Vector:
 					defaultText += defaultProp.vectorValue;
 					break;
 			}

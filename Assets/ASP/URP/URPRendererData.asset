@@ -88,6 +88,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   injectionPoint: 600
+--- !u!114 &-5682205381860844121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d69a19d29ef66464ea0afc7cd84fd6c2, type: 3}
+  m_Name: VolumetricFog
+  m_EditorClassIdentifier: com.cqf.urpvolumetricfog.runtime::VolumetricFogRendererFeature
+  m_Active: 1
+  downsampleDepthShader: {fileID: 4800000, guid: cffeaeec0396a2c4dad475266cc8dfeb, type: 3}
+  volumetricFogShader: {fileID: 4800000, guid: 08f816187f9af0244a95556ee0cab83f, type: 3}
 --- !u!114 &-5557879276581649474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,7 +118,7 @@ MonoBehaviour:
   m_Active: 1
   m_Settings:
     AOMethod: 0
-    Downsample: 0
+    Downsample: 1
     AfterOpaque: 0
     Source: 1
     NormalSamples: 1
@@ -111,7 +126,7 @@ MonoBehaviour:
     DirectLightingStrength: 0.25
     Radius: 0.035
     Samples: 1
-    BlurQuality: 0
+    BlurQuality: 1
     Falloff: 100
     SampleCount: -1
 --- !u!114 &-1899658520697321284
@@ -194,11 +209,15 @@ MonoBehaviour:
   - {fileID: 5026116597292994786}
   - {fileID: -7173561925061970490}
   - {fileID: -5557879276581649474}
-  m_RendererFeatureMap: 9aa77b9d4d8368716c25aa4a75ee4645a04eb49a30794c62bcc84ae7a30ea3e5e82c8586b1190feb2d0827541bd4d1f4e210586d6a5ac045c6f569b26f63729cbe83d8ae3e72deb2
+  - {fileID: -5682205381860844121}
+  m_RendererFeatureMap: 9aa77b9d4d8368716c25aa4a75ee4645a04eb49a30794c62bcc84ae7a30ea3e5e82c8586b1190feb2d0827541bd4d1f4e210586d6a5ac045c6f569b26f63729cbe83d8ae3e72deb2a71d5f914fc024b1
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
-  m_AssetVersion: 2
+  m_AssetVersion: 3
+  m_PrepassLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_OpaqueLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -281,7 +300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e32e72b6a3f58a24c9033e2b9275eea0, type: 3}
   m_Name: ScreenSpaceShadows
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   m_Shader: {fileID: 4800000, guid: 0f854b35a0cf61a429bd5dcfea30eddd, type: 3}
 --- !u!114 &7083169563607846560
 MonoBehaviour:
