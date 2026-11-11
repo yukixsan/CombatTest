@@ -22,8 +22,7 @@ public class PlayerStateController : MonoBehaviour
     public DamagedState DamagedState { get; private set; }
     public PlayerAirborneDamagedState AirborneDamagedState { get; private set; }
     public DeadState DeadState { get; private set; }
-
-    [SerializeField]public bool CanMove { get; private set; } = true;
+    public bool CanMove { get; private set; } = true;
     public bool CanJump { get; private set; } = true;
     public bool IsAirborne => _movement != null && !_movement.IsGrounded;
     public bool IsDead => currentState == DeadState;

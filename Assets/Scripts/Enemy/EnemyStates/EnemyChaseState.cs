@@ -12,7 +12,7 @@ public class EnemyChaseState : EnemyBaseState
     }
     public override void OnFixedUpdate()
     {
-        Debug.Log("EnemyChaseState: OnFixedUpdate() called");
+        // Per-physics-step log removed: 7 enemies x 50 Hz = 350 Debug.Log/s (stack trace + GC) caused hitches.
         if (!movement.IsGrounded)
         {
             controller.SwitchState(controller.AirborneState);

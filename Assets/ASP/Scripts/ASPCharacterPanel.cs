@@ -170,36 +170,84 @@ namespace ASP
             }
         }
         
-        public void UpdateLightDirectionOverrideParam()
+        // --- Per-frame update, allocation-free in Play mode -------------------------------
+        // The original version ran GetComponentsInChildren + renderer.materials + shader.name
+        // (each allocates) for every character every frame: ~40 KB garbage/frame on Level_01
+        // with 11 characters, causing periodic GC hitches. Materials are now cached in Play
+        // mode and property names are pre-hashed. Behaviour is unchanged.
+        private static readonly int ID_FaceFrontDirection   = Shader.PropertyToID("_FaceFrontDirection");
+        private static readonly int ID_FaceRightDirection   = Shader.PropertyToID("_FaceRightDirection");
+        private static readonly int ID_CharacterCenterWS    = Shader.PropertyToID("_CharacterCenterWS");
+        private static readonly int ID_CharacterCenterCube  = Shader.PropertyToID("_CharacterCenterCubeSize");
+        private static readonly int ID_OverrideLightDir     = Shader.PropertyToID("_OverrideLightDirToggle");
+        private static readonly int ID_OverrideLightColor   = Shader.PropertyToID("_OverrideLightColorIntensityToggle");
+        private static readonly int ID_FakeLightColor       = Shader.PropertyToID("_FakeLightColor");
+        private static readonly int ID_FakeLightIntensity   = Shader.PropertyToID("_FakeLightIntensity");
+        private static readonly int ID_FakeLightEuler       = Shader.PropertyToID("_FakeLightEuler");
+        private static readonly int ID_SimpleAABBCutOff     = Shader.PropertyToID("_UseSimpleAABBCutOffForCharacterShadow");
+
+        private readonly List<Material> _aspMaterialCache = new List<Material>();
+        private bool _aspCacheValid;
+        private int _aspCacheHierarchyCount = -1;
+
+        /// <summary>Call after swapping materials on this character at runtime.</summary>
+        public void InvalidateMaterialCache() => _aspCacheValid = false;
+
+        private void OnEnable() => _aspCacheValid = false;
+
+        private static bool IsASPMaterial(Material mat)
         {
+            if (mat == null || mat.shader == null) return false;
+            string n = mat.shader.name;
+            return n == "ASP/Character" || n == "ASP/Eye";
+        }
+
+        private void RebuildMaterialCache()
+        {
+            _aspMaterialCache.Clear();
             foreach (var renderer in GetComponentsInChildren<Renderer>())
             {
-                if(renderer.GetComponent<VisualEffect>() != null)
+                if (renderer.GetComponent<VisualEffect>() != null)
                     continue;
-                var subMaterialIndex = 0;
                 Material[] mats = Application.isPlaying ? renderer.materials : renderer.sharedMaterials;
                 foreach (var mat in mats)
-                {
-                    if(mat == null || mat.shader == null)
-                        continue;
-                    if (!(mat.shader.name.Equals("ASP/Character") || mat.shader.name.Equals("ASP/Eye")))
-                    {
-                        continue;
-                    }
-                    
-                    mat.SetVector("_FaceFrontDirection", HeadBoneTransform != null ? HeadBoneTransform.forward : transform.forward);
-                    mat.SetVector("_FaceRightDirection", HeadBoneTransform != null ? HeadBoneTransform.right : transform.right);
-                    mat.SetVector("_CharacterCenterWS", CharacterCenterWS);
-                    mat.SetFloat("_CharacterCenterCubeSize", _CharacterCenterCubeSize);
-                    mat.SetFloat("_OverrideLightDirToggle", _overrideMode != OverrideMode.NO_OVERRIDE ? 1 : 0);
-                    mat.SetFloat("_OverrideLightColorIntensityToggle", _mainLightColorOverride ? 1 : 0);
-                    mat.SetColor("_FakeLightColor", _mainLightColorOverrideValue);
-                    mat.SetFloat("_FakeLightIntensity", _mainLightStrengthOverrideValue);
-                    mat.SetVector("_FakeLightEuler",
-                        new Vector3(180 + _overrideLightAngle.x, _overrideLightAngle.y, _overrideLightAngle.z));
-                    mat.SetInt("_UseSimpleAABBCutOffForCharacterShadow", UseSimpleAABBCutOffForCharacterShadow ? 1 : 0);
-                    subMaterialIndex++;
-                }
+                    if (IsASPMaterial(mat)) _aspMaterialCache.Add(mat);
+            }
+            _aspCacheHierarchyCount = transform.hierarchyCount;
+            _aspCacheValid = true;
+        }
+
+        public void UpdateLightDirectionOverrideParam()
+        {
+            // Edit mode: rebuild every call so inspector material swaps are picked up immediately.
+            // Play mode: rebuild only when invalidated or the hierarchy changed (weapon spawned, etc).
+            if (!Application.isPlaying || !_aspCacheValid || _aspCacheHierarchyCount != transform.hierarchyCount)
+                RebuildMaterialCache();
+
+            Transform face = HeadBoneTransform != null ? HeadBoneTransform : transform;
+            Vector3 faceForward = face.forward;
+            Vector3 faceRight   = face.right;
+            Vector3 center      = CharacterCenterWS;
+            Vector3 fakeEuler   = new Vector3(180 + _overrideLightAngle.x, _overrideLightAngle.y, _overrideLightAngle.z);
+            float overrideDir   = _overrideMode != OverrideMode.NO_OVERRIDE ? 1 : 0;
+            float overrideColor = _mainLightColorOverride ? 1 : 0;
+            int   aabbCutOff    = UseSimpleAABBCutOffForCharacterShadow ? 1 : 0;
+
+            for (int i = 0; i < _aspMaterialCache.Count; i++)
+            {
+                var mat = _aspMaterialCache[i];
+                if (mat == null) { _aspCacheValid = false; continue; }
+
+                mat.SetVector(ID_FaceFrontDirection, faceForward);
+                mat.SetVector(ID_FaceRightDirection, faceRight);
+                mat.SetVector(ID_CharacterCenterWS, center);
+                mat.SetFloat(ID_CharacterCenterCube, _CharacterCenterCubeSize);
+                mat.SetFloat(ID_OverrideLightDir, overrideDir);
+                mat.SetFloat(ID_OverrideLightColor, overrideColor);
+                mat.SetColor(ID_FakeLightColor, _mainLightColorOverrideValue);
+                mat.SetFloat(ID_FakeLightIntensity, _mainLightStrengthOverrideValue);
+                mat.SetVector(ID_FakeLightEuler, fakeEuler);
+                mat.SetInt(ID_SimpleAABBCutOff, aabbCutOff);
             }
         }
 
