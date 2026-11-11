@@ -12,7 +12,6 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _CT_SPECULAR
   - _EMISSION
   m_InvalidKeywords:
   - _USEGLOBALATMOSPHERE_ON
@@ -51,8 +50,8 @@ Material:
     - _HazeHeightFalloff: 0.02
     - _HazeStart: 45
     - _HazeStrength: 0
-    - _OutlineAlbedoMix: 0.35
-    - _OutlineWidth: 0.012
+    - _OutlineAlbedoMix: 0
+    - _OutlineWidth: 0.02
     - _ReceivedShadowStrength: 0.75
     - _RimBacklitBoost: 2
     - _RimLightInfluence: 0.8
@@ -65,15 +64,15 @@ Material:
     - _UseEmission: 1
     - _UseGlobalAtmosphere: 1
     - _UseRamp: 0
-    - _UseSpecular: 1
+    - _UseSpecular: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 0, b: 0, a: 0.76862746}
     - _FlashColor: {r: 1, g: 1, b: 1, a: 1}
     - _HazeColor: {r: 0.78, g: 0.8399999, b: 1, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RimColor: {r: 1, g: 0.95, b: 0.85, a: 0.65}
-    - _ShadowColor: {r: 0.62, g: 0.54999995, b: 0.7, a: 1}
+    - _RimColor: {r: 1, g: 0.9231877, b: 0.7754717, a: 0.65}
+    - _ShadowColor: {r: 0.67425376, g: 0.6391954, b: 0.7132075, a: 1}
     - _SpecularColor: {r: 0.34999996, g: 0.34999996, b: 0.34999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

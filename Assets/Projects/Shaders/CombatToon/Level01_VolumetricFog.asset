@@ -51,7 +51,7 @@ MonoBehaviour:
     m_Value: 0.35
   tint:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.9, b: 0.78, a: 1}
+    m_Value: {r: 0.6144311, g: 0.53333336, b: 0.78039217, a: 1}
   enableAdditionalLightsContribution:
     m_OverrideState: 1
     m_Value: 1

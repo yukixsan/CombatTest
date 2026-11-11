@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db4e9ad3e9694425b66636e55d88ae56, type: 3}
   m_Name: ASPSreenSpaceOutline
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   EnableOutline:
     m_OverrideState: 1
     m_Value: 1
@@ -306,7 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70afe9e12c7a7ed47911bb608a23a8ff, type: 3}
   m_Name: SplitToning
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   shadows:
     m_OverrideState: 1
     m_Value: {r: 0.6528301, g: 0.6528301, b: 0.6528301, a: 1}
