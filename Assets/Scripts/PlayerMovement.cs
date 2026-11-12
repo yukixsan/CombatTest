@@ -41,6 +41,9 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     //private PlayerInputActions inputActions;
     private Vector2 moveInput;
+    private float? _automatedMoveInputX;
+    [SerializeField] private Vector3 _streetForward = Vector3.right;
+    public Vector3 StreetForward => _streetForward;
     [SerializeField]private bool _isGrounded;
     public bool IsMoving { get; private set; }
     public float HorizontalInput => moveInput.x;
@@ -57,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
 
     //State Controller
     [SerializeField] private PlayerStateController _stateController;
+    [SerializeField] private float _lockedDepth;
     public bool IsGrounded
     {
         get { return _isGrounded; } set {  _isGrounded = value; }
@@ -64,20 +68,18 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+    }
 
-        // Generated input class
-        // inputActions = new PlayerInputActions();
+    private void Start()
+    {
+        bool isZStreet = Mathf.Abs(_streetForward.z) > 0.5f;
+        _lockedDepth = isZStreet ? transform.position.x : transform.position.z;
 
-        // // Bind Move (A/D or Left/Right)
-        // inputActions.Gameplay.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
-        // inputActions.Gameplay.Move.canceled += ctx => moveInput = Vector2.zero;
+        RigidbodyConstraints posFreeze = isZStreet 
+            ? RigidbodyConstraints.FreezePositionX 
+            : RigidbodyConstraints.FreezePositionZ;
 
-        // // Bind Jump
-        // inputActions.Gameplay.Jump.performed += OnJumpPerformed;
-
-        // //Bind Crouch
-        // inputActions.Gameplay.Crouch.performed += ctx => _stateController.SetCrouching(true);
-        // inputActions.Gameplay.Crouch.canceled += ctx => _stateController.SetCrouching(false);
+        rb.constraints = posFreeze | RigidbodyConstraints.FreezeRotation;
     }
 
     private void OnEnable()
@@ -131,7 +133,8 @@ public class PlayerMovement : MonoBehaviour
         {
             dashTimer -= Time.fixedDeltaTime;
             rb.useGravity = false;
-            externalVelocity = new Vector3(_dashDirection.x * _activeDashSpeed, _dashDirection.y * _activeDashSpeed, 0f);
+            Vector3 dashHorizontal = _streetForward * (_dashDirection.x * _activeDashSpeed);
+            externalVelocity = new Vector3(dashHorizontal.x, _dashDirection.y * _activeDashSpeed, dashHorizontal.z);
             velocity = externalVelocity;
 
             if (dashTimer <= 0f)
@@ -147,15 +150,33 @@ public class PlayerMovement : MonoBehaviour
         float baseX = 0f;
 
         bool allowBaseMovement = _stateController.CanMove;
+        float inputX = _automatedMoveInputX ?? moveInput.x;
+        bool hasMovePermission = allowBaseMovement || _automatedMoveInputX.HasValue;
 
         // Disable input movement if - movement not allowed - OR currently dashing
-        if (allowBaseMovement && !isDashing)
+        if (hasMovePermission && !isDashing)
         {
-            baseX = moveInput.x * moveSpeed * MoveSpeedMultiplier;
+            baseX = inputX * moveSpeed * MoveSpeedMultiplier;
         }
 
-        velocity.x = baseX + externalVelocity.x;
+        Vector3 moveHorizontal = _streetForward * baseX;
+        velocity.x = moveHorizontal.x + externalVelocity.x;
+        velocity.z = moveHorizontal.z + externalVelocity.z;
 
+        // Enforce 2.5D depth lock on linear velocity and anchor position
+        Vector3 curPos = rb.position;
+        if (Mathf.Abs(_streetForward.z) > 0.5f)
+        {
+            velocity.x = 0f; // On Z street (highway), depth is X
+            curPos.x = _lockedDepth;
+        }
+        else
+        {
+            velocity.z = 0f; // On X street (building), depth is Z
+            curPos.z = _lockedDepth;
+        }
+
+        rb.position = curPos;
         rb.linearVelocity = velocity;
 
         IsMoving = Mathf.Abs(baseX) > 0.1f;
@@ -194,19 +215,19 @@ public class PlayerMovement : MonoBehaviour
     {
         float facing = Mathf.Sign(_model.localScale.x); 
 
-        // Flip the X direction if facing left
-        dir.x *= facing;
+        // dir.x is forward/back along the active street
+        Vector3 horizontalDir = _streetForward * (dir.x * facing);
+        Vector3 finalDir = new Vector3(horizontalDir.x, dir.y, horizontalDir.z);
 
-        // Normalize and scale
-
-        pendingLaunchVelocity += dir.normalized * strength;
+        pendingLaunchVelocity += finalDir.normalized * strength;
         hasPendingVelocity = true;
     }
 
     private void LaunchForce(Vector3 dir, float strength)
     {
         float facing = Mathf.Sign(_model.localScale.x);
-        Vector3 finalDir = new Vector3(dir.x * facing, dir.y, dir.z);
+        Vector3 horizontalDir = _streetForward * (dir.x * facing);
+        Vector3 finalDir = new Vector3(horizontalDir.x, dir.y, horizontalDir.z);
         rb.AddForce(finalDir.normalized * strength, ForceMode.VelocityChange);
     }
 
@@ -220,6 +241,51 @@ public class PlayerMovement : MonoBehaviour
     {
         isKnockedBack = false;
         knockbackVelocity = Vector3.zero;
+    }
+
+    public void SetStreetTrack(Vector3 forwardDirection, RigidbodyConstraints constraints, Quaternion? targetRotation = null)
+    {
+        _streetForward = forwardDirection.sqrMagnitude > 0.001f ? forwardDirection.normalized : Vector3.right;
+        rb.constraints = constraints;
+        if (targetRotation.HasValue)
+        {
+            transform.rotation = targetRotation.Value;
+            rb.rotation = targetRotation.Value;
+        }
+
+        bool isZStreet = Mathf.Abs(_streetForward.z) > 0.5f;
+        _lockedDepth = isZStreet ? transform.position.x : transform.position.z;
+    }
+
+    public void SetStreetForward(Vector3 forwardDirection, Quaternion? targetRotation = null)
+    {
+        _streetForward = forwardDirection.sqrMagnitude > 0.001f ? forwardDirection.normalized : Vector3.right;
+        if (targetRotation.HasValue)
+        {
+            transform.rotation = targetRotation.Value;
+            rb.rotation = targetRotation.Value;
+        }
+    }
+
+    public void SetAutomatedMoveInput(float? inputX)
+    {
+        _automatedMoveInputX = inputX;
+    }
+
+    public void TeleportTo(Vector3 worldPosition)
+    {
+        rb.linearVelocity = Vector3.zero;
+        rb.position = worldPosition;
+        transform.position = worldPosition;
+        bool isZStreet = Mathf.Abs(_streetForward.z) > 0.5f;
+        _lockedDepth = isZStreet ? worldPosition.x : worldPosition.z;
+        hasPendingVelocity = false;
+        pendingLaunchVelocity = Vector3.zero;
+        isKnockedBack = false;
+        knockbackVelocity = Vector3.zero;
+        isDashing = false;
+        externalVelocity = Vector3.zero;
+        _jumpPressed = false;
     }
 
     #region Animation Event Presets 
@@ -268,7 +334,8 @@ public class PlayerMovement : MonoBehaviour
     //Model flip handler
     private void LateUpdate()
     {
-        HandleModelFlip(moveInput.x);
+        float flipInput = _automatedMoveInputX ?? moveInput.x;
+        HandleModelFlip(flipInput);
     }
 
     private void HandleModelFlip(float moveX)

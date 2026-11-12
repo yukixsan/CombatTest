@@ -642,11 +642,11 @@ public event System.Action<CombatActionData> OnActionAccepted;
         GameObject markObj;
         if (SkillObjectPool.Instance != null)
         {
-            markObj = SkillObjectPool.Instance.Spawn(burstDashData.markPrefab, originPos, Quaternion.identity);
+            markObj = SkillObjectPool.Instance.Spawn(burstDashData.markPrefab, originPos, transform.rotation);
         }
         else
         {
-            markObj = Instantiate(burstDashData.markPrefab, originPos, Quaternion.identity);
+            markObj = Instantiate(burstDashData.markPrefab, originPos, transform.rotation);
         }
 
         var mark = markObj.GetComponent<BurstMark>();
@@ -776,11 +776,14 @@ public event System.Action<CombatActionData> OnActionAccepted;
         Vector3 offset = data.spawnOffset;
         offset.x *= Mathf.Sign(_model.localScale.x);
 
+        Vector3 spawnPos = transform.position + transform.TransformDirection(offset);
+        Quaternion spawnRot = transform.rotation * data.skillPrefab.transform.rotation;
+
         // ✅ Pool spawn instead of Instantiate
         GameObject obj = SkillObjectPool.Instance.Spawn(
             data.skillPrefab,
-            transform.position + offset, 
-            data.skillPrefab.transform.rotation);
+            spawnPos, 
+            spawnRot);
 
         SkillObject skill = obj.GetComponent<SkillObject>();
         if (skill != null)

@@ -35,8 +35,7 @@ public class EnemyAttackState : EnemyBaseState
             controller.attackVFXIndex
         );
         controller.Hitbox?.SetPayload(payload);
-
-        //controller.Hitbox?.Active();
+        // Hitbox active/inactive is driven by Animation Events on the attack animation
     }
 
     public override void OnUpdate()

@@ -9,7 +9,37 @@ public class PlayerHurtbox : MonoBehaviour
     {
         if (other.gameObject.layer == 9)
         {
-            var enemyHitbox = other.transform.root.GetComponentInChildren<EnemyHitBox>();
+            // 1. Authoritative: Find the attacking enemy's EnemyStateController and read its active hitbox
+            EnemyHitBox enemyHitbox = other.GetComponentInParent<EnemyStateController>()?.Hitbox;
+
+            // 2. If not found or controller's hitbox has no payload, find any EnemyHitBox in parents that HAS a payload
+            if (enemyHitbox == null || !enemyHitbox.HasPayload)
+            {
+                var hitboxes = other.GetComponentsInParent<EnemyHitBox>();
+                foreach (var hb in hitboxes)
+                {
+                    if (hb != null && hb.HasPayload)
+                    {
+                        enemyHitbox = hb;
+                        break;
+                    }
+                }
+            }
+
+            // 3. Fallback to direct component or attached Rigidbody lookup
+            if (enemyHitbox == null)
+            {
+                enemyHitbox = other.GetComponent<EnemyHitBox>()
+                           ?? other.GetComponentInParent<EnemyHitBox>()
+                           ?? other.GetComponentInChildren<EnemyHitBox>();
+
+                if (enemyHitbox == null && other.attachedRigidbody != null)
+                {
+                    enemyHitbox = other.attachedRigidbody.GetComponent<EnemyHitBox>()
+                               ?? other.attachedRigidbody.GetComponentInChildren<EnemyHitBox>();
+                }
+            }
+
             if (enemyHitbox != null && enemyHitbox.HasPayload)
             {
                 var payload = enemyHitbox.Payload;

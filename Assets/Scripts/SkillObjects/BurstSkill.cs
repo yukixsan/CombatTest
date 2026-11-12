@@ -7,9 +7,8 @@ public class BurstSkill : SkillObject
     [Header("Projectile Settings")]
     [SerializeField] private float speed = 10f;
     [SerializeField] private float lifetime = 3f;
-    [SerializeField] private Rigidbody rb3d;
-    [FormerlySerializedAs("rb")]
-    [SerializeField] private Rigidbody2D rb2d;
+    [FormerlySerializedAs("rb3d")]
+    [SerializeField] private Rigidbody rb;
 
     [Header("Drag Settings")]
     [Tooltip("Radius around the projectile center within which enemies are caught and dragged.")]
@@ -38,15 +37,30 @@ public class BurstSkill : SkillObject
         _hitTimer = 0f;
         if (_hitbox == null) _hitbox = GetComponentInChildren<PlayerHitbox>();
 
-        if (rb3d == null) rb3d = GetComponent<Rigidbody>();
-        if (rb2d == null) rb2d = GetComponent<Rigidbody2D>();
+        // Ensure 3D Rigidbody exists
+        if (rb == null)
+        {
+            rb = GetComponent<Rigidbody>();
+            if (rb == null)
+            {
+                rb = gameObject.AddComponent<Rigidbody>();
+                rb.useGravity = false;
+                rb.isKinematic = false;
+            }
+        }
 
-        // Calculate travel direction along local x-axis, flipped by player facing
-        Vector3 dir = transform.right * _facing;
+        // transform.right is already aligned with street forward, player facing, and downward tilt by SkillObject.Initialize
+        Vector3 dir = transform.right;
         _travelVelocity = dir * speed;
 
-        if (rb3d != null) rb3d.linearVelocity = _travelVelocity;
-        if (rb2d != null) rb2d.linearVelocity = _travelVelocity;
+        var mover = player.GetComponentInParent<PlayerMovement>();
+        bool isZStreet = mover != null ? (Mathf.Abs(mover.StreetForward.z) > 0.5f) : (Mathf.Abs(transform.forward.x) > 0.5f);
+        if (rb != null)
+        {
+            RigidbodyConstraints posFreeze = isZStreet ? RigidbodyConstraints.FreezePositionX : RigidbodyConstraints.FreezePositionZ;
+            rb.constraints = posFreeze | RigidbodyConstraints.FreezeRotation;
+            rb.linearVelocity = _travelVelocity;
+        }
 
         // Pool auto-return
         var returnComp = GetComponent<SkillObjectReturn>();
@@ -57,8 +71,7 @@ public class BurstSkill : SkillObject
     private void FixedUpdate()
     {
         // Maintain projectile movement
-        if (rb3d != null) rb3d.linearVelocity = _travelVelocity;
-        if (rb2d != null) rb2d.linearVelocity = _travelVelocity;
+        if (rb != null) rb.linearVelocity = _travelVelocity;
 
         CaptureEnemies();
         DragEnemies();
@@ -93,6 +106,8 @@ public class BurstSkill : SkillObject
 
     private void DragEnemies()
     {
+        bool isZStreet = Mathf.Abs(_travelVelocity.z) > Mathf.Abs(_travelVelocity.x);
+
         for (int i = _draggedEnemies.Count - 1; i >= 0; i--)
         {
             var enemyRb = _draggedEnemies[i];
@@ -102,9 +117,12 @@ public class BurstSkill : SkillObject
                 continue;
             }
 
-            // Keep Z frozen to 2.5D plane
+            // Keep depth axis frozen to 2.5D plane
             Vector3 toCenter = transform.position - enemyRb.position;
-            toCenter.z = 0f;
+            if (isZStreet)
+                toCenter.x = 0f;
+            else
+                toCenter.z = 0f;
 
             // Velocity drag: match projectile velocity + soft pull toward projectile center
             enemyRb.linearVelocity = _travelVelocity + (toCenter * centeringStrength);

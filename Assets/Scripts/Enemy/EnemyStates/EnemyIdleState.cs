@@ -19,8 +19,8 @@ public class EnemyIdleState : EnemyBaseState
 
         if (controller.target != null)
         {
-            Vector3 dir = (controller.target.position - controller.transform.position).normalized;
-            movement.Flip(dir.x);
+            Vector3 localDiff = controller.transform.InverseTransformDirection(controller.target.position - controller.transform.position);
+            movement.Flip(localDiff.x);
         }
     }
 
@@ -35,8 +35,8 @@ public class EnemyIdleState : EnemyBaseState
 
         if (controller.target == null) return;
 
-        Vector3 dir = (controller.target.position - controller.transform.position).normalized;
-        movement.Flip(dir.x);
+        Vector3 diff = controller.transform.InverseTransformDirection(controller.target.position - controller.transform.position);
+        movement.Flip(diff.x);
 
         if (chaseCDTimer > 0f)
         {

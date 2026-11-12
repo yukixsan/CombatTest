@@ -25,6 +25,10 @@ public class SkillObjectPool : MonoBehaviour
     {
         instance.SetActive(false);
         instance.transform.SetParent(null);
+        if (prefab != null)
+        {
+            instance.transform.localScale = prefab.transform.localScale;
+        }
 
         if (!_pools.ContainsKey(prefab))
             _pools[prefab] = new Queue<GameObject>();

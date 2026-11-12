@@ -7,29 +7,45 @@ public class PlayerHead : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        // 1. Check if the object entering our head trigger is the Player
+        // 1. Check if the object entering our head trigger is an Enemy
         if (other.CompareTag("Enemy"))
         {
-            Rigidbody playerRb = other.attachedRigidbody;
-            if (playerRb != null)
+            Rigidbody enemyRb = other.attachedRigidbody;
+            if (enemyRb != null)
             {
-                // 2. Figure out which side of the head center the player is closer to
-                float pushDirection = (playerRb.transform.position.x >= transform.position.x) ? 1f : -1f;
+                // Prevent self-triggering
+                var myRb = GetComponentInParent<Rigidbody>();
+                if (enemyRb == myRb) return;
 
-                // 3. Manually translate their position horizontally on the 2D plane
-                Vector3 currentPosition = playerRb.transform.position;
-                currentPosition.x += pushDirection * pushSpeed * Time.deltaTime;
-                
-                // Use MovePosition so the Rigidbody updates cleanly without breaking physics interpolation
-                playerRb.MovePosition(currentPosition);
-
-                // 4. Zero out downward velocity so they don't awkwardly "sink" into the head while sliding
-                Vector3 velocity = playerRb.linearVelocity; // Note: Use .velocity if on Unity 2022 or older
-                if (velocity.y < 0)
+                // Determine street forward direction (World X or World Z)
+                Vector3 streetForward = Vector3.right;
+                var mover = GetComponentInParent<PlayerMovement>();
+                if (mover != null)
                 {
-                    velocity.y = 0;
-                    playerRb.linearVelocity = velocity;
+                    streetForward = mover.StreetForward;
                 }
+                streetForward.y = 0f;
+                if (streetForward.sqrMagnitude > 0.001f) streetForward.Normalize();
+
+                // Push along the street forward direction instead of hardcoded X
+                Vector3 diff = enemyRb.position - transform.position;
+                float pushDirection = Vector3.Dot(diff, streetForward) >= 0f ? 1f : -1f;
+
+                Vector3 pushOffset = streetForward * (pushDirection * pushSpeed * Time.fixedDeltaTime);
+
+                // Preserve Y and depth coordinate strictly
+                Vector3 newPos = enemyRb.position + pushOffset;
+                newPos.y = enemyRb.position.y;
+                if (Mathf.Abs(streetForward.z) > 0.5f)
+                {
+                    newPos.x = enemyRb.position.x;
+                }
+                else
+                {
+                    newPos.z = enemyRb.position.z;
+                }
+
+                enemyRb.MovePosition(newPos);
             }
         }
     }

@@ -13,8 +13,16 @@ public static class EnemyHitReaction
         var movement = targetRb.GetComponent<EnemyMovement>();
         movement?.InterruptFall();
 
-        float facingX = Mathf.Sign(targetRb.transform.position.x - payload.attacker.position.x);
-        if (facingX == 0f) facingX = 1f;
+        Vector3 streetForward = Vector3.right;
+        if (payload.attacker != null)
+        {
+            var mover = payload.attacker.GetComponent<PlayerMovement>();
+            streetForward = mover != null ? mover.StreetForward : payload.attacker.forward;
+        }
+
+        Vector3 diff = targetRb.transform.position - payload.attacker.position;
+        float facingSign = Mathf.Sign(Vector3.Dot(diff, streetForward));
+        if (facingSign == 0f) facingSign = 1f;
 
         float launchY = payload.LaunchForce * payload.LaunchDir;
         float currentVelY = targetRb.linearVelocity.y;
@@ -67,6 +75,7 @@ public static class EnemyHitReaction
             }
         }
 
-        targetRb.linearVelocity = new Vector3(payload.KnockbackForce * facingX, finalY, 0f);
+        Vector3 horizontalForce = streetForward * (payload.KnockbackForce * facingSign);
+        targetRb.linearVelocity = new Vector3(horizontalForce.x, finalY, horizontalForce.z);
     }
 }

@@ -10,23 +10,31 @@ public class SkillObject : MonoBehaviour
     public virtual void Initialize(PlayerSkillData data, Transform player)
     {
         _facing = Mathf.Sign(player.localScale.x);
+
+        var mover = player.GetComponentInParent<PlayerMovement>();
+        Transform rootTransform = mover != null ? mover.transform : player.root;
+        Vector3 streetForward = mover != null ? mover.StreetForward : (Mathf.Abs(rootTransform.forward.z) > 0.5f ? Vector3.forward : Vector3.right);
+        streetForward.y = 0f;
+        if (streetForward.sqrMagnitude > 0.001f) streetForward.Normalize();
+
+        // 1. Position calculation with street-aware offset
         Vector3 actualOffset = data.spawnOffset;
         actualOffset.x *= _facing;
+        Vector3 worldOffset = rootTransform.TransformDirection(actualOffset);
+        transform.position = rootTransform.position + worldOffset;
 
-        transform.position = player.position + actualOffset;
-        // Don't apply player rotation - keep skill object's own z-rotation
-        // Mirror rotation when facing left
-        if (_facing < 0)
-        {
-            Vector3 eulerAngles = transform.eulerAngles;
-            eulerAngles.z = -eulerAngles.z;
-            transform.eulerAngles = eulerAngles;
-        }
-        // optional: flip visuals if assigned
-        if (_model != null)
+        // 2. Base prefab rotation preservation (e.g. Z = -35 for Burst Ring)
+        // Street rotation aligns to current road angle, facing flips 180 around Y when facing left
+        Quaternion streetRot = rootTransform.rotation;
+        Quaternion facingRot = _facing < 0 ? Quaternion.Euler(0f, 180f, 0f) : Quaternion.identity;
+        Quaternion basePrefabRot = data.skillPrefab != null ? data.skillPrefab.transform.rotation : Quaternion.identity;
+        transform.rotation = streetRot * facingRot * basePrefabRot;
+
+        // Visual model scaling (ensure root Rigidbody is never negatively scaled)
+        if (_model != null && _model != transform)
         {
             Vector3 scale = _model.localScale;
-            scale.x = Mathf.Abs(scale.x) * _facing;  // Always set explicitly based on facing
+            scale.x = Mathf.Abs(scale.x);
             _model.localScale = scale;
         }
         

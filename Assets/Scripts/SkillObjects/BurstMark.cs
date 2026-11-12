@@ -81,7 +81,7 @@ public class BurstMark : MonoBehaviour
             // Spawn VFX
             if (data.spawnVFXPrefab != null)
             {
-                Instantiate(data.spawnVFXPrefab, transform.position, Quaternion.identity);
+                Instantiate(data.spawnVFXPrefab, transform.position, transform.rotation);
             }
 
             // Play spawn SFX
@@ -131,7 +131,7 @@ public class BurstMark : MonoBehaviour
         // Spawn detonation VFX
         if (_detonationVFXPrefab != null)
         {
-            Instantiate(_detonationVFXPrefab, transform.position, Quaternion.identity);
+            Instantiate(_detonationVFXPrefab, transform.position, transform.rotation);
         }
 
         // Play detonation SFX

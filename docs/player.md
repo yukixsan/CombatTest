@@ -1,14 +1,14 @@
 # Player Movement & State System
 
 ## 2. Player Movement
-**Script:** `PlayerMovement.cs` — Rigidbody-driven; direct `rb.linearVelocity` assignment every `FixedUpdate`. Z always 0.
+**Script:** `PlayerMovement.cs` — Rigidbody-driven; direct `rb.linearVelocity` assignment every `FixedUpdate`. Movement is driven along `_streetForward` (default World X `(1,0,0)`; switches to `(0,0,1)` for Z-aligned streets).
 
 ### FixedUpdate Priority Stack
 1. Ground check — `Physics.CheckSphere`
 2. PendingLaunch — overrides velocity for 1 frame, then returns
-3. Dash state — `externalVelocity = _dashDirection * _activeDashSpeed`; gravity off; `velocity = externalVelocity`. On expiration (`dashTimer <= 0`), resets `isDashing`, restores gravity, and zeros `velocity` (hard-brake).
-4. Base movement — `moveInput.x * moveSpeed` if `CanMove && !isDashing`
-5. Velocity write — `rb.linearVelocity = (baseX + externalVelocity.x, velocity.y, 0)`
+3. Dash state — `externalVelocity` calculated along `_streetForward`; gravity off; `velocity = externalVelocity`. On expiration (`dashTimer <= 0`), resets `isDashing`, restores gravity, and zeros `velocity` (hard-brake).
+4. Base movement — `moveInput.x * moveSpeed` if `CanMove && !isDashing` (or automated move input)
+5. Velocity write — `rb.linearVelocity = (_streetForward * baseX + externalVelocity, velocity.y)`
 6. Jump — if `_jumpPressed && isGrounded && CanJump`: `velocity.y = jumpForce`
 7. Fall mult — `AddForce(Vector3.down * _fallMult)` when airborne and falling (guarded by `!isDashing`)
 

@@ -37,7 +37,8 @@ public class AttackVFXManager : MonoBehaviour
 
         if (attachTo != null)
         {
-            Quaternion baseRot = obj.transform.localRotation;
+            Quaternion baseRot = prefabToSpawn.transform.localRotation;
+            Vector3 baseScale = prefabToSpawn.transform.localScale;
 
             if (phaseVFX.parentToTransform)
             {
@@ -47,15 +48,13 @@ public class AttackVFXManager : MonoBehaviour
                 if (phaseVFX.flipByRotation)
                 {
                     obj.transform.localRotation = Quaternion.Euler(baseRot.eulerAngles.x, facing < 0 ? 180f : 0f, baseRot.eulerAngles.z);
+                    obj.transform.localScale = baseScale;
                 }
                 else
                 {
-                    obj.transform.localRotation = Quaternion.Euler(
-                    baseRot.eulerAngles.x,
-                    baseRot.eulerAngles.y,
-                    baseRot.eulerAngles.z);
+                    obj.transform.localRotation = baseRot;
 
-                    Vector3 scale = obj.transform.localScale;
+                    Vector3 scale = baseScale;
                     scale.x = facing < 0 ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
                     obj.transform.localScale = scale;
                 }
@@ -63,20 +62,19 @@ public class AttackVFXManager : MonoBehaviour
             else
             {
                 obj.transform.SetParent(null);
-                obj.transform.position = attachTo.position + offset;
+                obj.transform.position = attachTo.TransformPoint(offset);
 
                 if (phaseVFX.flipByRotation)
                 {
-                    obj.transform.rotation = Quaternion.Euler(baseRot.eulerAngles.x, facing < 0 ? 180f : 0f, baseRot.eulerAngles.z);
+                    Quaternion flipRot = Quaternion.Euler(baseRot.eulerAngles.x, facing < 0 ? 180f : 0f, baseRot.eulerAngles.z);
+                    obj.transform.rotation = attachTo.rotation * flipRot;
+                    obj.transform.localScale = baseScale;
                 }
                 else
                 {
-                    obj.transform.rotation = Quaternion.Euler(
-                    baseRot.eulerAngles.x,
-                    baseRot.eulerAngles.y,
-                    baseRot.eulerAngles.z);
+                    obj.transform.rotation = attachTo.rotation * baseRot;
 
-                    Vector3 scale = obj.transform.localScale;
+                    Vector3 scale = baseScale;
                     scale.x = facing < 0 ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
                     obj.transform.localScale = scale;
                 }

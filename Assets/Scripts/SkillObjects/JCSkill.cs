@@ -23,6 +23,8 @@ public class JCSkill : SkillObject
     private float _scanTimer = 0f;
     private int _targetsHitCount = 0;
     private bool _isSpawningSequential = false;
+    private Vector3 _streetForward = Vector3.right;
+    private Vector3 _depthNormal = Vector3.forward;
 
     public override void Initialize(PlayerSkillData data, Transform player)
     {
@@ -31,6 +33,13 @@ public class JCSkill : SkillObject
         _targetsHitCount = 0;
         _isSpawningSequential = false;
         _targetedHurtboxes.Clear();
+
+        var mover = player.GetComponentInParent<PlayerMovement>();
+        Transform rootTransform = mover != null ? mover.transform : player.root;
+        _streetForward = mover != null ? mover.StreetForward : (Mathf.Abs(rootTransform.forward.z) > 0.5f ? Vector3.forward : Vector3.right);
+        _streetForward.y = 0f;
+        if (_streetForward.sqrMagnitude > 0.001f) _streetForward.Normalize();
+        _depthNormal = Vector3.Cross(_streetForward, Vector3.up);
 
         // Calculate total pool lifetime to accommodate sequential hit delays
         float totalLifetime = maxScanLifetime + (maxTargets * Mathf.Max(0f, delayBetweenHits)) + 0.3f;
@@ -51,11 +60,15 @@ public class JCSkill : SkillObject
 
     private void ScanArea()
     {
-        Vector3 centerWorld = transform.position + new Vector3(scanBoxOffset.x * _facing, scanBoxOffset.y, 0f);
+        Vector3 forwardDir = _streetForward * _facing;
+        Vector3 centerWorld = transform.position + forwardDir * scanBoxOffset.x + Vector3.up * scanBoxOffset.y;
+        Quaternion boxRotation = Quaternion.LookRotation(_depthNormal, Vector3.up);
+        Vector3 halfExtents = new Vector3(scanBoxSize.x * 0.5f, scanBoxSize.y * 0.5f, 2.5f);
+
         Collider[] hits = Physics.OverlapBox(
             centerWorld,
-            new Vector3(scanBoxSize.x * 0.5f, scanBoxSize.y * 0.5f, 0.5f),
-            Quaternion.identity,
+            halfExtents,
+            boxRotation,
             enemyLayer
         );
 
@@ -138,7 +151,8 @@ public class JCSkill : SkillObject
     {
         if (jcHitPrefab == null) return;
 
-        GameObject jcHitObj = Instantiate(jcHitPrefab, hitPosition, Quaternion.identity);
+        Quaternion hitRot = Quaternion.LookRotation(_depthNormal, Vector3.up);
+        GameObject jcHitObj = Instantiate(jcHitPrefab, hitPosition, hitRot);
         var hit = jcHitObj.GetComponent<JCHitObject>();
         if (hit != null)
         {
@@ -156,7 +170,18 @@ public class JCSkill : SkillObject
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
-        Vector3 center = transform.position + new Vector3(scanBoxOffset.x * _facing, scanBoxOffset.y, 0f);
-        Gizmos.DrawWireCube(center, new Vector3(scanBoxSize.x, scanBoxSize.y, 1f));
+        var mover = GetComponentInParent<PlayerMovement>();
+        Vector3 streetForward = mover != null ? mover.StreetForward : (Mathf.Abs(transform.forward.z) > 0.5f ? Vector3.forward : Vector3.right);
+        streetForward.y = 0f;
+        if (streetForward.sqrMagnitude > 0.001f) streetForward.Normalize();
+
+        Vector3 depthNormal = Vector3.Cross(streetForward, Vector3.up);
+        Vector3 center = transform.position + streetForward * (scanBoxOffset.x * _facing) + Vector3.up * scanBoxOffset.y;
+        Quaternion boxRotation = Quaternion.LookRotation(depthNormal, Vector3.up);
+
+        Matrix4x4 oldMatrix = Gizmos.matrix;
+        Gizmos.matrix = Matrix4x4.TRS(center, boxRotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, new Vector3(scanBoxSize.x, scanBoxSize.y, 5f));
+        Gizmos.matrix = oldMatrix;
     }
 }

@@ -151,5 +151,10 @@ public class EnemyStateController : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    #region Animation Events
+    public void EnableHitbox() => _hitbox?.Active();
+    public void DisableHitbox() => _hitbox?.Deactive();
+    #endregion
   
 }

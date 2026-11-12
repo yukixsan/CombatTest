@@ -22,12 +22,22 @@ public class EnemyCombat : MonoBehaviour
         Debug.Log($"{name} took {payload.Damage} dmg. HP: {currentHealth}/{maxHealth}");
 
         // Knockback
-        float facingX = Mathf.Sign(transform.position.x - payload.attacker.position.x);
+        Vector3 streetForward = Vector3.right;
+        if (payload.attacker != null)
+        {
+            var mover = payload.attacker.GetComponent<PlayerMovement>();
+            streetForward = mover != null ? mover.StreetForward : payload.attacker.forward;
+        }
 
+        Vector3 diff = transform.position - payload.attacker.position;
+        float facing = Mathf.Sign(Vector3.Dot(diff, streetForward));
+        if (facing == 0f) facing = 1f;
+
+        Vector3 hForce = streetForward * (payload.KnockbackForce * facing);
         Vector3 knockback = new Vector3(
-                   payload.KnockbackForce * facingX,
+                   hForce.x,
                    payload.LaunchForce * payload.LaunchDir,
-                   0
+                   hForce.z
                );
 
         rb.AddForce(knockback, ForceMode.Impulse);

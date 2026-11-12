@@ -78,6 +78,14 @@ Entries marked `(?)` are still unverified. **Maintenance:** add one line here wh
 ## Scripts/MenuHandlers
 `PauseMenu.cs` — `PauseMenu.Instance.IsPaused` (read by `HitStopManager`)
 
+## Scripts/Level — Level transitions and camera choreography
+| File | Purpose | Doc |
+|---|---|---|
+| `Scripts/Level/StreetTrack.cs` | Defines street forward direction and 2.5D Rigidbody constraints | — |
+| `Scripts/Level/CornerPivotTrigger.cs` | Automated 90° corner pivot trigger for single-camera continuous 3D turns | — |
+| `Scripts/Level/CornerTransitionManager.cs` | Coordinates 2.5D corner transitions, Cinemachine 3 camera priorities, and player input locking | — |
+| `Scripts/Level/CornerTransitionTrigger.cs` | Trigger volume initiating automated street corner turns and coordinate handoffs | — |
+
 ## Projects/ — Input, commands, player states, managers
 | File | Purpose | Doc |
 |---|---|---|

@@ -29,10 +29,15 @@ public class EnemyChaseState : EnemyBaseState
 
         if (dist > controller.stopDistance)
         {
-            Vector3 dir = (controller.target.position - controller.transform.position).normalized;
-            movement.SetMoveVelocity(new Vector3(dir.x * movement.moveSpeed, 0, 0));
+            Vector3 diff = controller.target.position - controller.transform.position;
+            Vector3 localDiff = controller.transform.InverseTransformDirection(diff);
+            float horizontalSign = Mathf.Sign(localDiff.x);
+            if (horizontalSign == 0f) horizontalSign = 1f;
+
+            Vector3 moveDir = controller.transform.TransformDirection(new Vector3(horizontalSign, 0f, 0f));
+            movement.SetMoveVelocity(moveDir * movement.moveSpeed);
             movement.ApplyMovement();
-            movement.Flip(dir.x);
+            movement.Flip(localDiff.x);
         }
         else
         {

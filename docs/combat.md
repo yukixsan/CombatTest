@@ -91,6 +91,10 @@ Events fire in order: `OnWindupStart → OnActiveStart → OnRecoveryStart → O
 5. `HitStopManager.Instance.StartHitstop(payload.HitstopDuration)`
 6. `healthComponent.TakeDamage(payload.Damage, poiseDamage=20)`
 
+**PlayerHurtbox** (`Scripts/PlayerHurtbox.cs`):
+- Resolves enemy hitbox via `other.GetComponent<EnemyHitBox>() ?? other.GetComponentInParent<EnemyHitBox>() ?? other.attachedRigidbody?.GetComponent<EnemyHitBox>()` scoped locally to the hitting enemy hierarchy (never `transform.root` which would resolve to a common parent folder).
+- Applies damage via `healthComponent.TakeDamage(payload.Damage, payload.AttackerArmor)` and triggers `playerStateController.TriggerDamaged(payload)` if armor broken.
+
 ---
 
 # 7. Data Structures
@@ -171,6 +175,17 @@ All values, base damage, hitstop duration, hit VFX index, spawn VFX/SFX, detonat
 - **Sequencing Order:** Detonates marks in FIFO order (from oldest spawned mark to newest).
 - **Sequencing Interval:** Controlled by `BurstDashData.sequentialDetonationInterval` (default `0.08s`), creating a chain-pop effect along the player's previous burst dash path.
 - **API:** `BurstMark.DetonateSequentially(MonoBehaviour runner, float interval)`. Fallback `BurstMark.DetonateAll()` available for instantaneous detonation.
+
+## 8.6 Skill Objects & 2.5D Street Alignment
+- **Base Class:** `SkillObject` (`Scripts/SkillObjects/SkillObject.cs`).
+- **Street Alignment & Facing:** `SkillObject.Initialize` computes 3D position using `rootTransform.TransformDirection(actualOffset)` and rotation using `rootTransform.rotation * (facing < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.identity) * basePrefabRot`. This automatically handles street angle transitions ($Y = 0^\circ$ Street 1 vs $Y = 90^\circ$ Highway), player facing direction, and preserves base prefab tilt ($Z = -35^\circ$ on `Burst Ring`).
+- **BurstSkill:**
+  - Moves via 3D `Rigidbody.linearVelocity = transform.right * speed` (where `transform.right` incorporates street angle, facing, and $-35^\circ$ downward tilt).
+  - Automatically freezes depth axis position on `rb3d.constraints` (`FreezePositionZ` on X-street, `FreezePositionX` on Z-street) and disables legacy `Rigidbody2D.simulated`.
+  - `DragEnemies()` zeros depth delta before applying centering velocity to prevent pulling enemies off-plane.
+- **JCSkill & JCHitObject:**
+  - `JCSkill.ScanArea()` uses street-aligned `Physics.OverlapBox` oriented via `Quaternion.LookRotation(depthNormal, Vector3.up)` with generous depth tolerance (`halfExtents.z = 2.5f`).
+  - `JCSkill.SpawnJCHit()` instantiates `jcHitPrefab` with street rotation `Quaternion.LookRotation(depthNormal, Vector3.up)` so slashes and hitboxes align along the road on both Street 1 and Street 2.
 
 ---
 

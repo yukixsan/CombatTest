@@ -84,10 +84,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1592061905489168634}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0
+  m_LinearDamping: 0
+  m_AngularDamping: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dde4a9d10dbf47479a69cbd2f332e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 600
+  maxHealth: 550
   currentHealth: 0
   superArmor: 0
   maxArmor: 100
@@ -235,6 +235,8 @@ MonoBehaviour:
   fallMultiplier: 50
   fallInterruptDuration: 0.1
   fallStartDelay: 0.05
+  groundKnockbackDecel: 38
+  airKnockbackDecel: 22
   groundCheckPoint: {fileID: 1831264951692918788}
   groundCheckDistance: 0.2
   groundLayer:
@@ -271,6 +273,8 @@ MonoBehaviour:
   stopDistance: 2
   idleToChaseDelay: 1
   damagedDuration: 0.5
+  maxJuggleHeight: 8
+  juggleLiftVelocity: 2
   attackDuration: 1
   attackCooldown: 1
   canAttack: 1
@@ -356,10 +360,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1772199711252260769}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1376,10 +1380,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -1.3052037
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 19119b13bb19f544e8228883046b99f2, type: 2}
     - target: {fileID: 9500000, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: d359b6ea5d241714cb8f0fe15fbdbe7e, type: 2}
+    - target: {fileID: 13700000, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 39801059a472dc24595a30c1be7d380e, type: 2}
     m_RemovedComponents:
     - {fileID: 9500000, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
     m_RemovedGameObjects: []
@@ -1396,9 +1408,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 100092, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2259063727136222243}
-    - targetCorrespondingSourceObject: {fileID: 100092, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1748758976904394785}
     - targetCorrespondingSourceObject: {fileID: 100092, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
       insertIndex: -1
@@ -1412,19 +1421,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 100092, guid: 56532fe0066e40b4d87bf0dc8028d892, type: 3}
   m_PrefabInstance: {fileID: 9011768673422144817}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2259063727136222243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9011768673422046157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f67ed3fc96d5dda4fa0cebd3f4454f0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hitBoxObject: {fileID: 1772199711252260769}
 --- !u!114 &1748758976904394785
 MonoBehaviour:
   m_ObjectHideFlags: 0
