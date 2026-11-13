@@ -45,12 +45,12 @@ MonoBehaviour:
   detonationSFXVolume: 0.9
   sequentialDetonationInterval: 0.3
   neutralPayload:
-    knockbackForce: 0
+    knockbackForce: 15
     launchForce: 1
     launchDir: 1
     damageMultiplier: 1
   horizontalPayload:
-    knockbackForce: 15
+    knockbackForce: -15
     launchForce: 0
     launchDir: 0
     damageMultiplier: 1

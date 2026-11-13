@@ -652,8 +652,8 @@ public event System.Action<CombatActionData> OnActionAccepted;
         var mark = markObj.GetComponent<BurstMark>();
         if (mark != null)
         {
-            HitboxPayload payload = burstDashData.CreateMarkPayload(burstDir, markObj.transform);
-            mark.Initialize(payload, burstDashData.markLifetime, burstDashData.markPrefab, burstDashData, markObj.transform);
+            HitboxPayload payload = burstDashData.CreateMarkPayload(burstDir, transform);
+            mark.Initialize(payload, burstDashData.markLifetime, burstDashData.markPrefab, burstDashData, transform);
         }
     }
 

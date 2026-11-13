@@ -59,7 +59,7 @@ public static void ApplyKnockback(
 ```
 
 **Mechanics:**
-- **Horizontal Impulse + Active Braking:** Target receives `KnockbackForce * facingX`. In `FixedUpdate`, `EnemyMovement.ApplyKnockbackDeceleration()` linearly brakes horizontal velocity to zero (`groundKnockbackDecel = 38f`, `airKnockbackDecel = 22f`). This produces an explosive initial pop with a tight, bounded travel distance ($S = \frac{V_0^2}{2a} \approx 2.0\text{–}2.5\text{m}$) rather than runaway sliding.
+- **Street-Aware Horizontal Impulse + Active Braking:** Target receives `KnockbackForce * facingSign` along `streetForward` (resolved from `PlayerMovement.Instance.StreetForward` or target enemy's 2.5D track orientation). In `FixedUpdate`, `EnemyMovement.ApplyKnockbackDeceleration()` linearly brakes horizontal velocity to zero (`groundKnockbackDecel = 38f`, `airKnockbackDecel = 22f`). This produces an explosive initial pop with a tight, bounded travel distance ($S = \frac{V_0^2}{2a} \approx 2.0\text{–}2.5\text{m}$) rather than runaway sliding.
 - **Air Juggle Catch & Launch:** When an airborne enemy is hit (even if falling fast):
   - **Launch attacks (`LaunchForce > 0, LaunchDir > 0`):** Overrides falling momentum and applies `launchY` upward. If the enemy reaches the ceiling (`maxJuggleHeight = 8f`), velocity is held at `juggleLiftVelocity = 5f` to maintain the combo without rocketing into space.
   - **Air combo strikes (`LaunchForce == 0`):** Catches falling enemies out of the air and applies `juggleLiftVelocity = 5f`, keeping them floating and suspended in the combo.

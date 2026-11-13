@@ -7,11 +7,15 @@ public static class PlayerHitReaction
         Vector3 streetForward = Vector3.right;
         if (payload.attacker != null)
         {
-            var mover = payload.attacker.GetComponent<PlayerMovement>();
-            streetForward = mover != null ? mover.StreetForward : payload.attacker.forward;
+            var mover = payload.attacker.GetComponentInParent<PlayerMovement>();
+            if (mover != null)
+            {
+                streetForward = mover.StreetForward;
+            }
         }
 
-        Vector3 diff = targetPosition - payload.attacker.position;
+        Vector3 attackerPos = payload.attacker != null ? payload.attacker.position : targetPosition - streetForward;
+        Vector3 diff = targetPosition - attackerPos;
         float facingSign = Mathf.Sign(Vector3.Dot(diff, streetForward));
         if (facingSign == 0f) facingSign = 1f;
 

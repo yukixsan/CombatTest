@@ -25,11 +25,15 @@ public class EnemyCombat : MonoBehaviour
         Vector3 streetForward = Vector3.right;
         if (payload.attacker != null)
         {
-            var mover = payload.attacker.GetComponent<PlayerMovement>();
-            streetForward = mover != null ? mover.StreetForward : payload.attacker.forward;
+            var mover = payload.attacker.GetComponentInParent<PlayerMovement>();
+            if (mover != null)
+            {
+                streetForward = mover.StreetForward;
+            }
         }
 
-        Vector3 diff = transform.position - payload.attacker.position;
+        Vector3 attackerPos = payload.attacker != null ? payload.attacker.position : transform.position - streetForward;
+        Vector3 diff = transform.position - attackerPos;
         float facing = Mathf.Sign(Vector3.Dot(diff, streetForward));
         if (facing == 0f) facing = 1f;
 
