@@ -266,10 +266,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97c23e3b12dc18c42a140437e53d3951, type: 3}
   m_Name: Tonemapping
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 0
   neutralHDRRangeReductionMode:
     m_OverrideState: 0
     m_Value: 2
@@ -328,19 +328,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
   m_Name: Vignette
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.Vignette
-  active: 1
+  active: 0
   color:
     m_OverrideState: 1
-    m_Value: {r: 0.12, g: 0.06, b: 0.08, a: 1}
+    m_Value: {r: 0.7304158, g: 0, b: 1, a: 1}
   center:
     m_OverrideState: 0
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.22
+    m_Value: 0.283
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.45
+    m_Value: 0.39
   rounded:
     m_OverrideState: 0
     m_Value: 0
