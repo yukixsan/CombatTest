@@ -31,4 +31,4 @@
 ## 4.5 Other VFX scripts
 - `HitFX` (`Scripts/HitFX.cs`): shake + blink feedback on a hit target; `PlayEffect()`.
 - `PlayerLocomotionFX`: dedicated reused particle systems (jump/land/dash/run dust). Not pooled.
-- `ComboCountManager`: combo HUD; `RegisterHit()` from hits; DOTween animations.
+- `ComboCountManager`: combo HUD; `RegisterHit()` from hits; DOTween animations (dual-layer shadow/main TMP text punch, masked box scale pulse + rotation + color tiers, and burst mark dropdown on milestones).

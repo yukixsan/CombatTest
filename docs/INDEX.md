@@ -70,7 +70,7 @@ Entries marked `(?)` are still unverified. **Maintenance:** add one line here wh
 |---|---|
 | `VFXHandling/AttackVFXManager.cs` | Per-phase attack VFX pool |
 | `VFXHandling/VfxReturnPool.cs` | `VFXPoolReturn` auto-return |
-| `VFXHandling/ComboCountManager.cs` | Combo HUD singleton; `RegisterHit()`; DOTween panel/fill/text pop animation |
+| `VFXHandling/ComboCountManager.cs` | Combo HUD singleton; `RegisterHit()`; DOTween panel/fill/punch, masked box pulse/rotation/color tiers, burst dropdown |
 | `VFXHandling/UIBurstGauge.cs` | TMP_Text burst gauge display (`SetTarget` / inspector wire) | combat |
 | `VFXHandling/PlayerLocomotionFX.cs` | Dedicated dust particle systems: `PlayJumpDust(pos)`, `PlayLandDust`, `PlayDashDust`, `StartRunDust`/stop (delayed stop coroutine) |
 | `AudioHandling/SFXManager.cs` | Pooled AudioSource SFX |

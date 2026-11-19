@@ -1,0 +1,75 @@
+.hud-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 95px;
+}
+
+.burst-and-skill-container {
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.burst-bar-container {
+    position: relative;
+    width: 340px;
+    height: 97px;
+    align-items: center;
+    justify-content: center;
+}
+
+.burst-bar-image {
+    width: 100%;
+    height: 100%;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.burst-marks-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.burst-mark {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    top: 45%;
+    translate: -50% -50%;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.mark-1 {
+    left: 18.6%;
+}
+
+.mark-2 {
+    left: 50%;
+}
+
+.mark-3 {
+    left: 81.4%;
+}
+
+.skill-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.skill-icon {
+    width: 56px;
+    height: 56px;
+    margin-left: 5px;
+    margin-right: 5px;
+    -unity-background-scale-mode: scale-to-fit;
+}
