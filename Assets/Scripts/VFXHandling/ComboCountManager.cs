@@ -24,6 +24,7 @@ public class ComboCountManager : MonoBehaviour
 
     [Header("Masked Box Animation")]
     [SerializeField] private Image maskedBoxImage;
+    [SerializeField] private Image maskedBoxImage2;
     [SerializeField] private float pulseMinScale = 0.85f;
     [SerializeField] private float pulseMaxScale = 1.25f;
     [SerializeField] private float pulseDuration = 0.4f;
@@ -36,6 +37,11 @@ public class ComboCountManager : MonoBehaviour
     };
     [SerializeField] private int hitsPerColorChange = 10;
     [SerializeField] private float colorTransitionDuration = 0.25f;
+
+    [Header("Fire Particle System")]
+    [SerializeField] private ParticleSystem fireParticleSystem;
+    [SerializeField] private float[] tierSpeeds = new float[] { 5f, 7f, 10f };
+    [SerializeField] private float[] tierEmissionRates = new float[] { 5f, 7f, 10f };
 
     [Header("Milestone")]
     [SerializeField] private int burstMilestoneInterval = 10;
@@ -60,6 +66,8 @@ public class ComboCountManager : MonoBehaviour
     [SerializeField] private float stampStartScale = 2.5f;
     [SerializeField] private float stampDuration = 0.22f;
     [SerializeField] private Ease stampEase = Ease.InQuad;
+    [Tooltip("Delay before the second/subsequent elements appear after the first element.")]
+    [SerializeField] private float delayAfterFirstElement = 0.15f;
     [SerializeField] private float stampStagger = 0.08f;
     [SerializeField] private float burstStayDuration = 1.2f;
     [SerializeField] private float burstSlideOutDuration = 0.25f;
@@ -74,6 +82,9 @@ public class ComboCountManager : MonoBehaviour
     private Tween boxScaleTween;
     private Tween boxRotateTween;
     private Tween boxColorTween;
+    private Tween boxScaleTween2;
+    private Tween boxRotateTween2;
+    private Tween boxColorTween2;
     private Tween timerColorTween;
     private Tween textPunchTween;
     private Tween hitPunchTween;
@@ -122,6 +133,11 @@ public class ComboCountManager : MonoBehaviour
                 }
             }
         }
+
+        if (fireParticleSystem != null)
+        {
+            fireParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
     }
 
     private void OnDestroy()
@@ -132,6 +148,9 @@ public class ComboCountManager : MonoBehaviour
         boxScaleTween?.Kill();
         boxRotateTween?.Kill();
         boxColorTween?.Kill();
+        boxScaleTween2?.Kill();
+        boxRotateTween2?.Kill();
+        boxColorTween2?.Kill();
         timerColorTween?.Kill();
         textPunchTween?.Kill();
         hitPunchTween?.Kill();
@@ -211,7 +230,15 @@ public class ComboCountManager : MonoBehaviour
             _lastColorTier = Mathf.Clamp(hitCount / hitsPerColorChange, 0, tierColors.Length - 1);
             Color startColor = tierColors[_lastColorTier];
             if (maskedBoxImage != null) maskedBoxImage.color = startColor;
+            if (maskedBoxImage2 != null) maskedBoxImage2.color = startColor;
             if (timerFillImage != null) timerFillImage.color = startColor;
+        }
+
+        if (fireParticleSystem != null)
+        {
+            ApplyParticleTier(_lastColorTier);
+            if (!fireParticleSystem.isPlaying)
+                fireParticleSystem.Play();
         }
 
         StartMaskedBoxLoop();
@@ -226,6 +253,11 @@ public class ComboCountManager : MonoBehaviour
         StopMaskedBoxLoop();
         HideBurstDrop();
 
+        if (fireParticleSystem != null && fireParticleSystem.isPlaying)
+        {
+            fireParticleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        }
+
         panelTween = panelRoot
             .DOAnchorPos(hiddenAnchoredPos, panelSlideOutDuration)
             .SetEase(Ease.InCubic)
@@ -239,20 +271,26 @@ public class ComboCountManager : MonoBehaviour
 
     private void StartMaskedBoxLoop()
     {
-        if (maskedBoxImage == null) return;
+        StartSingleBoxLoop(maskedBoxImage, ref boxScaleTween, ref boxRotateTween);
+        StartSingleBoxLoop(maskedBoxImage2, ref boxScaleTween2, ref boxRotateTween2);
+    }
 
-        boxScaleTween?.Kill();
-        boxRotateTween?.Kill();
+    private void StartSingleBoxLoop(Image box, ref Tween scaleTween, ref Tween rotateTween)
+    {
+        if (box == null) return;
 
-        maskedBoxImage.transform.localScale = Vector3.one * pulseMinScale;
-        boxScaleTween = maskedBoxImage.transform
+        scaleTween?.Kill();
+        rotateTween?.Kill();
+
+        box.transform.localScale = Vector3.one * pulseMinScale;
+        scaleTween = box.transform
             .DOScale(pulseMaxScale, pulseDuration)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.InOutSine)
             .SetUpdate(true);
 
-        maskedBoxImage.transform.localRotation = Quaternion.identity;
-        boxRotateTween = maskedBoxImage.transform
+        box.transform.localRotation = Quaternion.identity;
+        rotateTween = box.transform
             .DORotate(new Vector3(0f, 0f, 360f), rotationDuration, RotateMode.FastBeyond360)
             .SetLoops(-1, LoopType.Restart)
             .SetEase(Ease.Linear)
@@ -264,12 +302,21 @@ public class ComboCountManager : MonoBehaviour
         boxScaleTween?.Kill();
         boxRotateTween?.Kill();
         boxColorTween?.Kill();
+        boxScaleTween2?.Kill();
+        boxRotateTween2?.Kill();
+        boxColorTween2?.Kill();
         timerColorTween?.Kill();
 
         if (maskedBoxImage != null)
         {
             maskedBoxImage.transform.localScale = Vector3.one;
             maskedBoxImage.transform.localRotation = Quaternion.identity;
+        }
+
+        if (maskedBoxImage2 != null)
+        {
+            maskedBoxImage2.transform.localScale = Vector3.one;
+            maskedBoxImage2.transform.localRotation = Quaternion.identity;
         }
     }
 
@@ -292,6 +339,14 @@ public class ComboCountManager : MonoBehaviour
                     .SetUpdate(true);
             }
 
+            if (maskedBoxImage2 != null)
+            {
+                boxColorTween2?.Kill();
+                boxColorTween2 = maskedBoxImage2
+                    .DOColor(targetColor, colorTransitionDuration)
+                    .SetUpdate(true);
+            }
+
             if (timerFillImage != null)
             {
                 timerColorTween?.Kill();
@@ -299,6 +354,37 @@ public class ComboCountManager : MonoBehaviour
                     .DOColor(targetColor, colorTransitionDuration)
                     .SetUpdate(true);
             }
+
+            ApplyParticleTier(tierIndex);
+        }
+    }
+
+    private void ApplyParticleTier(int tierIndex)
+    {
+        if (fireParticleSystem == null) return;
+
+        var main = fireParticleSystem.main;
+        var emission = fireParticleSystem.emission;
+
+        // Tier start color
+        if (tierColors != null && tierColors.Length > 0)
+        {
+            int colorIdx = Mathf.Clamp(tierIndex, 0, tierColors.Length - 1);
+            main.startColor = new ParticleSystem.MinMaxGradient(tierColors[colorIdx]);
+        }
+
+        // Tier speed (default: 5, 7, 10)
+        if (tierSpeeds != null && tierSpeeds.Length > 0)
+        {
+            int speedIdx = Mathf.Clamp(tierIndex, 0, tierSpeeds.Length - 1);
+            main.startSpeed = tierSpeeds[speedIdx];
+        }
+
+        // Tier emission rate over time (default: 5, 7, 10)
+        if (tierEmissionRates != null && tierEmissionRates.Length > 0)
+        {
+            int emitIdx = Mathf.Clamp(tierIndex, 0, tierEmissionRates.Length - 1);
+            emission.rateOverTime = tierEmissionRates[emitIdx];
         }
     }
 
@@ -355,7 +441,7 @@ public class ComboCountManager : MonoBehaviour
             obj.anchoredPosition = _initialDropPositions[i];
             obj.localScale = Vector3.one * stampStartScale;
 
-            float delay = i * stampStagger;
+            float delay = i == 0 ? 0f : delayAfterFirstElement + (i - 1) * stampStagger;
             float totalEntranceTime = delay + stampDuration;
             if (totalEntranceTime > maxEntranceTime)
                 maxEntranceTime = totalEntranceTime;

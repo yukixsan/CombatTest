@@ -128,7 +128,7 @@ prefab (GameObject), localOffset (Vector3), flipByRotation (bool), sfx (AudioCli
 - Subscribes to `ComboCountManager.Instance.OnComboMilestone` (fired every 10 hits by default via `milestoneInterval`). Each milestone gives `+1` gauge (capped at `maxGauge`).
 - Persistence: hit counter resets on combo drop, but burst gauge persists.
 - API: `AddGauge(int)`, `TryConsume()`, `ResetGauge()`.
-- UI: `UIBurstGauge` (`Scripts/VFXHandling/UIBurstGauge.cs`) displays current/max via `TMP_Text` ("Burst: X/5"). Supports inspector wire or `SetTarget(BurstGauge)`.
+- UI: `UIBurstGauge` (`Scripts/VFXHandling/UIBurstGauge.cs`) displays current/max via `TMP_Text` ("Burst: X/5"). `BurstGaugeUI` (`Projects/UI Asset/BurstGaugeUI.cs`) drives UI Toolkit marks (`Mark1..Mark3`) with `.burst-mark--active` CSS transitions.
 
 ## 8.2 Burst Dash (Usage) — Implemented (Phase 2)
 - **Input:** `Gameplay/Burst` action bound to `<Mouse>/middleButton`. Handled by `PlayerInputReader` -> `CommandBuffer.Enqueue(CommandType.Burst)`.

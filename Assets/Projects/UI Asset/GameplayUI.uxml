@@ -1,23 +1,23 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Projects/UI%20Asset/GameplayUI.uss?fileID=7433441132597879392&amp;guid=997ed592abffccf44bab35e9baf3391c&amp;type=3#GameplayUI" />
+    <Style src="project://database/Assets/Projects/UI%20Asset/GameplayUI.uss?fileID=7433441132597879392&amp;guid=997ed592abffccf44bab35e9baf3391c&amp;type=3#GameplayUI"/>
     <ui:VisualElement name="HUDContainer" class="hud-container">
         <ui:VisualElement name="BurstAndSkill" class="burst-and-skill-container">
-            <!-- Burst Bar and Overlaid Diamond Marks -->
             <ui:VisualElement name="BurstBarContainer" class="burst-bar-container">
-                <ui:Image name="BurstBar" class="burst-bar-image" source="project://database/Assets/Projects/UI%20Asset/BurstMarkBa.png?fileID=2800000&amp;guid=a8890b5e705a8fe4e92f887024077c97&amp;type=3#BurstMarkBa" />
+                <ui:Image name="BurstBar" source="project://database/Assets/Projects/UI%20Asset/BurstMarkBa.png?fileID=2800000&amp;guid=a8890b5e705a8fe4e92f887024077c97&amp;type=3#BurstMarkBa" class="burst-bar-image"/>
                 <ui:VisualElement name="BurstMarks" class="burst-marks-container">
-                    <ui:Image name="Mark1" class="burst-mark mark-1" source="project://database/Assets/Projects/UI%20Asset/mark1.png?fileID=2800000&amp;guid=e000b6539e5b6e142a453a83900791c8&amp;type=3#mark1" />
-                    <ui:Image name="Mark2" class="burst-mark mark-2" source="project://database/Assets/Projects/UI%20Asset/mark2.png?fileID=2800000&amp;guid=5a7da09921e337e4f97de59c6dd3f3aa&amp;type=3#mark2" />
-                    <ui:Image name="Mark3" class="burst-mark mark-3" source="project://database/Assets/Projects/UI%20Asset/mark3.png?fileID=2800000&amp;guid=fc12f61fd6298934b935a4d349058b43&amp;type=3#mark3" />
+                    <ui:Image name="Mark1_Glow" source="project://database/Assets/Projects/UI%20Asset/mark1.png?fileID=2800000&amp;guid=e000b6539e5b6e142a453a83900791c8&amp;type=3#mark1" tint-color="rgb(72, 110, 255)" class="burst-mark burst-mark-glow mark-1"/>
+                    <ui:Image name="Mark1" source="project://database/Assets/Projects/UI%20Asset/mark1.png?fileID=2800000&amp;guid=e000b6539e5b6e142a453a83900791c8&amp;type=3#mark1" class="burst-mark mark-1"/>
+                    <ui:Image name="Mark2_Glow" source="project://database/Assets/Projects/UI%20Asset/mark2.png?fileID=2800000&amp;guid=5a7da09921e337e4f97de59c6dd3f3aa&amp;type=3#mark2" tint-color="rgb(72, 110, 255)" class="burst-mark burst-mark-glow mark-2"/>
+                    <ui:Image name="Mark2" source="project://database/Assets/Projects/UI%20Asset/mark2.png?fileID=2800000&amp;guid=5a7da09921e337e4f97de59c6dd3f3aa&amp;type=3#mark2" class="burst-mark mark-2"/>
+                    <ui:Image name="Mark3_Glow" source="project://database/Assets/Projects/UI%20Asset/mark3.png?fileID=2800000&amp;guid=fc12f61fd6298934b935a4d349058b43&amp;type=3#mark3" tint-color="rgb(72, 110, 255)" class="burst-mark burst-mark-glow mark-3"/>
+                    <ui:Image name="Mark3" source="project://database/Assets/Projects/UI%20Asset/mark3.png?fileID=2800000&amp;guid=fc12f61fd6298934b935a4d349058b43&amp;type=3#mark3" class="burst-mark mark-3"/>
                 </ui:VisualElement>
             </ui:VisualElement>
-
-            <!-- Skill Icons Row -->
             <ui:VisualElement name="SkillContainer" class="skill-container">
-                <ui:Image name="SkillIcon1" class="skill-icon" source="project://database/Assets/Projects/UI%20Asset/Skill%20Icon.png?fileID=2800000&amp;guid=6d843b07c7ae4194595dac8b0c018af3&amp;type=3#Skill%20Icon" />
-                <ui:Image name="SkillIcon2" class="skill-icon" source="project://database/Assets/Projects/UI%20Asset/Skill%20Icon.png?fileID=2800000&amp;guid=6d843b07c7ae4194595dac8b0c018af3&amp;type=3#Skill%20Icon" />
-                <ui:Image name="SkillIcon3" class="skill-icon" source="project://database/Assets/Projects/UI%20Asset/Skill%20Icon.png?fileID=2800000&amp;guid=6d843b07c7ae4194595dac8b0c018af3&amp;type=3#Skill%20Icon" />
-                <ui:Image name="SkillIcon4" class="skill-icon" source="project://database/Assets/Projects/UI%20Asset/Skill%20Icon.png?fileID=2800000&amp;guid=6d843b07c7ae4194595dac8b0c018af3&amp;type=3#Skill%20Icon" />
+                <ui:Image name="SkillIcon1" source="project://database/Assets/Projects/UI%20Asset/Skill%20Icon.png?fileID=2800000&amp;guid=6d843b07c7ae4194595dac8b0c018af3&amp;type=3#Skill%20Icon" class="skill-icon"/>
+                <ui:Image name="SkillIcon2" source="project://database/Assets/Projects/UI%20Asset/Skill%20Icon.png?fileID=2800000&amp;guid=6d843b07c7ae4194595dac8b0c018af3&amp;type=3#Skill%20Icon" class="skill-icon"/>
+                <ui:Image name="SkillIcon3" source="project://database/Assets/Projects/UI%20Asset/Skill%20Icon.png?fileID=2800000&amp;guid=6d843b07c7ae4194595dac8b0c018af3&amp;type=3#Skill%20Icon" class="skill-icon"/>
+                <ui:Image name="SkillIcon4" source="project://database/Assets/Projects/UI%20Asset/Skill%20Icon.png?fileID=2800000&amp;guid=6d843b07c7ae4194595dac8b0c018af3&amp;type=3#Skill%20Icon" class="skill-icon"/>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

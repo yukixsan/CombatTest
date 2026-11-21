@@ -24,6 +24,7 @@ Entries marked `(?)` are still unverified. **Maintenance:** add one line here wh
 | `Scripts/BurstGauge.cs` | Burst gauge resource (int 0–max); AddGauge / TryConsume | combat |
 | `Scripts/AwakeningManager.cs` | Awakening state, timer, speed & damage multiplier coordination | combat |
 | `Scripts/UICamera.cs` | UI camera helper (not read in detail) (?) | — |
+| `Projects/UI Asset/BurstGaugeUI.cs` | UI Toolkit controller for burst marks; binds to BurstGauge | combat |
 
 ## Scripts/Data
 | File | Purpose |
